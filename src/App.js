@@ -15,18 +15,25 @@ import { ProductThumbnail } from "./components/ProductThumbnail";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Product } from "./pages/Product";
+import { ProductFilter } from "./pages/ProductFilter";
+import ScrollToTop from "./helpers/ScrollToTop";
 
 function App() {
 
   return (
     <BrowserRouter>
       <Nav />
-      <Routes>
-        <Route element={<Home />} path="/" />
-        <Route element={<Product />} path="/product">
-          <Route element={<Product />} path=":product_id" />
-        </Route>
-      </Routes>
+      <ScrollToTop>
+        <Routes>
+          <Route element={<Home />} path="/" />
+          <Route element={<Product />} path="/product">
+            <Route element={<Product />} path=":product_id" />
+          </Route>
+          <Route element={<ProductFilter />} path="/filter">
+
+          </Route>
+        </Routes>
+      </ScrollToTop>
       <Social />
       <Footer />
     </BrowserRouter>
