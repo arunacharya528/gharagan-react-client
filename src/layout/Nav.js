@@ -1,4 +1,6 @@
-export const Nav = () => { 
+import { Link } from "react-router-dom";
+
+export const Nav = () => {
     return (
         <div id="nav">
             <div id="top-bar" class="">
@@ -64,7 +66,9 @@ export const Nav = () => {
             <div id="nav-bar">
                 <div class="container">
                     <div class="d-flex flex-wrap">
-                        <a href="#">Nav component</a>
+                        <Link to="/">Home</Link>
+                        <Link to="/filter/">Filter</Link>
+
                         <a href="#">Nav component</a>
                         <a href="#">Nav component</a>
                         <a href="#">Nav component</a>
