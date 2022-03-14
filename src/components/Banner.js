@@ -13,7 +13,7 @@ export const Banner = () => {
             .catch((error) => {
                 console.log(error);
             });
-    });
+    },[]);
 
 
     return (
