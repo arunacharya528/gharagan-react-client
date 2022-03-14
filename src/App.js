@@ -12,43 +12,24 @@ import { Nav } from "./layout/Nav";
 import { Social } from "./layout/Social";
 import { getProducts } from "./adapters/product";
 import { ProductThumbnail } from "./components/ProductThumbnail";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Home } from "./pages/Home";
+import { Product } from "./pages/Product";
 
 function App() {
 
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    getProducts()
-      .then((response) => {
-        console.log(response.data);
-        setProducts(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, [])
   return (
-    <div>
+    <BrowserRouter>
       <Nav />
-      <Banner />
-
-
-      <div className="container">
-
-        <div class="header">
-          <h5>Gharagan Sells</h5>
-          <a href="#">More Products <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
-        </div>
-
-        <div id="catalog-container" className="row">
-          {
-            products.map((product, index) => <ProductThumbnail key={index} product={product} />)
-          }
-        </div>
-      </div>
+      <Routes>
+        <Route element={<Home />} path="/" />
+        <Route element={<Product />} path="/product">
+          <Route element={<Product />} path=":product_id" />
+        </Route>
+      </Routes>
       <Social />
       <Footer />
-    </div>
+    </BrowserRouter>
   );
 }
 
