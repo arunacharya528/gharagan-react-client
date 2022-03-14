@@ -1,10 +1,12 @@
+import { Link } from "react-router-dom";
+
 export const ProductThumbnail = (props) => {
 
     const discountPercent = props.product.discount.discount_percent;
     const actualPrice = props.product.price - Math.ceil(props.product.discount.discount_percent * 0.01 * props.product.price)
     const initialPrice = props.product.price;
     return (
-        <div class="product-thumbnail  col-12 col-sm-6 col-lg-3">
+        <Link to={'/product/' + props.product.id} class="product-thumbnail  col-12 col-sm-6 col-lg-3">
             <div id="image-container">
                 <img src="https://via.placeholder.com/400x200" />
             </div>
@@ -27,6 +29,6 @@ export const ProductThumbnail = (props) => {
                 </div>
                 <div id="discount">{discountPercent}% OFF</div>
             </div>
-        </div>
+        </Link>
     );
 }
