@@ -1,0 +1,32 @@
+#social {
+    text-align: center;
+    .red,
+    .blue {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        i {
+            font-size: 3rem;
+        }
+        .title {
+            padding: 0.2rem 0;
+            font-weight: bold;
+        }
+        .hashtag {
+            color: grey;
+        }
+        padding: 1rem;
+    }
+    .red {
+        background-color: rgba(255, 0, 0, 0.05);
+        i {
+            color: red;
+        }
+    }
+    .blue {
+        background-color: rgba(17, 0, 255, 0.05);
+        i {
+            color: rgb(0, 0, 139);
+        }
+    }
+}

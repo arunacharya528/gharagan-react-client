@@ -1,0 +1,70 @@
+ #page-ribbon {
+     background-color: $light-shade;
+     padding: 1.5rem 0;
+ }
+ 
+ .closeable-tag {
+     outline: 1px solid black;
+     padding: 0.2rem;
+     border-radius: 0.2rem;
+     margin-right: 0.5rem;
+     .btn-close {
+         font-size: 0.7rem;
+     }
+     .btn-close:focus {
+         outline: none;
+     }
+ }
+ 
+ .product-list {
+     display: flex;
+     flex-direction: column;
+     padding: 0 1rem;
+     .product {
+         display: flex;
+         flex-direction: row;
+         justify-content: space-between;
+         margin: 0.2rem 0;
+         cursor: pointer;
+     }
+ }
+ 
+ #sidebar {
+     box-shadow: 0 0 2px grey;
+     border-radius: 0.5rem;
+     padding: 1rem;
+     .btn.btn-primary {
+         background-color: $brand-red;
+         border: none;
+     }
+     .btn-btn-primary:focus {
+         border: none;
+         outline: none;
+     }
+     .btn:focus {
+         box-shadow: none;
+     }
+ }
+ 
+ .accordion-item {
+     border: none;
+ }
+ 
+ .accordion-button:not(.collapsed) {
+     color: $brand-red;
+     background-color: $brand-red-light;
+     box-shadow: none;
+ }
+ 
+ .accordion-button:not(.collapsed)::after {
+     background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fd4e5d'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+     transform: rotate(-180deg);
+     color: red;
+ }
+ 
+ .accordion-button:focus {
+     z-index: 3;
+     border-color: $brand-red-light;
+     outline: 0;
+     box-shadow: 0 0 0 .25rem $brand-red-light;
+ }

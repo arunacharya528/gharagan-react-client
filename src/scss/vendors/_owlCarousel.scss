@@ -1,0 +1,31 @@
+.owl-carousel {
+    img {
+        height: 70vh;
+        width: auto;
+    }
+    .owl-stage {
+        display: flex;
+    }
+    .owl-nav {
+        position: absolute;
+        top: 40%;
+        font-size: 3rem;
+        width: 100%;
+        .owl-prev {
+            position: absolute;
+            left: 0;
+        }
+        .owl-next {
+            position: absolute;
+            right: 0;
+        }
+        .owl-nav *:hover {
+            background: red;
+            color: #FFF;
+            text-decoration: none;
+        }
+    }
+    .owl-dots {
+        padding: 2rem 0;
+    }
+}

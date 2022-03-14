@@ -1,0 +1,69 @@
+#price {
+    #actual-price {
+        color: $primary-color;
+        font-weight: bolder;
+        margin-right: 0.5rem;
+    }
+    #original-price {
+        font-weight: lighter;
+    }
+    #discount {
+        background-color: rgba(0, 128, 0, 0.2);
+        color: $success-color;
+        padding: 0.1rem 0.5rem;
+        border-radius: 0.2rem;
+    }
+}
+
+#description {
+    padding: 1rem 0;
+}
+
+.rating {
+    i {
+        color: $primary-color;
+    }
+    .highlight {
+        font-weight: bold;
+    }
+}
+
+.category {
+    color: grey;
+}
+
+.brand-btn {
+    background-color: $brand-red;
+    border: none;
+    color: white;
+}
+
+.brand-btn:focus {
+    border: none;
+    outline: none;
+}
+
+.brand-badge {
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.2rem;
+    margin: 0 0.3rem;
+}
+
+.facebook {
+    background-color: #e1ebfb;
+    color: #007bff;
+}
+
+.twitter {
+    background-color: #caebf9;
+    color: #00c2ff;
+}
+
+.instagram {
+    background-color: #e0e2fe;
+    color: #4e54c8;
+}
+
+.rating-input {
+    font-size: xx-large;
+}

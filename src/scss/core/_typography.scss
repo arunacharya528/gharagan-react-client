@@ -1,0 +1,47 @@
+a {
+    text-decoration: none;
+    color: black;
+    padding: 0 0.2rem;
+}
+
+a:hover {
+    color: black;
+    filter: opacity(0.7);
+}
+
+.icon-btn {
+    margin: 0 1rem;
+    i {
+        font-size: x-large;
+        padding: 10px;
+        border-radius: 50%;
+    }
+    position: relative;
+    #badge {
+        position: absolute;
+        font-size: small;
+        background-color: red;
+        color: white;
+        width: 20px;
+        line-height: 20px;
+        text-align: center;
+        border-radius: 50%;
+        left: -5px;
+    }
+}
+
+.icon-btn:hover {
+    filter: opacity(1);
+    i {
+        background-color: $light-shade;
+    }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bolder;
+}

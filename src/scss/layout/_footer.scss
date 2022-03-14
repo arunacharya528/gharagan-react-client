@@ -1,0 +1,78 @@
+footer {
+    a {
+        color: white;
+    }
+    a:hover {
+        color: grey;
+    }
+    background-color: #182233;
+    color: white;
+    padding: 4rem 0;
+    #services {
+        .service {
+            i {
+                font-size: 3rem;
+                color: $brand-red;
+                padding: 0 1rem;
+            }
+            .title {
+                font-weight: bolder;
+            }
+        }
+    }
+    #about {
+        display: flex;
+        flex-direction: column;
+        .image-container {
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    }
+    #more {
+        display: flex;
+        flex-direction: column;
+        .newsletter {
+            input {
+                border: none;
+                outline: none;
+                border-radius: 0.2rem;
+            }
+            button {
+                background-color: $brand-red;
+                border: none;
+                color: white;
+                border-radius: 0.2rem;
+            }
+        }
+        .social-links {
+            margin: 2rem 0;
+            a {
+                i {
+                    background-color: grey;
+                    width: 25px;
+                    line-height: 25px;
+                    text-align: center;
+                    border-radius: 0.2rem;
+                }
+            }
+            a:hover {
+                color: white;
+            }
+        }
+        .payments {
+            display: flex;
+            flex-wrap: wrap;
+            a {
+                img {
+                    width: 100px;
+                }
+            }
+        }
+    }
+}
