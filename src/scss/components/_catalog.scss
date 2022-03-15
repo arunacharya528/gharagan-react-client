@@ -9,6 +9,17 @@
             img {
                 width: 100%;
             }
+            img:nth-child(2) {
+                display: none;
+            }
+        }
+        #image-container:hover {
+            img:nth-child(1) {
+                display: none;
+            }
+            img:nth-child(2) {
+                display: block;
+            }
         }
         #category {
             color: grey;
@@ -38,5 +49,11 @@
             }
         }
         padding-bottom: 2rem;
+        border-radius: 0.5rem;
+        transition: box-shadow 0.2s;
+    }
+    .product-thumbnail:hover {
+        filter: opacity(1);
+        box-shadow: 0 0 5px $brand-red;
     }
 }
