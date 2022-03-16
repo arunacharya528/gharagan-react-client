@@ -1,10 +1,11 @@
+import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { FilterBar } from "../components/FilterBar";
-
+const queryString = require('query-string')
 export const ProductFilter = () => {
 
     return (
         <>
-
             <div id="page-ribbon">
                 <div class="container">
                     <div class="d-flex justify-content-between my-4">
@@ -16,33 +17,6 @@ export const ProductFilter = () => {
                                 <li class="breadcrumb-item active" aria-current="page">Data</li>
                             </ol>
                         </nav>
-                    </div>
-                    <div class="d-flex justify-content-between my-4">
-                        <div>
-                            <span class="closeable-tag">
-                                Product
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </span>
-                            <span class="closeable-tag">
-                                Product
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </span>
-                            <span class="closeable-tag">
-                                Product
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </span>
-                            <a href="#" class=""><u>Clear all</u></a>
-                        </div>
-                        <div>
-                            <div class="form-group d-flex align-items-center">
-                                <label for="" class="text-nowrap">Sort By</label> &emsp;
-                                <select class="form-control">
-                                    <option>Some value</option>
-                                    <option>Some value</option>
-                                    <option>Some value</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                 </div>
 

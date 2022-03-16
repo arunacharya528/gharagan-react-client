@@ -23,7 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <Nav />
-      <ScrollToTop>
+      {/* <ScrollToTop> */}
         <Routes>
           <Route element={<Home />} path="/" />
           <Route element={<Product />} path="/product">
@@ -33,7 +33,7 @@ function App() {
 
           </Route>
         </Routes>
-      </ScrollToTop>
+      {/* </ScrollToTop> */}
       <Social />
       <Footer />
     </BrowserRouter>
