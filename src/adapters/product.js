@@ -4,7 +4,7 @@ const axios = require('axios');
 export const getProducts = (urlQuery = '') => {
     let config = {
         method: 'get',
-        url: `${apiURL}/product?${urlQuery}`,
+        url: `${apiURL}/product?${urlQuery}&item=8`,
         headers: {},
         maxRedirects: 0
     };

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { getBrand } from "../adapters/brand";
+import { getBrands } from "../adapters/brand";
 import { CarouselView } from "./OwlCarousel";
 
 export const Brand = () => {
 
     const [brands, setBrands] = useState([]);
     useEffect(() => {
-        getBrand()
+        getBrands()
             .then((response) => {
                 setBrands(response.data);
             })

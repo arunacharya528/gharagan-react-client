@@ -4,13 +4,13 @@ const axios = require('axios');
 
 let config = {
     method: 'get',
-    url: `${apiURL}/brand`,
+    url: `${apiURL}/productCategory`,
     headers: {},
     maxRedirects: 0
 };
 
 
-export const getBrands = () => {
+export const getCategories = () => {
     return axios(config)
 }
 
