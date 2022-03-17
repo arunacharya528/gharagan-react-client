@@ -1,6 +1,5 @@
 .owl-carousel {
     img {
-        height: 70vh;
         width: auto;
     }
     .owl-stage {
@@ -8,7 +7,7 @@
     }
     .owl-nav {
         position: absolute;
-        top: 40%;
+        top: 35%;
         font-size: 3rem;
         width: 100%;
         .owl-prev {
@@ -26,6 +25,8 @@
         }
     }
     .owl-dots {
+        position: relative;
+        width: 100%;
         padding: 2rem 0;
     }
 }

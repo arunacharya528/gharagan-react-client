@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Banner";
+import { Brand } from "../components/Brand";
 import { ProductThumbnail } from "../components/ProductThumbnail";
 
 export const Home = () => {
@@ -59,6 +60,8 @@ export const Home = () => {
                 </section>
 
             </div>
+
+            <Brand/>
         </>
     );
 }
