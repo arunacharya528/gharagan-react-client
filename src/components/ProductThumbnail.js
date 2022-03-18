@@ -12,7 +12,7 @@ export const ProductThumbnail = (props) => {
 
     const averageRating = Math.floor(props.product.averageRating);
     return (
-        <Link to={'/product/' + props.product.id} class="product-thumbnail  col-12 col-sm-6 col-lg-3">
+        <Link to={'/product/' + props.product.id} class={"product-thumbnail  col-12 col-sm-6 col-lg-" + (props.width ? props.width : 3)}>
             <div id="image-container">
                 <img src={image1} alt={"First Image of " + props.product.name} />
                 <img src={image2} alt={"Second Image of " + props.product.name} />
@@ -24,7 +24,7 @@ export const ProductThumbnail = (props) => {
                     {[...Array(averageRating)].map((e, i) =>
                         <i class="fa fa-star-o highlight"></i>
                     )}
-                    {[...Array(5-averageRating)].map((e, i) =>
+                    {[...Array(5 - averageRating)].map((e, i) =>
                         <i class="fa fa-star-o"></i>
                     )}
                 </div>

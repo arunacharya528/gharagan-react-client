@@ -3,6 +3,7 @@ import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Banner";
 import { Brand } from "../components/Brand";
 import { ProductThumbnail } from "../components/ProductThumbnail";
+import { Loading } from "../helpers/Loading";
 
 export const Home = () => {
 
@@ -10,7 +11,7 @@ export const Home = () => {
     const [mostViewedProducts, setMostViewedProducts] = useState([]);
 
     useEffect(() => {
-        getProducts("item=8&page=1&latest=true")
+        getProducts("page=1&latest=true")
             .then((response) => {
                 setLatestProducts(response.data.data);
             })
@@ -18,7 +19,7 @@ export const Home = () => {
                 console.log(error);
             });
 
-        getProducts("item=8&page=1&mostViewed=true")
+        getProducts("page=1&mostViewed=true")
             .then((response) => {
                 setMostViewedProducts(response.data.data);
             })
@@ -32,7 +33,7 @@ export const Home = () => {
         <>
             <Banner />
             <div className="container">
-
+                {console.log(latestProducts)}
                 <section className="mb-5">
                     <div class="header">
                         <h5>Latest Products</h5>
@@ -40,8 +41,9 @@ export const Home = () => {
                     </div>
 
                     <div id="catalog-container" className="row">
-                        {
-                            latestProducts.map((product, index) => <ProductThumbnail key={index} product={product} />)
+                        {latestProducts.length === 0 ?
+                            <Loading />
+                            : latestProducts.map((product, index) => <ProductThumbnail key={index} product={product} />)
                         }
                     </div>
                 </section>
@@ -54,14 +56,17 @@ export const Home = () => {
 
                     <div id="catalog-container" className="row">
                         {
-                            mostViewedProducts.map((product, index) => <ProductThumbnail key={index} product={product} />)
+                            mostViewedProducts.length === 0 ?
+                                <Loading />
+                                :
+                                mostViewedProducts.map((product, index) => <ProductThumbnail key={index} product={product} />)
                         }
                     </div>
                 </section>
 
             </div>
 
-            <Brand/>
+            <Brand />
         </>
     );
 }

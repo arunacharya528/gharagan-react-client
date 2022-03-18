@@ -1,10 +1,10 @@
 import { apiURL } from './url';
 
 const axios = require('axios');
-export const getProducts = (urlQuery = '') => {
+export const getProducts = (urlQuery = '', item = "item=8") => {
     let config = {
         method: 'get',
-        url: `${apiURL}/product?${urlQuery}&item=8`,
+        url: `${apiURL}/product?${urlQuery}&${item}`,
         headers: {},
         maxRedirects: 0
     };

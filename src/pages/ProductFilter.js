@@ -15,7 +15,7 @@ export const ProductFilter = () => {
     const [pagination, setPagination] = useState([]);
 
     useEffect(() => {
-        getProducts(location.search)
+        getProducts(location.search, 'item=9')
             .then(response => {
                 setPagination(response.data.links)
                 setProducts(response.data.data)
@@ -64,7 +64,7 @@ export const ProductFilter = () => {
                             {products.length === 0 ?
                                 <Loading />
                                 :
-                                products.map((product, index) => <ProductThumbnail key={index} product={product} />)
+                                products.map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
                             }
                         </div>
                         <nav className="my-3">
