@@ -1,88 +1,53 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getBrands } from "../adapters/brand";
 import { getCategories } from "../adapters/category";
-const queryString = require('query-string')
+import { Loading } from "../helpers/Loading";
+
+
+const handleURL = require('../helpers/handleURL');
 
 export const FilterBar = () => {
 
     const navigate = useNavigate();
-    const [query, setQuery] = useState({
-        brand: [],
-        category: [],
-        page: 1
-    });
+    const location = useLocation();
 
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
 
+    const handleUpdate = (value, type, stat) => {
+        handleURL.handleURLUpdate(value, type, stat, location, navigate)
+    }
 
-    const handleCategory = (category_id) => {
-        if (query.category.includes(category_id)) {
-            query.category.splice(query.category.indexOf(category_id), 1)
-        } else {
-            query.category = [...query.category, category_id]
-        }
-        setQuery(query)
-        updateUrlQuery()
+    const getStatus = (id, type, status) => {
+        handleURL.getURLStatus(id, type, status, location);
     }
-    const handleBrand = (brand_id) => {
-        if (query.brand.includes(brand_id)) {
-            query.brand.splice(query.brand.indexOf(brand_id), 1)
-        } else {
-            query.brand = [...query.brand, brand_id]
-        }
-        setQuery(query)
-        updateUrlQuery()
-    }
-    const handleMin = (minValue) => {
-        query.pmin = minValue;
-        setQuery(query)
-        updateUrlQuery()
-    }
-    const handleMax = (maxValue) => {
-        query.pmax = maxValue;
-        setQuery(query)
-        updateUrlQuery()
-    }
-    const handleSort = (e) => {
-        query.sort = e.target.value;
-        setQuery(query);
-        updateUrlQuery();
-    }
+
     const handleClear = () => {
-        setQuery({ brand: [], category: [], pmin: undefined, pmax: undefined, page: 1 });
-        updateUrlQuery();
+        navigate('?')
     }
-    const updateUrlQuery = () => {
-        const stringifiedQuery = queryString.stringify(query)
-        console.log(stringifiedQuery)
-        navigate('?' + stringifiedQuery)
-    }
-
-    // useEffect()
 
     useEffect(() => {
         getCategories()
             .then(response => {
                 setCategories(response.data)
-                // console.log(response.data)
             })
             .catch(error => console.log(error))
 
         getBrands()
             .then(response => {
                 setBrands(response.data)
-                // console.log(response.data)
             })
             .catch(error => console.log(error))
-
-        updateUrlQuery()
     }, [])
+
     return (
+
         <div id="sidebar">
             <div class="accordion">
-                {
+                {categories.length === 0 ?
+                    <Loading size="50px" text="Loading Categories" />
+                    :
                     categories.map((category, index) =>
                         <div class="accordion-item" key={index}>
                             <h2 class="accordion-header">
@@ -97,8 +62,8 @@ export const FilterBar = () => {
                                             <div href="#" class="product" key={index}>
                                                 <div class="name">
                                                     <input type="checkbox" class="form-check-input" value="1"
-                                                        onChange={e => handleCategory(childCategory.id)}
-                                                        checked={query.category.includes(childCategory.id) ? true : false}
+                                                        onChange={e => handleUpdate(childCategory.id, 'categories')}
+                                                        checked={getStatus(childCategory.id + '', 'categories')}
                                                     /> {childCategory.name}
                                                 </div>
                                                 <div class="quantity">{childCategory.number_of_product}</div>
@@ -118,36 +83,37 @@ export const FilterBar = () => {
             <div class="d-flex">
                 <div class="form-group w-50  px-1">
                     <label for="min">Min</label>
-                    <input type="number" class="form-control" min={0} onChange={e => handleMin(e.target.value)} value={query.pmin} />
+                    <input type="number" class="form-control" min={0} onChange={e => handleUpdate(e.target.value, 'pmin', 'single')} value={getStatus(null, 'pmin', 'single')} />
                 </div>
                 <div class="form-group w-50 px-1">
                     <label for="max">Max</label>
-                    <input type="number" class="form-control" min={0} onChange={e => handleMax(e.target.value)} value={query.pmax} />
+                    <input type="number" class="form-control" min={0} onChange={e => handleUpdate(e.target.value, 'pmax', 'single')} value={getStatus(null, 'pmax', 'single')} />
                 </div>
             </div>
 
             <hr />
             <h6>Brands</h6>
             <div class="product-list">
-
-                {brands.map((brand, index) =>
-                    <div class="product">
-                        <div class="name">
-                            <input type="checkbox" class="form-check-input" value="1"
-                                onChange={e => handleBrand(brand.id)}
-                                checked={query.brand.includes(brand.id) ? true : false}
-                            /> {brand.name}
-                        </div>
-                        <div class="quantity">{brand.number_of_products}</div>
-                    </div>
-                )}
+                {
+                    brands.length === 0 ?
+                        <Loading text="Loading brands" size="50px" />
+                        : brands.map((brand, index) =>
+                            <div class="product" key={index}>
+                                <div class="name">
+                                    <input type="checkbox" class="form-check-input" value="1"
+                                        onChange={e => handleUpdate(brand.id, 'brands')}
+                                        checked={getStatus(brand.id + "", 'brands')}
+                                    /> {brand.name}
+                                </div>
+                                <div class="quantity">{brand.number_of_products}</div>
+                            </div>
+                        )}
             </div>
-
             <hr />
-
             <div class="form-group d-flex align-items-center">
                 <label for="" class="text-nowrap">Sort By</label> &emsp;
-                <select class="form-control" onChange={e => handleSort(e)}>
+                <select class="form-control" onChange={e => handleUpdate(e.target.value, 'sort', 'single')} value={getStatus(null, 'sort', 'single')}>
+                    <option value={0}>Select sorting method</option>
                     <option value={'latest'}>Latest</option>
                     <option value={'mostViewed'}>Most Viewed</option>
                 </select>

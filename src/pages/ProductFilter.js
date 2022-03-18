@@ -3,17 +3,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { FilterBar } from "../components/FilterBar";
 import { ProductThumbnail } from "../components/ProductThumbnail";
-const queryString = require('query-string')
+import { Loading } from "../helpers/Loading";
+
+const handleURL = require('../helpers/handleURL');
+
 export const ProductFilter = () => {
 
-    const location = useLocation().search;
+    const location = useLocation();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
     const [pagination, setPagination] = useState([]);
-    const [pageLocation, setPageLocation] = useState('');
 
     useEffect(() => {
-        getProducts(location)
+        getProducts(location.search)
             .then(response => {
                 setPagination(response.data.links)
                 setProducts(response.data.data)
@@ -24,16 +26,12 @@ export const ProductFilter = () => {
 
     const handlelinkClick = (link) => {
         // get json object of location
-        const parsedLocation = queryString.parse(location)
+        // const parsedLocation = queryString.parse(location)
         // get page number from clicked page link
         var linkPage = link.url !== null ? link.url.split("?")[1] : '';
         linkPage = linkPage !== '' ? linkPage.split("=")[1] : linkPage;
         if (linkPage !== '') {
-            // set page location is json object
-            parsedLocation.page = linkPage
-
-            // set location of page and allow change to take place through use effect
-            navigate("?" + queryString.stringify(parsedLocation))
+            handleURL.handleURLUpdate(linkPage, 'page', 'single', location, navigate)
         }
 
     }
@@ -61,9 +59,11 @@ export const ProductFilter = () => {
                     <div class="col-lg-3">
                         <FilterBar />
                     </div>
-                    <div class="col-lg-9 d-flex justify-content-center flex-column">
+                    <div class="col-lg-9 d-flex flex-column">
                         <div id="catalog-container" className="row">
-                            {
+                            {products.length === 0 ?
+                                <Loading />
+                                :
                                 products.map((product, index) => <ProductThumbnail key={index} product={product} />)
                             }
                         </div>
