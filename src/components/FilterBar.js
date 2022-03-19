@@ -20,7 +20,7 @@ export const FilterBar = () => {
     }
 
     const getStatus = (id, type, status) => {
-        handleURL.getURLStatus(id, type, status, location);
+        return handleURL.getURLStatus(id, type, status, location);
     }
 
     const handleClear = () => {
