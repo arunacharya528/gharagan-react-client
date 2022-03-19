@@ -11,7 +11,7 @@ export const Home = () => {
     const [mostViewedProducts, setMostViewedProducts] = useState([]);
 
     useEffect(() => {
-        getProducts("page=1&latest=true")
+        getProducts("page=1&sort=latest")
             .then((response) => {
                 setLatestProducts(response.data.data);
             })
@@ -19,7 +19,7 @@ export const Home = () => {
                 console.log(error);
             });
 
-        getProducts("page=1&mostViewed=true")
+        getProducts("page=1&sort=mostViewed")
             .then((response) => {
                 setMostViewedProducts(response.data.data);
             })
