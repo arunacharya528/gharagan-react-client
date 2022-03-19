@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { RateDisplay } from "./Rating";
 
 export const ProductThumbnail = (props) => {
 
@@ -10,7 +11,7 @@ export const ProductThumbnail = (props) => {
     const image1 = props.product.images.length > 0 ? props.product.images[0].image : '';
     const image2 = props.product.images.length >= 2 ? props.product.images[1].image : '';
 
-    const averageRating = Math.floor(props.product.averageRating);
+    const averageRating = props.product.averageRating;
     return (
         <Link to={'/product/' + props.product.id} class={"product-thumbnail  col-12 col-sm-6 col-lg-" + (props.width ? props.width : 3)}>
             <div id="image-container">
@@ -19,15 +20,7 @@ export const ProductThumbnail = (props) => {
             </div>
             <div class="d-flex justify-content-between">
                 <div id="category">{props.product.category.name}</div>
-                <div id="rating">
-
-                    {[...Array(averageRating)].map((e, i) =>
-                        <i class="fa fa-star-o highlight"></i>
-                    )}
-                    {[...Array(5 - averageRating)].map((e, i) =>
-                        <i class="fa fa-star-o"></i>
-                    )}
-                </div>
+                <RateDisplay rating={averageRating} />
             </div>
 
             <div id="name">{props.product.name}</div>
