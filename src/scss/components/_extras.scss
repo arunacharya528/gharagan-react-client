@@ -22,3 +22,15 @@
         font-size: small;
     }
 }
+
+.image-zoom {
+    img {
+        width: 100% !important;
+        height: auto !important;
+    }
+    div {
+        * {
+            z-index: 5;
+        }
+    }
+}

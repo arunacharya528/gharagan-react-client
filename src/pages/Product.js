@@ -1,21 +1,49 @@
 import { useLocation } from "react-router-dom";
+import { ProductImage } from "../components/ProductImage";
+import { RateDisplay, RatingSummary } from "../components/Rating";
 
 export const Product = () => {
 
     var url = useLocation().pathname;
     url = url.split("/")
 
-
+    const productImages = 
+        [
+            {
+                "image": "http://via.placeholder.com/3000x3000/00ff00/?text=Product%20Image"
+            },
+            {
+                "image": "http://via.placeholder.com/3000x3000/ff0000/?text=Product%20Image"
+            },
+            {
+                "image": "http://via.placeholder.com/3000x3000/0000ff/?text=Product%20Image"
+            },
+            {
+                "image": "http://via.placeholder.com/3000x3000/00ff00/?text=Product%20Image"
+            },
+            {
+                "image": "http://via.placeholder.com/3000x3000/00ff00/?text=Product%20Image"
+            },
+            {
+                "image": "http://via.placeholder.com/3000x3000/0000ff/?text=Product%20Image"
+            },
+            {
+                "image": "http://via.placeholder.com/3000x3000/ff0000/?text=Product%20Image"
+            },
+            {
+                "image": "http://via.placeholder.com/3000x3000/00ff00/?text=Product%20Image"
+            }
+        ]
 
 
     return (
 
         <section class="container">
             <div class="card my-4 p-3">
-                <h6>General Info</h6>
+                <h4>General Info</h4>
                 <div class="row">
                     <div class="col-sm-6">
-                        Here lies the image
+                        <ProductImage images={productImages} />
                     </div>
                     <div class="col-sm-6">
                         <div id="price" class="d-flex justify-content-between align-items-center">
@@ -34,60 +62,54 @@ export const Product = () => {
                         <div id="description">
                             Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
                         </div>
-                        <hr/>
+                        <hr />
 
-                            <div class="row my-2">
-                                <div class="col-2">Category</div>
-                                <div class="col">
-                                    <div class="category">Category name</div>
-                                </div>
+                        <div class="row my-2">
+                            <div class="col-2">Category</div>
+                            <div class="col">
+                                <div class="category">Category name</div>
                             </div>
-                            <div class="row my-2">
-                                <div class="col-2">Rating</div>
-                                <div class="col">
-                                    <div class="rating">
-                                        <i class="fa fa-star-o highlight"></i>
-                                        <i class="fa fa-star-o highlight"></i>
-                                        <i class="fa fa-star-o highlight"></i>
-                                        <i class="fa fa-star-o highlight"></i>
-                                        <i class="fa fa-star-o"></i>
-                                    </div>
-                                </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-2">Rating</div>
+                            <div class="col">
+                                <RateDisplay rating={4} />
                             </div>
+                        </div>
 
-                            <div class="d-flex">
-                                <div class="form-group">
-                                    <select class="form-control">
-                                        <option>1</option>
-                                        <option>2</option>
-                                        <option>3</option>
-                                    </select>
-                                </div>
-
-                                <div class="btn brand-btn mx-3">
-                                    <i class="fa fa-cart-arrow-down"></i> Add to cart
-                                </div>
+                        <div class="d-flex">
+                            <div class="form-group">
+                                <select class="form-control">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                </select>
                             </div>
 
-                            <div class="row my-5">
-                                <div class="col-2">Share</div>
-                                <div class="col d-flex">
-                                    <div href="#" class="brand-badge facebook">
-                                        <i class="fa fa-facebook"></i> Facebook
-                                    </div>
-                                    <div href="#" class="brand-badge twitter">
-                                        <i class="fa fa-twitter" aria-hidden="true"></i> Twitter
-                                    </div>
-                                    <div href="#" class="brand-badge instagram">
-                                        <i class="fa fa-instagram" aria-hidden="true"></i> Instagram
-                                    </div>
+                            <div class="btn brand-btn mx-3">
+                                <i class="fa fa-cart-arrow-down"></i> Add to cart
+                            </div>
+                        </div>
+
+                        <div class="row my-5">
+                            <div class="col-2">Share</div>
+                            <div class="col d-flex">
+                                <div href="#" class="brand-badge facebook">
+                                    <i class="fa fa-facebook"></i> Facebook
+                                </div>
+                                <div href="#" class="brand-badge twitter">
+                                    <i class="fa fa-twitter" aria-hidden="true"></i> Twitter
+                                </div>
+                                <div href="#" class="brand-badge instagram">
+                                    <i class="fa fa-instagram" aria-hidden="true"></i> Instagram
                                 </div>
                             </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="card my-4 p-3">
-                <h6>Description</h6>
+                <h4>Description</h4>
                 <p>
                     Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
                     sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi
@@ -97,71 +119,10 @@ export const Product = () => {
             </div>
 
             <div class="card my-4 p-3">
-                <h6>Rate and Comment</h6>
+                <h4>Customer reviews</h4>
                 <div class="row d-flex align-items-center">
                     <div class="col-sm-6">
-
-                        <div class="rating-detail d-flex flex-column">
-                            <div class="row my-2">
-                                <div class="col-2">Overall</div>
-                                <div class="col">
-                                    <div class="h3">4.6</div>
-                                </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col-1">5</div>
-                                <div class="col">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style={{width:"25%"}} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col-1">4</div>
-                                <div class="col">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col-1">3</div>
-                                <div class="col">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col-1">2</div>
-                                <div class="col">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row my-2">
-                                <div class="col-1">1</div>
-                                <div class="col">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style={{ width: "25%" }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row my-2 d-flex align-items-center">
-                                <div class="col-3">Rate Yourself</div>
-                                <div class="col">
-                                    <div class="rating-input">
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-                                        <i class="fa fa-star-o"></i>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <RatingSummary />
                     </div>
                     <div class="col-sm-6">
                         <div>
