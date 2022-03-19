@@ -1,9 +1,25 @@
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { getCategories } from "../adapters/category";
 
 export const Nav = () => {
+
+    const [categories, setCategories] = useState([]);
+    const [selectedCategory, setSelectedCategory] = useState([]);
+    const navigate = useNavigate();
+    useEffect(() => {
+        getCategories()
+            .then(response => {
+                setCategories(response.data)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+    }, [])
     return (
         <div id="nav">
-            <div id="top-bar" class="">
+            {/* {console.log(categories)} */}
+            {/* <div id="top-bar" class="">
                 <div class="container d-flex justify-content-between">
                     <div>
                         <a href="">Cart</a>
@@ -20,7 +36,7 @@ export const Nav = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div id="nav-search">
                 <div class="container">
                     <div class="row d-flex align-items-center">
@@ -63,20 +79,43 @@ export const Nav = () => {
                 </div>
 
             </div>
-            <div id="nav-bar">
+            <nav id="nav-bar">
                 <div class="container">
-                    <div class="d-flex flex-wrap">
+                    <div class="d-flex flex-wrap flex-row align-items-start">
                         <Link to="/">Home</Link>
                         <Link to="/filter/">Filter</Link>
 
-                        <a href="#">Nav component</a>
-                        <a href="#">Nav component</a>
-                        <a href="#">Nav component</a>
-                        <a href="#">Nav component</a>
-                        <a href="#">Nav component</a>
+                        {categories.map((category, index) =>
+                            <a onClick={e => setSelectedCategory(category)} key={index}>{category.name}</a>
+                        )}
                     </div>
+                    {selectedCategory.length !== 0 ?
+                        <div className="selectedCategory">
+                            <div className="row">
+                                <div className="col-sm-5 col-lg-3 d-flex flex-column">
+                                    {
+                                        selectedCategory.child_categories.map((category, index) =>
+                                            <div className="nav-item" key={index} onClick={e => {
+                                                navigate(`/filter/?categories=${category.id}`)
+                                                setSelectedCategory([]);
+                                            }}>{category.name}</div>
+                                        )
+                                    }
+                                </div>
+                                <div className="col p-3">
+                                    <div className="d-flex justify-content-end">
+                                        <button className="btn btn-close text-white" onClick={e =>
+                                            setSelectedCategory([])
+                                        }></button>
+                                    </div>
+                                    <div></div>
+                                    {selectedCategory.description}
+                                </div>
+                            </div>
+                        </div>
+                        : ''}
                 </div>
-            </div>
+            </nav>
         </div>
     );
 }
