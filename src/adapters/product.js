@@ -1,4 +1,4 @@
-import { apiURL } from './url';
+const apiURL = process.env.REACT_APP_API_URL;
 
 const axios = require('axios');
 export const getProducts = (urlQuery = '', item = "item=8") => {

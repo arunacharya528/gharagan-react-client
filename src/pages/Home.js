@@ -33,7 +33,6 @@ export const Home = () => {
         <>
             <Banner />
             <div className="container">
-                {console.log(latestProducts)}
                 <section className="mb-5">
                     <div class="header">
                         <h5>Latest Products</h5>
