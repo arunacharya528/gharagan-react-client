@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { getCategories } from "../adapters/category";
+import { AuthLink, AuthUser } from "../pages/Authenticate";
 
 export const Nav = () => {
 
@@ -67,13 +68,7 @@ export const Nav = () => {
                                 <i class="fa fa-heart-o" aria-hidden="true"></i>
                                 <span id="label">Wishlist</span>
                             </a>
-                            <div class="profile d-flex align-items-center">
-                                <i class="fa fa-user-o" aria-hidden="true"></i>
-                                <div>
-                                    <div class="user">Welcome user</div>
-                                    <a href="#">Login</a>
-                                </div>
-                            </div>
+                            <AuthUser />
                         </div>
                     </div>
                 </div>

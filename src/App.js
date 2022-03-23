@@ -17,6 +17,8 @@ import { Home } from "./pages/Home";
 import { Product } from "./pages/Product";
 import { ProductFilter } from "./pages/ProductFilter";
 import ScrollToTop from "./helpers/ScrollToTop";
+import { Login } from "./pages/Authenticate";
+import { login } from "./adapters/auth";
 
 function App() {
 
@@ -24,15 +26,16 @@ function App() {
     <BrowserRouter>
       <Nav />
       {/* <ScrollToTop> */}
-        <Routes>
-          <Route element={<Home />} path="/" />
-          <Route element={<Product />} path="/product">
-            <Route element={<Product />} path=":product_id" />
-          </Route>
-          <Route element={<ProductFilter />} path="/filter">
+      <Routes>
+        <Route element={<Home />} path="/" index />
+        <Route element={<Product />} path="/product">
+          <Route element={<Product />} path=":product_id" />
+        </Route>
+        <Route element={<ProductFilter />} path="/filter">
 
-          </Route>
-        </Routes>
+        </Route>
+        <Route element={<Login/>} path="/login" />
+      </Routes>
       {/* </ScrollToTop> */}
       <Social />
       <Footer />
