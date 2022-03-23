@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Cookies from "universal-cookie";
 import { getCategories } from "../adapters/category";
+import { getShoppingSession } from "../adapters/shoppingSession";
 import { AuthLink, AuthUser } from "../pages/Authenticate";
 
 export const Nav = () => {
 
     const [categories, setCategories] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState([]);
+    const [session, setSession] = useState(undefined);
     const navigate = useNavigate();
+    const cookie = new Cookies()
+    const userData = cookie.get('userData')
     useEffect(() => {
         getCategories()
             .then(response => {
@@ -17,6 +22,15 @@ export const Nav = () => {
                 console.log(error)
             })
     }, [])
+
+    const handleCartClick = () => {
+        getShoppingSession(userData.access_token, userData.user.id)
+            .then(response => {
+                setSession(response.data)
+                console.log(response)
+            })
+            .catch(error => console.log(error))
+    }
     return (
         <div id="nav">
             {/* {console.log(categories)} */}
@@ -57,17 +71,45 @@ export const Nav = () => {
 
                             </div>
                         </div>
-                        <div class="col-sm-4 d-flex justify-content-between">
-                            <a href="#" class="icon-btn">
-                                <span id="badge">1</span>
-                                <i class="fa fa-cart-plus" aria-hidden="true"></i>
-                                <span id="label">Cart</span>
-                            </a>
-                            <a href="#" class="icon-btn">
-                                <span id="badge">1</span>
-                                <i class="fa fa-heart-o" aria-hidden="true"></i>
-                                <span id="label">Wishlist</span>
-                            </a>
+                        <div class="col-sm-3 d-flex justify-content-between">
+
+                            {
+                                userData ?
+                                    <div className="position-relative">
+                                        <a href="#" class="icon-btn" onClick={handleCartClick}>
+                                            <span id="badge">1</span>
+                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                            <span id="label">Cart</span>
+                                        </a>
+
+                                        {
+                                            session ?
+                                                <div className="position-absolute card border-0 p-3 shadow" style={{ width: '400px', left: '-2rem' }}>
+                                                    <div className="d-flex justify-content-end">
+                                                        <button className="btn btn-close text-white" onClick={e =>
+                                                            setSession(undefined)
+                                                        }></button>
+                                                    </div>
+
+                                                    {
+                                                        session.cart_items.map((item, index) =>
+
+                                                            <div className="row" key={index}>
+                                                                <div className="col-2">
+                                                                    <img src={item.product.images[0].image} style={{ width: '100%' }} />
+                                                                </div>
+                                                                <div className="col">{item.product.name}</div>
+                                                                <div className="col-2">{item.quantity}</div>
+                                                            </div>
+                                                        )
+                                                    }
+                                                </div>
+                                                : ''
+                                        }
+
+                                    </div>
+                                    : ''
+                            }
                             <AuthUser />
                         </div>
                     </div>
