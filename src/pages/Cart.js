@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { removeCartItem } from "../adapters/cartItems";
 
 import { createOrder, getShoppingSession } from "../adapters/shoppingSession";
 import { Loading } from "../helpers/Loading";
@@ -12,6 +13,7 @@ export const Cart = () => {
     const [cartItems, setCartItems] = useState(undefined);
     const [total, setTotal] = useState([]);
     const [message, setMessage] = useState(undefined);
+    const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         getShoppingSession(cookie.get('access_token'), cookie.get('session_id'))
@@ -20,7 +22,7 @@ export const Cart = () => {
                 setTotal(response.data.total);
             })
             .catch(error => console.log(error))
-    }, []);
+    }, [refresh]);
 
 
     const getDiscountedPrice = (price, discountP) => {
@@ -48,6 +50,17 @@ export const Cart = () => {
         createOrder(cookie.get('access_token'), cookie.get('session_id'))
             .then(response => setMessage(<><strong>Success!!</strong> Successfully placeed your order</>))
             .catch(error => setMessage(<><strong>Error!</strong> There was an error placing your order please try again.</>))
+    }
+
+    const handleCartItemRemoval = (itemId) => {
+
+        removeCartItem(cookie.get('access_token'), itemId)
+            .then((response) => {
+                setRefresh(!refresh);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
     return (
         <div className="container">
@@ -83,7 +96,11 @@ export const Cart = () => {
                         <div className="row p-3 my-2 d-flex align-items-center" style={{ backgroundColor: "#d9d9d9" }}>
                             <div className="col-md-2"><img src={item.product.images[0].image} alt="" style={{ width: "100px" }} /></div>
                             <div className="col">
-                                <div className="d-block"><b>Name: </b>{item.product.name}</div>
+                                <div className="d-block"><b>Name: </b>
+                                    <Link to={"/product/" + item.product.id}>
+                                        <u>{item.product.name}</u>
+                                    </Link>
+                                </div>
                                 <div className="d-block"><b>Category: </b>{item.product.category.name}</div>
                                 <div className="d-block"><b>Brand: </b>{item.product.brand.name}</div>
                             </div>
@@ -100,7 +117,7 @@ export const Cart = () => {
                             <div className="col-md-1 fw-bold">
                                 {getTotalPrice(getDiscountedPrice(item.product.price, item.product.discount.discount_percent), item.quantity)}
                             </div>
-                            <div className="col-md-1"><div className="btn btn-close" title="remove"></div></div>
+                            <div className="col-md-1"><div className="btn btn-close" title="remove" onClick={e => handleCartItemRemoval(item.id)}></div></div>
                         </div>
                     )}
 

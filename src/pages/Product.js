@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
-import { postToCart } from "../adapters/cartItems";
+import { getByProductAndSession, postToCart } from "../adapters/cartItems";
 import { getproduct } from "../adapters/product";
 import { ProductImage } from "../components/ProductImage";
 import { RateDisplay, RatingSummary } from "../components/Rating";
@@ -15,7 +15,10 @@ export const Product = () => {
     // console.log(url[2])
     const [product, setProduct] = useState([]);
     const [quantity, setQuantity] = useState([]);
-    var updateProduct = false;
+    const [quantityInCart, setQuantityInCart] = useState(undefined)
+    // const [refresh]
+    const [refresh, setRefresh] = useState(false);
+
     const cookie = new Cookies()
 
 
@@ -23,19 +26,31 @@ export const Product = () => {
         getproduct(url[2])
             .then(response => setProduct(response.data))
             .catch(error => console.log(error))
-    }, [updateProduct]);
+    }, []);
+
+    useEffect(() => {
+        getByProductAndSession(cookie.get('access_token'), url[2], cookie.get('session_id'))
+            .then(response => {
+                setQuantityInCart(response.data.quantity)
+            })
+            .catch(error => console.log(error))
+    }, [refresh])
+
+
 
     const handleCartAddition = (e) => {
         e.preventDefault();
 
-        postToCart(cookie.get('userData').access_token, {
+        postToCart(cookie.get('access_token'), {
             quantity: quantity,
-            session_id: cookie.get('userData').session_id,
+            session_id: cookie.get('session_id'),
             product_id: product.id
         })
-            .then(response => console.log(response))
+            .then(response => { setRefresh(!refresh) })
             .catch(error => console.log(error))
     }
+
+
 
     return (
         <section class="container" >
@@ -82,17 +97,39 @@ export const Product = () => {
                                         </div>
                                     </div>
 
+                                    <div class="row my-2 mt-5">
+                                        <div class="col-2">Quantity</div>
+                                        <div class="col h4">
+                                            {product.inventory.quantity}
+                                        </div>
+                                    </div>
+
                                     {cookie.get('userData') ?
 
-                                        <div class="d-flex">
-                                            <form className="d-flex flex-row" onSubmit={handleCartAddition}>
-                                                <div class="form-group">
-                                                    <input type="number" class="form-control" onChange={e => setQuantity(e.target.value)} max={product.inventory.quantity} min={0} placeholder="Enter quantity" />
-                                                </div>
+                                        <div class="">
+                                            <form className="" onSubmit={handleCartAddition}>
+                                                <div className="row">
 
-                                                <button class="btn brand-btn mx-3" type="submit">
-                                                    <i class="fa fa-cart-arrow-down"></i> Add to cart
-                                                </button>
+                                                    <div className="col">
+                                                        <div class="form-group ">
+                                                            <input type="number" class="form-control" onChange={e => setQuantity(e.target.value)} max={product.inventory.quantity} min={0} placeholder="Enter quantity" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="col">
+                                                        <button class="btn brand-btn mx-3" type="submit">
+                                                            <i class="fa fa-cart-arrow-down"></i> Add to cart
+                                                        </button>
+                                                    </div>
+                                                    <div className="col">
+
+                                                        {quantityInCart ?
+                                                            <div className="small d-block"><b>Quantity in cart</b>: {quantityInCart}</div>
+                                                            : ''}
+                                                        <div className="small d-block"><b>Quantity ordered</b>: 20</div>
+                                                    </div>
+
+                                                    <small>Adding to cart would replace same product if there are any.</small>
+                                                </div>
                                             </form>
                                         </div>
                                         : <Link to={"/login"} className="btn btn-primary" >Login First</Link>}
