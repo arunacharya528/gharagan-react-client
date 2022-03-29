@@ -27,7 +27,11 @@ export const Login = () => {
         e.preventDefault();
         login({ email: email, password: password })
             .then((response) => {
-                cookies.set('userData', response.data, { path: '/' });
+                console.log(response)
+                cookies.set('userData', response.data.user, { path: '/' });
+                cookies.set('session_id', response.data.session_id, { path: '/' });
+                cookies.set('access_token', response.data.access_token, { path: '/' });
+
                 goBack();
             })
             .catch((error) => {
@@ -83,10 +87,13 @@ export const AuthUser = () => {
     })
 
     const handleLogout = () => {
-        const accessToken = cookies.get('userData').access_token;
+        const accessToken = cookies.get('access_token');
         logout(accessToken)
             .catch(error => console.log(error))
         cookies.remove('userData', { path: "/" })
+        cookies.remove('session_id', { path: "/" })
+        cookies.remove('access_token', { path: "/" })
+
         setUser(undefined);
     }
 
@@ -95,7 +102,7 @@ export const AuthUser = () => {
             <div class="profile d-flex align-items-center">
                 <i class="fa fa-user-o" aria-hidden="true"></i>
                 <div>
-                    <div class="user">Welcome {user ? user.user.first_name : 'user'}</div>
+                    <div class="user">Welcome {user ? user.first_name : 'user'}</div>
                     {user ?
                         <div onClick={e => handleLogout()} style={{ cursor: 'pointer' }}>Logout</div>
                         :

@@ -12,7 +12,7 @@ export const Nav = () => {
     const [session, setSession] = useState(undefined);
     const navigate = useNavigate();
     const cookie = new Cookies()
-    const userData = cookie.get('userData')
+    const [userData, setUserData] = useState(undefined);
     useEffect(() => {
         getCategories()
             .then(response => {
@@ -23,35 +23,26 @@ export const Nav = () => {
             })
     }, [])
 
-    const handleCartClick = () => {
-        getShoppingSession(userData.access_token, userData.user.id)
+    useEffect(() => {
+        if (!userData) {
+            setUserData(cookie.get('userData'));
+        }
+    })
+
+    const [cartQuantity, setCartQuantity] = useState(undefined);
+
+    useEffect(() => {
+        getShoppingSession(cookie.get('access_token'), cookie.get('session_id'))
             .then(response => {
-                setSession(response.data)
-                console.log(response)
+                if (cartQuantity != response.data.cart_items.length) {
+                    setCartQuantity(response.data.cart_items.length);
+                }
             })
             .catch(error => console.log(error))
-    }
+    })
+
     return (
         <div id="nav">
-            {/* {console.log(categories)} */}
-            {/* <div id="top-bar" class="">
-                <div class="container d-flex justify-content-between">
-                    <div>
-                        <a href="">Cart</a>
-                        <a href="">Orders</a>
-                        <a href="">Track Orders</a>
-                        <a href="">Wishlist</a>
-                    </div>
-                    <div class="d-flex">
-                        <a href="">Logout</a>
-                        <div id="social-media">
-                            <span>Follow Us</span>
-                            <a href=""><i class="fa fa-facebook" aria-hidden="true"></i></a>
-                            <a href=""><i class="fa fa-instagram" aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div> */}
             <div id="nav-search">
                 <div class="container">
                     <div class="row d-flex align-items-center">
@@ -76,11 +67,15 @@ export const Nav = () => {
                             {
                                 userData ?
                                     <div className="position-relative">
-                                        <a href="#" class="icon-btn" onClick={handleCartClick}>
-                                            <span id="badge">1</span>
+                                        <Link to={"/cart"} class="icon-btn">
+                                            <span id="badge">{cartQuantity ? cartQuantity :
+                                                <div class="spinner-border spinner-border-sm" role="status">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                            }</span>
                                             <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                             <span id="label">Cart</span>
-                                        </a>
+                                        </Link>
 
                                         {
                                             session ?
@@ -90,19 +85,6 @@ export const Nav = () => {
                                                             setSession(undefined)
                                                         }></button>
                                                     </div>
-
-                                                    {
-                                                        session.cart_items.map((item, index) =>
-
-                                                            <div className="row" key={index}>
-                                                                <div className="col-2">
-                                                                    <img src={item.product.images[0].image} style={{ width: '100%' }} />
-                                                                </div>
-                                                                <div className="col">{item.product.name}</div>
-                                                                <div className="col-2">{item.quantity}</div>
-                                                            </div>
-                                                        )
-                                                    }
                                                 </div>
                                                 : ''
                                         }
