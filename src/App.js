@@ -19,6 +19,7 @@ import { ProductFilter } from "./pages/ProductFilter";
 import ScrollToTop from "./helpers/ScrollToTop";
 import { Login } from "./pages/Authenticate";
 import { login } from "./adapters/auth";
+import { Cart } from "./pages/Cart";
 
 function App() {
 
@@ -34,7 +35,9 @@ function App() {
         <Route element={<ProductFilter />} path="/filter">
 
         </Route>
-        <Route element={<Login/>} path="/login" />
+        <Route element={<Login />} path="/login" />
+        <Route element={<Cart />} path="/cart" />
+
       </Routes>
       {/* </ScrollToTop> */}
       <Social />
