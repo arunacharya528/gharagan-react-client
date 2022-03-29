@@ -48,8 +48,11 @@ export const Cart = () => {
         console.log(cookie.get('access_token'), cookie.get('session_id'));
 
         createOrder(cookie.get('access_token'), cookie.get('session_id'))
-            .then(response => setMessage(<><strong>Success!!</strong> Successfully placeed your order</>))
-            .catch(error => setMessage(<><strong>Error!</strong> There was an error placing your order please try again.</>))
+            .then(response => {
+                setMessage({ message: <> <strong>Success!!</strong> Successfully placed your order</>, type: 'success' })
+                setRefresh(!refresh);
+            })
+            .catch(error => setMessage({ message: <> <strong>Error!!</strong> There was an error placing your order please try again.</>, type: 'danger' }))
     }
 
     const handleCartItemRemoval = (itemId) => {
@@ -64,7 +67,7 @@ export const Cart = () => {
     }
     return (
         <div className="container">
-            {message ? <Message /> : ''}
+            {message ? <Message message={message.message} type={message.type} /> : ''}
             {cartItems ?
                 <>
                     {
