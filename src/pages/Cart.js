@@ -56,10 +56,11 @@ export const Cart = () => {
 
         removeCartItem(cookie.get('access_token'), itemId)
             .then((response) => {
+                setMessage({ message: <> <strong>Success!!</strong> Successfully removed item from cart</>, type: 'success' })
                 setRefresh(!refresh);
             })
             .catch((error) => {
-                console.log(error);
+                setMessage({ message: <> <strong>Error!!</strong> There was an error removig item from cart please try again.</>, type: 'danger' })
             });
     }
     return (
