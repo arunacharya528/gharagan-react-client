@@ -7,26 +7,27 @@
     }
     .owl-nav {
         position: absolute;
-        top: 35%;
+        top: 0;
+        margin: 0;
+        height: 100%;
         font-size: 3rem;
         width: 100%;
-        .owl-prev {
-            position: absolute;
-            left: 0;
-        }
-        .owl-next {
-            position: absolute;
-            right: 0;
-        }
-        .owl-nav *:hover {
-            background: red;
-            color: #FFF;
-            text-decoration: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        button {
+            height: 5rem;
+            width: 2rem;
         }
     }
     .owl-dots {
-        position: relative;
+        position: absolute;
+        bottom: 0;
         width: 100%;
         padding: 2rem 0;
     }
+}
+
+.owl-theme .owl-nav [class*='owl-'] {
+    margin: 0 !important;
 }
