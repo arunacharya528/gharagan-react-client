@@ -20,6 +20,7 @@ import ScrollToTop from "./helpers/ScrollToTop";
 import { Login } from "./pages/Authenticate";
 import { login } from "./adapters/auth";
 import { Cart } from "./pages/Cart";
+import { UserLayout } from "./layout/UserLayout";
 
 function App() {
 
@@ -32,11 +33,14 @@ function App() {
         <Route element={<Product />} path="/product">
           <Route element={<Product />} path=":product_id" />
         </Route>
-        <Route element={<ProductFilter />} path="/filter">
+        <Route element={<ProductFilter />} path="/filter" />
 
+        <Route element={<UserLayout component={<Cart />} />} path="/user">
+          <Route element={<UserLayout component={<Cart />} />} path="cart" />
+          <Route element={<Cart />} path="order" />
         </Route>
+
         <Route element={<Login />} path="/login" />
-        <Route element={<Cart />} path="/cart" />
 
       </Routes>
       {/* </ScrollToTop> */}

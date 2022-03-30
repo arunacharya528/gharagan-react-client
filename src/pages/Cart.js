@@ -66,7 +66,7 @@ export const Cart = () => {
             });
     }
     return (
-        <div className="container">
+        <div className="">
             {message ? <Message message={message.message} type={message.type} /> : ''}
             {cartItems ?
                 <>
