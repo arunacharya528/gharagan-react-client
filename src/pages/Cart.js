@@ -44,9 +44,6 @@ export const Cart = () => {
     }
 
     const handleOrder = () => {
-
-        console.log(cookie.get('access_token'), cookie.get('session_id'));
-
         createOrder(cookie.get('access_token'), cookie.get('session_id'))
             .then(response => {
                 setMessage({ message: <> <strong>Success!!</strong> Successfully placed your order</>, type: 'success' })

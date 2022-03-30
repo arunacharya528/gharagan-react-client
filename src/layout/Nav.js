@@ -67,7 +67,7 @@ export const Nav = () => {
                             {
                                 userData ?
                                     <div className="position-relative">
-                                        <Link to={"/user/cart"} class="icon-btn">
+                                        <Link to={"/cart"} class="icon-btn">
                                             <span id="badge">{cartQuantity ? cartQuantity :
                                                 <div class="spinner-border spinner-border-sm" role="status">
                                                     <span class="visually-hidden">Loading...</span>

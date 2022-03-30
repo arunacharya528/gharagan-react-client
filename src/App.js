@@ -21,6 +21,7 @@ import { Login } from "./pages/Authenticate";
 import { login } from "./adapters/auth";
 import { Cart } from "./pages/Cart";
 import { UserLayout } from "./layout/UserLayout";
+import { Order } from "./pages/Order";
 
 function App() {
 
@@ -35,10 +36,9 @@ function App() {
         </Route>
         <Route element={<ProductFilter />} path="/filter" />
 
-        <Route element={<UserLayout component={<Cart />} />} path="/user">
-          <Route element={<UserLayout component={<Cart />} />} path="cart" />
-          <Route element={<Cart />} path="order" />
-        </Route>
+        <Route element={<UserLayout />} path="/user" />
+        <Route element={<UserLayout component={<Cart />} />} path="/cart" />
+        <Route element={<UserLayout component={<Order />} />} path="/order" />
 
         <Route element={<Login />} path="/login" />
 
