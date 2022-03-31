@@ -13,7 +13,6 @@ export const UpdatePassword = () => {
 
     const handleSubmission = (e) => {
         e.preventDefault();
-        // console.log({ password, password_confirmation })
         updateUser(cookie.get('access_token'), cookie.get('userData').id, { password, password_confirmation })
             .then((response) => {
                 setResponse({ message: { success: ['Successfully updated your Password'] }, type: 'success' })
@@ -36,7 +35,7 @@ export const UpdatePassword = () => {
                     <input type="password"
                         class="form-control mb-1" placeholder="Re-enter password" autoComplete="" onChange={e => setPassword_confirmation(e.target.value)} />
                     <div>
-                        <button className="btn btn-primary" onClick={handleSubmission}>Update</button>
+                        <button className="btn btn-primary" onClick={handleSubmission} disabled={!(password && password_confirmation) ? true : false}>Update</button>
                     </div>
                 </form>
             </div>
