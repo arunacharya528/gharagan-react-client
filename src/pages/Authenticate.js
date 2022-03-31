@@ -95,6 +95,7 @@ export const AuthUser = () => {
         cookies.remove('access_token', { path: "/" })
 
         setUser(undefined);
+        window.location.reload();
     }
 
     return (

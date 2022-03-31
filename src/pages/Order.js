@@ -69,8 +69,7 @@ export const Order = () => {
                             : ''
                     }
 
-                    {orderDetails.map((item, index) =>
-
+                    {
                         orderDetails.map((order, index) =>
                             <div className="shadow-sm rounded card mb-5" key={index}>
 
@@ -156,8 +155,7 @@ export const Order = () => {
                             </div>
 
                         )
-
-                    )}
+                    }
 
 
 

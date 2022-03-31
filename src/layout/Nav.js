@@ -34,9 +34,8 @@ export const Nav = () => {
     useEffect(() => {
         getShoppingSession(cookie.get('access_token'), cookie.get('session_id'))
             .then(response => {
-                if (cartQuantity != response.data.cart_items.length) {
-                    setCartQuantity(response.data.cart_items.length);
-                }
+                const cartSize = response.data.cart_items.length;
+                setCartQuantity(cartSize);
             })
             .catch(error => console.log(error))
     })
@@ -68,11 +67,7 @@ export const Nav = () => {
                                 userData ?
                                     <div className="position-relative">
                                         <Link to={"/cart"} class="icon-btn">
-                                            <span id="badge">{cartQuantity ? cartQuantity :
-                                                <div class="spinner-border spinner-border-sm" role="status">
-                                                    <span class="visually-hidden">Loading...</span>
-                                                </div>
-                                            }</span>
+                                            <span id="badge">{cartQuantity ? cartQuantity : 0}</span>
                                             <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                             <span id="label">Cart</span>
                                         </Link>
