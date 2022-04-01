@@ -19,12 +19,21 @@
     padding: 1rem 0;
 }
 
-.rating {
-    i {
-        color: $primary-color;
-    }
-    .highlight {
-        font-weight: bold;
+$star-size: 60px;
+$star-color: #0d6dfd37;
+$star-background: #fc0;
+.stars {
+    --percent: calc(var(--rating) / 5 * 100%);
+    display: inline-block;
+    font-size: 1em;
+    line-height: 1;
+    &::before {
+        content: '★★★★★';
+        letter-spacing: 3px;
+        background: linear-gradient(90deg, $primary-color var(--percent), $star-color var(--percent));
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 }
 

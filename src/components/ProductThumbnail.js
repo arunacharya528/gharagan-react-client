@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { RateDisplay } from "./Rating";
+import { RateDisplay, RateDisplayByNumber } from "./Rating";
 
 export const ProductThumbnail = (props) => {
 
@@ -20,7 +20,7 @@ export const ProductThumbnail = (props) => {
             </div>
             <div class="d-flex justify-content-between">
                 <div id="category">{props.product.category.name}</div>
-                <RateDisplay rating={averageRating} />
+                <RateDisplayByNumber rating={averageRating} />
             </div>
 
             <div id="name">{props.product.name}</div>

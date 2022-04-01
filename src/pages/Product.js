@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import { getByProductAndSession, postToCart } from "../adapters/cartItems";
 import { getproduct } from "../adapters/product";
 import { ProductImage } from "../components/ProductImage";
-import { RateDisplay, RatingSummary } from "../components/Rating";
+import { RateDisplayByArray, RatingSummary } from "../components/Rating";
 import { Loading } from "../helpers/Loading";
 
 export const Product = () => {
@@ -93,7 +93,7 @@ export const Product = () => {
                                     <div class="row my-2">
                                         <div class="col-2">Rating</div>
                                         <div class="col">
-                                            <RateDisplay rating={4} />
+                                            <RateDisplayByArray ratings={product.ratings} />
                                         </div>
                                     </div>
 
@@ -125,7 +125,6 @@ export const Product = () => {
                                                         {quantityInCart ?
                                                             <div className="small d-block"><b>Quantity in cart</b>: {quantityInCart}</div>
                                                             : ''}
-                                                        <div className="small d-block"><b>Quantity ordered</b>: 20</div>
                                                     </div>
 
                                                     <small>Adding to cart would replace same product if there are any.</small>
@@ -166,7 +165,7 @@ export const Product = () => {
                             <h4>Customer reviews</h4>
                             <div class="row d-flex align-items-center">
                                 <div class="col-sm-6">
-                                    <RatingSummary />
+                                    <RatingSummary ratings={product.ratings} />
                                 </div>
                                 <div class="col-sm-6">
                                     <div>
