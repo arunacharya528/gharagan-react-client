@@ -1,10 +1,12 @@
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getByProductAndSession, postToCart } from "../adapters/cartItems";
 import { getproduct } from "../adapters/product";
+import { RateAndComment } from "../components/Product/RateAndComment";
 import { ProductImage } from "../components/ProductImage";
-import { RateDisplayByArray, RatingSummary } from "../components/Rating";
+import { RateDisplayByArray, RateDisplayByNumber, RateInput, RatingSummary } from "../components/Rating";
 import { Loading } from "../helpers/Loading";
 
 export const Product = () => {
@@ -59,7 +61,7 @@ export const Product = () => {
                 product.length !== 0 ?
 
                     <>
-                        <div class="card my-4 p-3">
+                        <div class="card shadow-sm my-4 p-3">
                             <h4>General Info</h4>
                             <div class="row">
                                 <div class="col-sm-6">
@@ -151,7 +153,7 @@ export const Product = () => {
                                 </div>
                             </div>
                         </div>
-                        <div class="card my-4 p-3">
+                        <div class="card shadow-sm my-4 p-3">
                             <h4>Description</h4>
                             <p>
                                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas
@@ -161,64 +163,74 @@ export const Product = () => {
                             </p>
                         </div>
 
-                        <div class="card my-4 p-3">
+                        <div class="card shadow-sm my-4 p-3">
                             <h4>Customer reviews</h4>
                             <div class="row d-flex align-items-center">
-                                <div class="col-sm-6">
+                                <div class="col-md-6">
                                     <RatingSummary ratings={product.ratings} />
                                 </div>
-                                <div class="col-sm-6">
-                                    <div>
-                                        <div class="form-group">
-                                            <label for="">Comment as Username</label>
-                                            <textarea class="form-control" name="" id="" rows="3"></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary my-2">Comment</button>
-                                    </div>
+                                <div class="col-md-6">
+                                    <RateAndComment />
                                 </div>
 
                             </div>
-
-
                             <div>
-                                <div class="row my-3">
-                                    <div class="col-1 d-flex justify-content-center">
-                                        <img src="http://via.placeholder.com/75x75" class="rounded-circle" />
+                                {product.ratings.map((rating, index) =>
+                                    <div class="row my-3" key={index}>
+                                        <div class="col-2 col-sm-2 col-md-1 d-flex justify-content-center">
+                                            <img src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${rating.user.first_name}%20${rating.user.last_name}&size=200`} class="rounded-circle" style={{ width: "50px", height: '50px' }} />
+                                        </div>
+                                        <div class="col d-flex flex-column">
+                                            <div className="d-block">
+                                                <span className="fw-bold">{rating.user.first_name} {rating.user.last_name}</span>
+                                                &emsp;
+                                                <span className="fst-italic">{moment(rating.created_at).fromNow()}</span>
+                                            </div>
+                                            <div className="d-block">{<RateDisplayByNumber rating={rating.rate} />}</div>
+                                            <p>{rating.comment}</p>
+                                        </div>
                                     </div>
-                                    <div class="col d-flex flex-column">
-                                        <b>Username</b>
-                                        <p>This is my comment</p>
-                                    </div>
-                                </div>
-                                <div class="row my-3">
-                                    <div class="col-1 d-flex justify-content-center">
-                                        <img src="http://via.placeholder.com/75x75" class="rounded-circle" />
-                                    </div>
-                                    <div class="col d-flex flex-column">
-                                        <b>Username</b>
-                                        <p>This is my comment</p>
-                                    </div>
-                                </div>
-                                <div class="row my-3">
-                                    <div class="col-1 d-flex justify-content-center">
-                                        <img src="http://via.placeholder.com/75x75" class="rounded-circle" />
-                                    </div>
-                                    <div class="col d-flex flex-column">
-                                        <b>Username</b>
-                                        <p>This is my comment</p>
-                                    </div>
-                                </div>
-                                <div class="row my-3">
-                                    <div class="col-1 d-flex justify-content-center">
-                                        <img src="http://via.placeholder.com/75x75" class="rounded-circle" />
-                                    </div>
-                                    <div class="col d-flex flex-column">
-                                        <b>Username</b>
-                                        <p>This is my comment</p>
-                                    </div>
-                                </div>
+                                )}
                             </div>
 
+                        </div>
+
+                        <div className="card shadow-sm my-4">
+                            <h4 className="p-3">Questions and Answers</h4>
+                            {product.questions.map((question, index) =>
+
+                                <div className="row py-3">
+                                    <div className="col-2 col-sm-2 col-md-1 text-center">
+                                        <div className="h5">{index + 1}</div>
+                                    </div>
+                                    <div className="col">
+                                        <div className="d-flex flex-column" key={index}>
+                                            <div className="d-block d-flex">
+                                                <span className="fw-bold">{question.user.first_name + " " + question.user.last_name}</span>&emsp;
+                                                <div className="fst-italic">{moment(question.created_at).fromNow()}</div>
+                                            </div>
+                                            <div className="d-block">{question.query}</div>
+                                        </div>
+
+                                        {question.answers.map((answer, index) =>
+                                            <div className="mx-4 py-3">
+
+                                                <div className="d-flex flex-column" key={index}>
+                                                    <div className="d-block d-flex">
+                                                        <div className="d-block fw-bold">By Seller</div>&emsp;
+                                                        <div className="fst-italic">{moment(answer.created_at).fromNow()}</div>
+                                                    </div>
+                                                    <div className="d-block">{answer.query}</div>
+                                                </div>
+
+                                            </div>
+
+                                        )}
+
+                                    </div>
+                                </div>
+
+                            )}
                         </div>
                     </>
                     : <Loading />
