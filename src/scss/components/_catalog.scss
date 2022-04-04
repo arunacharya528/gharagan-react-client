@@ -54,7 +54,8 @@
         transition: box-shadow 0.2s;
     }
     .product-thumbnail:hover {
-        filter: opacity(1);
-        box-shadow: 0 0 5px $brand-red;
+        background-color: rgba(0, 140, 255, 0.1);
+        box-shadow: none;
+        outline: 2px solid skyblue;
     }
 }
