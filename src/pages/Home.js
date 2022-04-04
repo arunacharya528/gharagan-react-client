@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Banner";
 import { Brand } from "../components/Brand";
@@ -11,7 +12,7 @@ export const Home = () => {
     const [mostViewedProducts, setMostViewedProducts] = useState([]);
 
     useEffect(() => {
-        getProducts("page=1&sort=latest")
+        getProducts("sort=latest")
             .then((response) => {
                 setLatestProducts(response.data.data);
             })
@@ -19,7 +20,7 @@ export const Home = () => {
                 console.log(error);
             });
 
-        getProducts("page=1&sort=mostViewed")
+        getProducts("sort=mostViewed")
             .then((response) => {
                 setMostViewedProducts(response.data.data);
             })
@@ -36,7 +37,7 @@ export const Home = () => {
                 <section className="mb-5">
                     <div class="header">
                         <h5>Latest Products</h5>
-                        <a href="#">More Products <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
+                        <Link to="/filter?sort=latest">More Products <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
                     </div>
 
                     <div id="catalog-container" className="row">
@@ -50,7 +51,7 @@ export const Home = () => {
                 <section className="mb-5">
                     <div class="header">
                         <h5>Most Viewed Products</h5>
-                        <a href="#">More Products <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></a>
+                        <Link to={"/filter?sort=mostViewed"}>More Products <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
                     </div>
 
                     <div id="catalog-container" className="row">
