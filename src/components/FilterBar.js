@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getBrands } from "../adapters/brand";
 import { getCategories } from "../adapters/category";
 import { Loading } from "../helpers/Loading";
-
+const queryString = require('query-string')
 
 const handleURL = require('../helpers/handleURL');
 
@@ -41,8 +41,40 @@ export const FilterBar = () => {
             .catch(error => console.log(error))
     }, [])
 
-    return (
 
+    const determineIfOpen = (childCategories, TYPE) => {
+        // extract child category id from provided categories
+        const categories = childCategories.map((category) => { return category.id })
+        // extract categories from address bar
+        const addressBar = queryString.parse(location.search)
+        const categoriesInAddressBar = addressBar.categories ? addressBar.categories.split(",") : [];
+
+        var isOpen = false;
+        // search and see if there are matching categories with provided category
+        categoriesInAddressBar.map((category) => {
+            if (categories.includes(parseInt(category))) {
+                isOpen = true;
+            }
+        })
+
+        if (isOpen === true) {
+            switch (TYPE) {
+                case 'TITLE':
+                    return '';
+                case 'BODY':
+                    return 'show';
+            }
+        } else {
+            switch (TYPE) {
+                case 'TITLE':
+                    return 'collapsed';
+                case 'BODY':
+                    return '';
+            }
+        }
+    }
+
+    return (
         <div id="sidebar">
             <div class="accordion">
                 {categories.length === 0 ?
@@ -51,11 +83,11 @@ export const FilterBar = () => {
                     categories.map((category, index) =>
                         <div class="accordion-item" key={index}>
                             <h2 class="accordion-header">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse" + category.name}>
+                                <button class={"accordion-button " + determineIfOpen(category.child_categories, "TITLE")} type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse" + category.name}>
                                     {category.name}&emsp;{category.number_of_product}
                                 </button>
                             </h2>
-                            <div id={"panelsStayOpen-collapse" + category.name} class="accordion-collapse collapse">
+                            <div id={"panelsStayOpen-collapse" + category.name} class={"accordion-collapse collapse " + determineIfOpen(category.child_categories, "BODY")}>
                                 <div class="accordion-body">
                                     <div class="product-list">
                                         {category.child_categories.map((childCategory, index) =>
