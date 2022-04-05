@@ -114,3 +114,9 @@ export const AuthUser = () => {
         </>
     );
 }
+
+export const AuthRedirect = () => { 
+    return (
+        <Link to={"/login"} className="btn btn-primary" >Log in to continue</Link>
+    );
+}
