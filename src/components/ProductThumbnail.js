@@ -4,14 +4,14 @@ import { RateDisplay, RateDisplayByNumber } from "./Rating";
 
 export const ProductThumbnail = (props) => {
 
-    const discountPercent = props.product.discount.discount_percent;
-    const actualPrice = props.product.price - Math.ceil(props.product.discount.discount_percent * 0.01 * props.product.price)
-    const initialPrice = props.product.price;
-
     const image1 = props.product.images.length > 0 ? props.product.images[0].image : '';
     const image2 = props.product.images.length >= 2 ? props.product.images[1].image : '';
 
     const averageRating = props.product.averageRating;
+
+    const getDiscountedPrice = (mainPrice, discount) => {
+        return discount ? mainPrice - Math.ceil(discount.discount_percent * 0.01 * mainPrice) : mainPrice;
+    }
     return (
         <Link to={'/product/' + props.product.id} class={"product-thumbnail  col-12 col-sm-6 col-lg-" + (props.width ? props.width : 3)}>
             <div id="image-container">
@@ -26,10 +26,10 @@ export const ProductThumbnail = (props) => {
             <div id="name">{props.product.name}</div>
             <div id="price" class="d-flex justify-content-between align-items-center">
                 <div class="d-flex">
-                    <div id="actual-price">Rs. {actualPrice}</div>
-                    <div id="original-price"><s>Rs. {initialPrice}</s></div>
+                    <div id="actual-price">Rs. {getDiscountedPrice(props.product.price, props.product.discount)}</div>
+                    {props.product.discount ? <div id="original-price"><s>Rs. {props.product.price}</s></div> : ''}
                 </div>
-                <div id="discount">{discountPercent}% OFF</div>
+                {props.product.discount ? <div id="discount">{props.product.discount.discount_percent}% OFF</div> : ''}
             </div>
         </Link>
     );
