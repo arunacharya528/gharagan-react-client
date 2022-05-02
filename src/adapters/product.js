@@ -1,10 +1,11 @@
 const apiURL = process.env.REACT_APP_API_URL;
-
 const axios = require('axios');
+
+
 export const getProducts = (urlQuery = '', item = "item=8") => {
     let config = {
         method: 'get',
-        url: `${apiURL}/product?${urlQuery}&${item}`,
+        url: `${apiURL}/product/all?${urlQuery}&${item}`,
         headers: {},
         maxRedirects: 0
     };

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getProducts } from "../adapters/product";
-import { Banner } from "../components/Banner";
+import { Banner } from "../components/Advertisement/Banner";
 import { Brand } from "../components/Brand";
 import { ProductThumbnail } from "../components/ProductThumbnail";
 import { Loading } from "../helpers/Loading";
@@ -14,7 +14,7 @@ export const Home = () => {
     useEffect(() => {
         getProducts("sort=latest")
             .then((response) => {
-                setLatestProducts(response.data.data);
+                setLatestProducts(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -22,14 +22,14 @@ export const Home = () => {
 
         getProducts("sort=mostViewed")
             .then((response) => {
-                setMostViewedProducts(response.data.data);
+                setMostViewedProducts(response.data);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, [])
 
-
+    console.log(latestProducts, mostViewedProducts)
     return (
         <>
             <Banner />
