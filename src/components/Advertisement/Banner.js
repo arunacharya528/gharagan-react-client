@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { getActiveAdvertisements } from "../../adapters/advertisement";
 import { Loading } from "../../helpers/Loading";
 import { CarouselView } from "../OwlCarousel";
@@ -21,9 +21,18 @@ export const Banner = () => {
             {banners.length !== 0 ?
                 <CarouselView items={banners.map((banner, index) => {
                     return (
-                        <div class="item">
+                        <React.Fragment key={index}>
+                            <div className="detail">
+                                <div className="heading">{banner.name}</div>
+                                <p>
+                                    {banner.summary}
+                                </p>
+                                <div className="link-container">
+                                    <a href={banner.url_slug} target="_blank">Click to Visit</a>
+                                </div>
+                            </div>
                             <img src={process.env.REACT_APP_FILE_PATH + banner.file.path} />
-                        </div>
+                        </React.Fragment>
                     );
                 })} displayItems={1}></CarouselView>
                 : <Loading />
