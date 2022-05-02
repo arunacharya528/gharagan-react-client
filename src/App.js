@@ -2,10 +2,9 @@
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
 import { useEffect, useState } from "react";
-import { getBanners } from "./adapters/banner";
 import "./app.scss";
 import { CarouselView } from "./components/OwlCarousel";
-import { Banner } from "./components/Banner";
+import { Banner } from "./components/Advertisement/Banner";
 
 import { Footer } from "./layout/Footer";
 import { Nav } from "./layout/Nav";
