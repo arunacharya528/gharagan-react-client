@@ -36,22 +36,22 @@ export const Nav = () => {
             })
     }, [])
 
-    useEffect(() => {
-        if (!userData) {
-            setUserData(cookie.get('userData'));
-        }
-    })
+    // useEffect(() => {
+    //     if (!userData) {
+    //         setUserData(cookie.get('userData'));
+    //     }
+    // })
 
-    const [cartQuantity, setCartQuantity] = useState(undefined);
+    // const [cartQuantity, setCartQuantity] = useState(undefined);
 
-    useEffect(() => {
-        getShoppingSession(cookie.get('access_token'), cookie.get('session_id'))
-            .then(response => {
-                const cartSize = response.data.cart_items.length;
-                setCartQuantity(cartSize);
-            })
-            .catch(error => console.log(error))
-    })
+    // useEffect(() => {
+    //     getShoppingSession(cookie.get('access_token'), cookie.get('session_id'))
+    //         .then(response => {
+    //             const cartSize = response.data.cart_items.length;
+    //             setCartQuantity(cartSize);
+    //         })
+    //         .catch(error => console.log(error))
+    // })
 
     const handleCategorySelection = (category) => {
         // extract ids of child categories in an array
@@ -104,7 +104,7 @@ export const Nav = () => {
                                 userData ?
                                     <div className="position-relative">
                                         <Link to={"/cart"} class="icon-btn">
-                                            <span id="badge">{cartQuantity ? cartQuantity : 0}</span>
+                                            <span id="badge"></span>
                                             <i class="fa fa-cart-plus" aria-hidden="true"></i>
                                             <span id="label">Cart</span>
                                         </Link>
