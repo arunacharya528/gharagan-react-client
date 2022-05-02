@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getBrands } from "../adapters/brand";
+import { Banner } from "./Advertisement/Banner";
 import { CarouselView } from "./OwlCarousel";
 
 export const Brand = () => {
@@ -20,7 +21,7 @@ export const Brand = () => {
         <CarouselView items={brands.map((brand, index) => {
             return (
                 <div class="item">
-                    <img src={brand.image} />
+                    <img src={brand.file ? process.env.REACT_APP_FILE_PATH + brand.file.path : brand.image_url} />
                 </div>
             );
         })} displayItems={5}></CarouselView>
