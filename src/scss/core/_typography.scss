@@ -45,3 +45,38 @@ h5,
 h6 {
     font-weight: bolder;
 }
+
+.brand-link {
+    text-decoration: none;
+    color: $brand-red !important;
+}
+
+.brand-link:hover {
+    filter: brightness(0.8);
+}
+
+.brand-btn {
+    background-color: $brand-red;
+    border: none;
+    color: white;
+}
+
+.brand-btn:hover {
+    filter: brightness(0.9);
+    color: white;
+}
+
+.brand-btn-outline {
+    color: $brand-red;
+    border-color: $brand-red;
+}
+
+.brand-btn-outline:hover {
+    background-color: $brand-red;
+    color: white;
+}
+
+.brand-btn:focus,
+.brand-btn-outline:focus {
+    box-shadow: 0 0 0 0.25rem $brand-red-light;
+}

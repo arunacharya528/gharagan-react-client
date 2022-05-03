@@ -22,9 +22,9 @@ export const ProductThumbnail = (props) => {
 
     const determineInventoryButton = (inventory) => {
         if (selectedInventory && selectedInventory.id === inventory.id) {
-            return 'btn-primary'
+            return 'brand-btn'
         } else {
-            return 'btn-outline-primary'
+            return 'brand-btn-outline'
         }
     }
 
@@ -34,7 +34,7 @@ export const ProductThumbnail = (props) => {
 
     return (
         <div to={'/product/' + props.product.id} class={"col-12 col-sm-6 col-lg-" + (props.width ? props.width : 3)}>
-            
+
             <div className="product-thumbnail">
                 <div className="visible-container">
                     <div id="image-container">
@@ -65,7 +65,7 @@ export const ProductThumbnail = (props) => {
 
                     }
                 </div>
-                
+
 
                 <div className="button-panel">
 
@@ -75,13 +75,13 @@ export const ProductThumbnail = (props) => {
                         )}
                     </div>
 
-                    <button className="brand-btn rounded w-100 py-2 mt-2 cart">Add to cart</button>
+                    <button className="btn brand-btn rounded w-100 py-2 mt-2 cart">Add to cart</button>
                     <div className="text-center mt-2 view">
-                        <Link to={'/product/' + props.product.id}>View product</Link>
+                        <Link to={'/product/' + props.product.id} className="brand-link">View product</Link>
                     </div>
                 </div>
             </div>
-            
+
         </div>
     );
 }
