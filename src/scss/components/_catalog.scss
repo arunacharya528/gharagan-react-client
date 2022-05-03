@@ -56,8 +56,9 @@
             flex-direction: column;
             align-items: center;
             z-index: 10;
-            overflow: hidden;
             position: absolute;
+            max-height: 0;
+            overflow: hidden;
             visibility: hidden;
             width: 100%;
             padding: 0 1rem;
@@ -68,20 +69,20 @@
             border-radius: 0 0 0.5rem 0.5rem;
             margin-top: -1rem;
             padding-bottom: 2rem;
-            transition: box-shadow 0.2s;
         }
         .visible-container {
             padding: 2rem;
         }
-        border-radius: 0.5rem 0.5rem 0 0;
-        transition: box-shadow 0.2s;
+        border-radius: 0.5rem;
         background-color: white;
     }
     .product-thumbnail:hover {
+        border-radius: 0.5rem 0.5rem 0 0;
         box-shadow: 0px -3px 10px 3px #88888889;
         .button-panel {
-            visibility: visible;
+            max-height: 500px;
             box-shadow: 1px 12px 10px 3px #88888889;
+            visibility: visible;
         }
     }
 }
