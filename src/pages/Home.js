@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Advertisement/Banner";
-import { Brand } from "../components/Brand";
+import {  BrandCarousel } from "../components/Brand";
 import { ProductThumbnail } from "../components/ProductThumbnail";
 import { Loading } from "../helpers/Loading";
 
@@ -98,7 +98,7 @@ export const Home = () => {
 
             </div>
 
-            <Brand />
+            <BrandCarousel />
         </>
     );
 }

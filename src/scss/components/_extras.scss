@@ -34,3 +34,23 @@
         }
     }
 }
+
+.page-banner {
+    padding: 5rem 0;
+    background-color: rgba(128, 128, 128, 0.3);
+    .container {
+        display: flex;
+        align-items: center;
+        img {
+            width: 200px;
+        }
+        h1 {
+            padding: 0 2rem;
+            background: #121FCF;
+            background: linear-gradient(to right, #121FCF 0%, #CF1512 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+}

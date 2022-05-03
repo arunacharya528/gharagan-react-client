@@ -22,6 +22,7 @@ import { Cart } from "./pages/Cart";
 import { UserLayout } from "./layout/UserLayout";
 import { Order } from "./pages/Order";
 import { Profile } from "./pages/Profile";
+import { Brand } from "./pages/Brand";
 
 function App() {
 
@@ -35,8 +36,9 @@ function App() {
           <Route element={<Product />} path=":product_id" />
         </Route>
         <Route element={<ProductFilter />} path="/filter" />
+        <Route element={<Brand />} path="/brand/:brandId" />
 
-        <Route element={<UserLayout component={<Profile/>}/>} path="/user" />
+        <Route element={<UserLayout component={<Profile />} />} path="/user" />
         <Route element={<UserLayout component={<Cart />} />} path="/cart" />
         <Route element={<UserLayout component={<Order />} />} path="/order" />
 
