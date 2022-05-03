@@ -26,6 +26,8 @@ export const Nav = () => {
     const cookie = new Cookies()
     const [userData, setUserData] = useState(undefined);
 
+    const [isCategoryShown, toggleCategory] = useState(false);
+
     useEffect(() => {
         getCategories()
             .then(response => {
@@ -62,14 +64,14 @@ export const Nav = () => {
         // implode the array by joining with string and fetch data with contructed link
         const latestLink = "categories=" + childCategories.join(',') + "&sort=latest";
         getProducts(latestLink)
-            .then(response => setLatestProducts(response.data.data))
+            .then(response => setLatestProducts(response.data))
             .catch(error => console.log(error))
         setLatetstProductlink("/filter/?" + latestLink);
 
 
         const mostViewedLink = "categories=" + childCategories.join(',') + "&sort=mostViewed";
         getProducts(mostViewedLink)
-            .then(response => setMostViewedProducts(response.data.data))
+            .then(response => setMostViewedProducts(response.data))
             .catch(error => console.log(error))
         setMostViewedProductLink("/filter/?" + mostViewedLink);
         setSelectedCategory(category);
@@ -102,7 +104,7 @@ export const Nav = () => {
 
                             {
                                 userData ?
-                                    <div className="position-relative">
+                                    <div className="">
                                         <Link to={"/cart"} class="icon-btn">
                                             <span id="badge"></span>
                                             <i class="fa fa-cart-plus" aria-hidden="true"></i>
@@ -131,69 +133,82 @@ export const Nav = () => {
 
             </div>
             <nav id="nav-bar">
-                <div class="container">
+                <div class="">
                     <div class="d-flex flex-wrap flex-row align-items-start">
+                        <a href="#" onClick={e => toggleCategory(!isCategoryShown)}>Categories</a>
                         <Link to="/">Home</Link>
                         <Link to="/filter/">Filter</Link>
-
-                        {categories.map((category, index) =>
-                            <a onClick={e => handleCategorySelection(category)} key={index}>{category.name}</a>
-                        )}
                     </div>
-                    {selectedCategory.length !== 0 ?
 
-
-                        <div className="selectedCategory">
-                            <div className="row">
-                                <div className="col-sm-5 col-lg-3 d-flex flex-column">
-                                    {
-                                        selectedCategory.child_categories.map((category, index) =>
-                                            <div className="nav-item" key={index} onClick={e => {
-                                                navigate(`/filter/?categories=${category.id}`)
-                                                setSelectedCategory([]);
-                                            }}>{category.name}</div>
-                                        )
-                                    }
+                    {
+                        isCategoryShown ?
+                            <div className="dropdown row">
+                                <div className="col-sm-2 d-flex flex-column">
+                                    {categories.map((category, index) =>
+                                        <a onClick={e => handleCategorySelection(category)} key={index} className={"dropdown-parent " + (selectedCategory.id === category.id ? 'active' : '')}>{category.name}</a>
+                                    )}
                                 </div>
-                                <div className="col p-3">
-                                    <div className="d-flex justify-content-between align-items-start mb-5">
-                                        <p>
-                                            {selectedCategory.description}
-                                        </p>
-                                        <button className="btn btn-close text-white" onClick={e =>
-                                            setSelectedCategory([])
+                                <div className="col">
+                                    <div className="col-sm-12 d-flex justify-content-end">
+                                        <button className="btn btn-close text-white" onClick={e => { setSelectedCategory([]); toggleCategory(!isCategoryShown) }
                                         }></button>
                                     </div>
-                                    <section className="mb-4">
-                                        <div className="d-flex justify-content-between">
-                                            <h5>Latest Products</h5>
-                                            <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
-                                        </div>
-                                        <div id="catalog-container" className="row">
-                                            {latestProducts.length === 0 ?
-                                                <Loading />
-                                                : latestProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
-                                            }
-                                        </div>
-                                    </section>
-                                    <section className="mb-4">
-                                        <div className="d-flex justify-content-between">
-                                            <h5>Most Viewed Products</h5>
-                                            <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
-                                        </div>
-                                        <div id="catalog-container" className="row">
-                                            {mostViewedProducts.length === 0 ?
-                                                <Loading />
-                                                : mostViewedProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
-                                            }
-                                        </div>
-                                    </section>
+                                    {selectedCategory.length !== 0 ?
 
+
+                                        <div className="selectedCategory">
+                                            <div className="row">
+                                                <div className="col-sm-2 col-lg-3 d-flex flex-column">
+                                                    {
+                                                        selectedCategory.child_categories.map((category, index) =>
+                                                            <div className="dropdown-child" key={index} onClick={e => {
+                                                                navigate(`/filter/?categories=${category.id}`)
+                                                                setSelectedCategory([]);
+                                                            }}>{category.name}</div>
+                                                        )
+                                                    }
+                                                </div>
+                                                <div className="col p-3">
+                                                    <div className="d-flex justify-content-between align-items-start mb-5">
+                                                        <p>
+                                                            {selectedCategory.description}
+                                                        </p>
+                                                    </div>
+                                                    <section className="mb-4">
+                                                        <div className="d-flex justify-content-between">
+                                                            <h5>Latest Products</h5>
+                                                            <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                                        </div>
+                                                        <div id="catalog-container" className="row">
+                                                            {latestProducts.length === 0 ?
+                                                                <Loading />
+                                                                : latestProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
+                                                            }
+                                                        </div>
+                                                    </section>
+                                                    <section className="mb-4">
+                                                        <div className="d-flex justify-content-between">
+                                                            <h5>Most Viewed Products</h5>
+                                                            <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                                        </div>
+                                                        <div id="catalog-container" className="row">
+                                                            {mostViewedProducts.length === 0 ?
+                                                                <Loading />
+                                                                : mostViewedProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
+                                                            }
+                                                        </div>
+                                                    </section>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        : ''}
                                 </div>
                             </div>
-                        </div>
+                            : ''
+                    }
 
-                        : ''}
                 </div>
             </nav>
         </div>

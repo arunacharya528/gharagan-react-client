@@ -45,29 +45,53 @@
         }
     }
     #nav-bar {
-        background-color: $footer-color;
+        // box-shadow: 2px 10px 10px rgba(128, 128, 128, 0.3);
         a,
         .nav-item {
             padding: 1rem 1.5rem;
-            color: white;
         }
-        a:hover,
-        .nav-item:hover {
-            background-color: $brand-red;
-            filter: opacity(1);
+        position: relative;
+        z-index: 100;
+        background-color: white;
+        .dropdown {
+            position: absolute;
+            background-color: white;
+            width: 100vw;
+            left: 0;
+            box-shadow: 2px 10px 10px rgba(128, 128, 128, 0.3);
         }
-        @keyframes fadein {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .dropdown-button-style {
+            padding: 0.8rem 1.5rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+        }
+        .dropdown-button-style:hover {
+            background-color: $light-shade;
+            color: $primary-color;
+        }
+        .dropdown-button-style.active {
+            background-color: $light-shade;
+            color: $primary-color;
+            filter: brightness(0.9);
+        }
+        .dropdown-button-style.active:hover {
+            filter: brightness(0.85);
+        }
+        .dropdown-parent {
+            @extend .dropdown-button-style;
+            border-radius: 0 3rem 3rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .dropdown-parent::after {
+            content: url("../../icons/chevron-right.svg");
+        }
+        .dropdown-child {
+            @extend .dropdown-button-style;
         }
         .selectedCategory {
-            background-color: $footer-color;
             z-index: 10;
-            color: white;
             animation: fadein 1s;
             a:hover {
                 background-color: rgba(0, 140, 255, 0.1);
@@ -76,7 +100,8 @@
             }
         }
         .btn-close {
-            background: transparent url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23fff%27%3e%3cpath d=%27M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z%27/%3e%3c/svg%3e") center/1em auto no-repeat;
+            background: black url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 16 16%27 fill=%27%23fff%27%3e%3cpath d=%27M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z%27/%3e%3c/svg%3e") center/1em auto no-repeat;
+            color: black;
         }
     }
 }
