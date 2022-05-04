@@ -3,6 +3,8 @@ import { ReactComponent as CartIcon } from './cart.svg';
 import { ReactComponent as PersonIcon } from './person.svg';
 import { ReactComponent as MapPinIcon } from './map-pin.svg';
 import { ReactComponent as CreditCardIcon } from './credit-card.svg';
+import { ReactComponent as CloseIcon } from './close.svg';
+
 
 
 export {
@@ -10,5 +12,6 @@ export {
     CartIcon,
     PersonIcon,
     MapPinIcon,
-    CreditCardIcon
+    CreditCardIcon,
+    CloseIcon
 }

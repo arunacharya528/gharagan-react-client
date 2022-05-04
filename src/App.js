@@ -24,6 +24,7 @@ import { Order } from "./pages/Order";
 import { Profile } from "./pages/Profile";
 import { Brand } from "./pages/Brand";
 import { UserProvider } from "./context/UserContext";
+import { CartProvider } from "./context/CartContext";
 
 function App() {
 
@@ -42,13 +43,15 @@ function App() {
       </Routes>
 
       <UserProvider>
-        <Routes>
-          <Route path="/user">
-            <Route element={<Profile />} path="profile" exact />
-            <Route element={<Cart />} path="cart" exact />
-            <Route element={<Order />} path="order" exact />
-          </Route>
-        </Routes>
+        <CartProvider>
+          <Routes>
+            <Route path="/user">
+              <Route element={<Profile />} path="profile" exact />
+              <Route element={<Cart />} path="cart" exact />
+              <Route element={<Order />} path="order" exact />
+            </Route>
+          </Routes>
+        </CartProvider>
       </UserProvider>
       {/* </ScrollToTop> */}
       <Social />

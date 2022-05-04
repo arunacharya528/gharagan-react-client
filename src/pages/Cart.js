@@ -1,144 +1,95 @@
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { removeCartItem } from "../adapters/cartItems";
 
 import { createOrder, getShoppingSession } from "../adapters/shoppingSession";
+import { ProductImage } from "../components/ProductImage";
+import { CartContext } from "../context/CartContext";
+import { UserContext } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
 import { Message } from "../helpers/Message";
+import { CloseIcon } from "../icons";
 
 export const Cart = () => {
 
-    const cookie = new Cookies();
+    // const cookie = new Cookies();
     const [cartItems, setCartItems] = useState(undefined);
     const [total, setTotal] = useState([]);
     const [message, setMessage] = useState(undefined);
     const [refresh, setRefresh] = useState(false);
 
-    useEffect(() => {
-        getShoppingSession(cookie.get('access_token'), cookie.get('session_id'))
-            .then(response => {
-                setCartItems(response.data.cart_items);
-                setTotal(response.data.total);
-            })
-            .catch(error => console.log(error))
-    }, [refresh]);
+    const { session } = useContext(CartContext);
 
 
-    const getDiscountedPrice = (price, discountP) => {
-        return price - Math.ceil(0.01 * discountP * price);
+    const getImageURl = (productImage) => {
+        return productImage.file ? process.env.REACT_APP_FILE_PATH + productImage.file.path : productImage.image_url;
     }
 
-    const getTotalPrice = (price, quantity) => {
-        return price * quantity
-    }
+    const getTotalPrice = (inventory) => {
+        if (!inventory.discount) {
+            return inventory.price;
+        } else {
+            const discountPercent = inventory.discount.discount_percent
+            const price = inventory.price;
 
-    const getGrandTotal = () => {
+            const discountedPrice = price - (price * 0.01 * discountPercent)
 
-        var total = 0;
-        cartItems.map(item => {
-            total += getTotalPrice(getDiscountedPrice(item.product.price, item.product.discount.discount_percent), item.quantity)
-        })
-
-        return total;
-    }
-
-    const handleOrder = () => {
-        createOrder(cookie.get('access_token'), cookie.get('session_id'))
-            .then(response => {
-                setMessage({ message: <> <strong>Success!!</strong> Successfully placed your order</>, type: 'success' })
-                setRefresh(!refresh);
-            })
-            .catch(error => setMessage({ message: <> <strong>Error!!</strong> There was an error placing your order please try again.</>, type: 'danger' }))
-    }
-
-    const handleCartItemRemoval = (itemId) => {
-
-        removeCartItem(cookie.get('access_token'), itemId)
-            .then((response) => {
-                setMessage({ message: <> <strong>Success!!</strong> Successfully removed item from cart</>, type: 'success' })
-                setRefresh(!refresh);
-            })
-            .catch((error) => {
-                setMessage({ message: <> <strong>Error!!</strong> There was an error removig item from cart please try again.</>, type: 'danger' })
-            });
+            return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
+        }
     }
     return (
-        <div className="">
-            {message ? <Message message={message.message} type={message.type} /> : ''}
-            {cartItems ?
-                <>
-                    {
-                        cartItems.length !== 0 ?
-                            <div className="row fw-bold p-3 my-2" style={{ backgroundColor: "#d9d9d9" }}>
-                                <div className="col-md-2">Image</div>
-                                <div className="col">Detail</div>
-                                <div className="col-md-2">Price</div>
-                                <div className="col-md-2">Quantity</div>
-                                <div className="col-md-1">Total</div>
-                                <div className="col-md-1">Action</div>
-                            </div>
 
-                            : ''
-                    }
+        <div>
+            {
+                session ?
 
-                    {
-                        cartItems.length == 0 ?
-                            <div className="fw-bold p-3 my-2 text-center" style={{ backgroundColor: "#d9d9d9" }}>
-                                There are no items in your cart
-                            </div>
+                    <>
 
-                            : ''
-                    }
+                        <div className="summary-grid">
 
-                    {cartItems.map((item, index) =>
+                            <>
+                                <div className="item header">Image</div>
+                                <div className="item header">Quantity</div>
+                                <div className="item header">Price</div>
+                                <div className="item header">Discount</div>
+                                <div className="item header">Calculated Price</div>
+                                <div className="item header">Action</div>
+                            </>
+                            {
+                                session.cart_items.map((item, index) =>
+                                    <React.Fragment key={index}>
+                                        <div className="item">
+                                            <img src={getImageURl(item.product.images[0])} alt={"Image of " + item.product.name} />
+                                        </div>
 
+                                        <div className="item">
+                                            {item.quantity}
+                                        </div>
 
-                        <div className="row p-3 my-2 d-flex align-items-center" style={{ backgroundColor: "#d9d9d9" }}>
-                            <div className="col-md-2"><img src={item.product.images[0].image} alt="" style={{ width: "100px" }} /></div>
-                            <div className="col">
-                                <div className="d-block"><b>Name: </b>
-                                    <Link to={"/product/" + item.product.id}>
-                                        <u>{item.product.name}</u>
-                                    </Link>
-                                </div>
-                                <div className="d-block"><b>Category: </b>{item.product.category.name}</div>
-                                <div className="d-block"><b>Brand: </b>{item.product.brand.name}</div>
-                            </div>
-                            <div className="col-md-2">
-                                <div className="d-block"><b>Discount: </b>{item.product.discount ? item.product.discount.discount_percent : "No"}%</div>
-                                <div className="d-block"><b>Price: </b><s>{item.product.price}</s></div>
-                                <div className="d-block"><b>Calculated Price: </b>{item.product.discount ? getDiscountedPrice(item.product.price, item.product.discount.discount_percent) : "No"}</div>
-                            </div>
-                            <div className="col-md-2">
-                                <div className="d-block"><b>Selected: </b>{item.quantity}</div>
-                                <div className="d-block"><b>Available: </b>{item.product.inventory.quantity}</div>
-                            </div>
+                                        <div className="item price">
+                                            Rs. {item.inventory.price}
+                                        </div>
 
-                            <div className="col-md-1 fw-bold">
-                                {getTotalPrice(getDiscountedPrice(item.product.price, item.product.discount.discount_percent), item.quantity)}
-                            </div>
-                            <div className="col-md-1"><div className="btn btn-close" title="remove" onClick={e => handleCartItemRemoval(item.id)}></div></div>
+                                        <div className="item">
+                                            {item.inventory.discount ? item.inventory.discount.discount_percent + "%" : '-'}
+                                        </div>
+
+                                        <div className="item price">
+                                            Rs. {getTotalPrice(item.inventory)}
+                                        </div>
+                                        <div className="item">
+                                            <button>
+                                                <CloseIcon />
+                                            </button>
+                                        </div>
+                                    </React.Fragment>
+                                )
+                            }
                         </div>
-                    )}
-
-                    {
-                        cartItems.length !== 0 ?
-                            <div className="row p-3 my-2 fw-bold  d-flex align-items-center" style={{ backgroundColor: "#d9d9d9" }}>
-                                <div className="col-md-2"></div>
-                                <div className="col"></div>
-                                <div className="col-md-2"></div>
-                                <div className="col-md-2">Grand Total</div>
-                                <div className="col-md-1">{total}</div>
-                                <div className="col-md-1">
-                                    <div className="btn btn-primary" onClick={e => handleOrder()}>Place Order</div>
-                                </div>
-                            </div>
-                            : ''
-                    }
-
-                </>
-                : <Loading />}
+                    </>
+                    : ''
+            }
         </div>
     );
 }

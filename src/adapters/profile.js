@@ -2,17 +2,15 @@ const axios = require('axios');
 const apiURL = process.env.REACT_APP_API_URL;
 const qs = require('qs');
 
-export const getUser = (bearerToken, userId) => {
-
+export const getUser = (bearerToken, userId, type = '') => {
     let config = {
         method: 'get',
-        url: `${apiURL}/user/${userId}`,
+        url: `${apiURL}/user/${userId}/${type}`,
         headers: {
             'Authorization': `Bearer ${bearerToken}`
         },
         maxRedirects: 0
     };
-
     return axios(config);
 }
 
