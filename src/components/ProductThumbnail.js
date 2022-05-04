@@ -40,7 +40,7 @@ export const ProductThumbnail = (props) => {
                     <div id="image-container">
                         {
                             images.map((image, index) =>
-                                <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.name : image.image_url} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} />
+                                <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} />
                             )
                         }
                     </div>
