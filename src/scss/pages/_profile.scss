@@ -1,0 +1,64 @@
+#profile-card {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 3px rgba(128, 128, 128, 0.4);
+    border-radius: 10px;
+    padding: 10px 0;
+    .card-padding {
+        padding: 1rem 2rem;
+    }
+    #profile {
+        @extend .card-padding;
+        .name {
+            color: $header-color;
+            font-size: larger;
+            font-weight: bold;
+        }
+        .email {
+            @extend .brand-link;
+        }
+    }
+    .header {
+        color: $header-color;
+        font-size: larger;
+        font-weight: bold;
+        background-color: rgba(128, 128, 128, 0.05);
+        @extend .card-padding;
+    }
+    .grid {
+        display: grid;
+        grid-template-columns: 1;
+        background-color: rgba(128, 128, 128, 0.3);
+        grid-row-gap: 1px;
+        .item {
+            padding: 0.8rem 2rem;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            .detail {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: center;
+                font-size: medium;
+                color: $header-color;
+                .icon {
+                    text-align: center;
+                    width: 50px;
+                }
+            }
+        }
+        .item.active {
+            color: $brand-red;
+            .detail {
+                color: $brand-red;
+                a {
+                    color: $brand-red;
+                }
+            }
+        }
+    }
+    a {
+        color: $header-color;
+    }
+}
