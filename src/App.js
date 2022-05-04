@@ -23,6 +23,7 @@ import { UserLayout } from "./layout/UserLayout";
 import { Order } from "./pages/Order";
 import { Profile } from "./pages/Profile";
 import { Brand } from "./pages/Brand";
+import { UserProvider } from "./context/UserContext";
 
 function App() {
 
@@ -37,14 +38,18 @@ function App() {
         </Route>
         <Route element={<ProductFilter />} path="/filter" />
         <Route element={<Brand />} path="/brand/:brandId" />
-
-        <Route element={<UserLayout component={<Profile />} />} path="/user" />
-        <Route element={<UserLayout component={<Cart />} />} path="/cart" />
-        <Route element={<UserLayout component={<Order />} />} path="/order" />
-
         <Route element={<Login />} path="/login" />
-
       </Routes>
+
+      <UserProvider>
+        <Routes>
+          <Route path="/user">
+            <Route element={<Profile />} path="profile" exact />
+            <Route element={<Cart />} path="cart" exact />
+            <Route element={<Order />} path="order" exact />
+          </Route>
+        </Routes>
+      </UserProvider>
       {/* </ScrollToTop> */}
       <Social />
       <Footer />

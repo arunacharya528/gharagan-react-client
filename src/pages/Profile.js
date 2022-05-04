@@ -1,29 +1,21 @@
-import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
-import { getUser } from "../adapters/profile";
-import { UpdateAddress } from "../components/Profile/UpdateAddress";
-import { UpdateEmail } from "../components/Profile/UpdateEmail";
-import { UpdateInfo } from "../components/Profile/UpdateInfo";
-import { UpdatePassword } from "../components/Profile/UpdatePassword";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
 
 export const Profile = () => {
 
-    const [profile, setProfile] = useState(undefined);
     const [email, setEmail] = useState(undefined);
     const [firstName, setFirstName] = useState(undefined);
     const [lastName, setLastName] = useState(undefined);
     const [contact, setContact] = useState(undefined);
 
-    const cookie = new Cookies();
+
+    const { user } = useContext(UserContext)
     useEffect(() => {
-        getUser(cookie.get('access_token'), cookie.get('userData').id)
-            .then((response) => {
-                setProfile(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+        setEmail(user.email);
+        setFirstName(user.first_name)
+        setLastName(user.last_name)
+        setContact(user.conatact)
     }, []);
 
 
@@ -31,20 +23,65 @@ export const Profile = () => {
 
     return (
         <> {
-            profile ?
-                <div className="row">
-                    <div className="col-sm-6">
-                        <UpdateEmail oldEmail={profile.email} />
-                        <UpdateAddress oldAddress={profile.address} />
+            user ?
+                <>
+                    <div className="row mt-5">
+                        <div className="col-sm-6">
+                            <div class="form-group">
+                                <label className="fw-bold">First Name</label>
+                                <input type="text"
+                                    class="form-control" value={firstName} onChange={e => setFirstName(e.target.value)} />
+                                    
+                            </div>
+                        </div>
+                        <div className="col-sm-6">
+                            <div class="form-group">
+                                <label className="fw-bold">Last Name</label>
+                                <input type="text"
+                                    class="form-control" value={lastName} onChange={e => setLastName(e.target.value)} />
+                            </div>
+                        </div>
                     </div>
-                    <div className="col-sm-6">
+                    <div className="row mt-5">
+                        <div className="col-sm-6">
+                            <div class="form-group">
+                                <label className="fw-bold">Email</label>
+                                <input type="text"
+                                    class="form-control" value={email} onChange={e => setEmail(e.target.value)} />
+                            </div>
+                        </div>
+                        <div className="col-sm-6">
+                            <div class="form-group">
+                                <label className="fw-bold">Contact</label>
+                                <input type="text"
+                                    class="form-control" value={contact} onChange={e => setContact(e.target.value)} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row mt-5">
+                        <div className="col-sm-6">
+                            <div class="form-group">
+                                <label className="fw-bold">Password</label>
+                                <input type="text"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                        <div className="col-sm-6">
+                            <div class="form-group">
+                                <label className="fw-bold">Confirm Password</label>
+                                <input type="text"
+                                    class="form-control" />
+                            </div>
+                        </div>
+                    </div>
 
-                        <UpdateInfo oldInfo={{ first_name: profile.first_name, last_name: profile.last_name, contact: profile.contact }} />
-                        <UpdatePassword />
+                    <div className="d-flex justify-content-end mt-3">
+                        <button className="brand-btn px-3 py-2 rounded">Update Profile</button>
                     </div>
-                </div>
+                </>
                 : <Loading />
         }
         </>
+
     );
 }
