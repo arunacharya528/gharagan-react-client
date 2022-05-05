@@ -46,7 +46,7 @@ export const Cart = () => {
 
                     <>
 
-                        <div className="summary-grid">
+                        <div className="summary-grid" style={{ gridTemplateColumns: 'repeat(6,1fr) !important' }}>
 
                             <>
                                 <div className="item header">Image</div>

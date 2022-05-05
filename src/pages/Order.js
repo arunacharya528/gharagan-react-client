@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { removeCartItem } from "../adapters/cartItems";
@@ -9,6 +9,9 @@ import { Loading } from "../helpers/Loading";
 import { Message } from "../helpers/Message";
 
 import moment from 'moment'
+import { getUser } from "../adapters/profile";
+import { UserContext } from "../context/UserContext";
+import { CloseIcon } from "../icons";
 
 export const Order = () => {
 
@@ -19,148 +22,160 @@ export const Order = () => {
     const [refresh, setRefresh] = useState(false);
     // const moment = 
 
+    const { user } = useContext(UserContext);
+    const [orders, setOrders] = useState(undefined)
     useEffect(() => {
-        getOrderDetailByUser(cookie.get('access_token'), cookie.get('userData').id)
-            .then(response => {
-                setOrderDetails(response.data.order_details);
-            })
+
+        getUser('', user.id, 'orders')
+            .then(response => setOrders(response.data))
             .catch(error => console.log(error))
-    }, [refresh]);
+        // getOrderDetailByUser(cookie.get('access_token'), cookie.get('userData').id)
+        //     .then(response => {
+        //         setOrderDetails(response.data.order_details);
+        //     })
+        //     .catch(error => console.log(error))
+    }, []);
 
+    console.log(orders)
+    // const getDiscountedPrice = (price, discountP) => {
+    //     return price - Math.ceil(0.01 * discountP * price);
+    // }
 
-    const getDiscountedPrice = (price, discountP) => {
-        return price - Math.ceil(0.01 * discountP * price);
+    // const getTotalPrice = (price, quantity) => {
+    //     return price * quantity
+    // }
+
+    // const getCurrentTotal = (order) => {
+    //     var total = 0;
+
+    //     order.order_items.map((item) => {
+    //         total += getTotalPrice(getDiscountedPrice(item.product.price, item.product.discount.discount_percent), item.quantity)
+    //     })
+    //     return total;
+    // }
+
+    // const handleOrderCancellation = (orderId) => {
+    //     cancelOrder(cookie.get('access_token'), orderId)
+    //         .then((response) => {
+    //             setMessage({ message: <> <strong>Success!!</strong> Successfully cancelled Order</>, type: 'success' })
+    //             setRefresh(!refresh);
+    //         })
+    //         .catch((error) => {
+    //             setMessage({ message: <> <strong>Error!!</strong> There was an error deleting your order please try again.</>, type: 'danger' })
+    //         });
+    // }
+
+    const getImageURl = (productImage) => {
+        return productImage.file ? process.env.REACT_APP_FILE_PATH + productImage.file.path : productImage.image_url;
     }
 
-    const getTotalPrice = (price, quantity) => {
-        return price * quantity
+    const getCalculatedPrice = (inventory) => {
+        if (!inventory.discount) {
+            return inventory.price;
+        } else {
+            const discountPercent = inventory.discount.discount_percent
+            const price = inventory.price;
+
+            const discountedPrice = price - (price * 0.01 * discountPercent)
+
+            return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
+        }
     }
 
-    const getCurrentTotal = (order) => {
-        var total = 0;
 
-        order.order_items.map((item) => {
-            total += getTotalPrice(getDiscountedPrice(item.product.price, item.product.discount.discount_percent), item.quantity)
-        })
-        return total;
+    const getTotalPrice = (quantity, inventory) => {
+        return Math.round(((quantity * getCalculatedPrice(inventory)) + Number.EPSILON) * 100) / 100;
     }
 
-    const handleOrderCancellation = (orderId) => {
-        cancelOrder(cookie.get('access_token'), orderId)
-            .then((response) => {
-                setMessage({ message: <> <strong>Success!!</strong> Successfully cancelled Order</>, type: 'success' })
-                setRefresh(!refresh);
-            })
-            .catch((error) => {
-                setMessage({ message: <> <strong>Error!!</strong> There was an error deleting your order please try again.</>, type: 'danger' })
-            });
+    const getProgressBar = (status) => {
+
+        const getResponse = () => {
+            switch (status) {
+                case 1: return 'Order Placed';
+                case 2: return 'Product collected for delivery';
+                case 3: return 'Product being Shipped';
+                case 4: return 'Product Received';
+            }
+        }
+
+        return (<div class="progress" style={{ height: 1.5 + "rem" }}>
+            <div class="progress-bar" role="progressbar" style={{ width: (status * 25) + "%" }} aria-valuenow={status * 25} aria-valuemin="0" aria-valuemax="100">{getResponse()}</div>
+        </div>);
     }
+
     return (
-        <div className="">
-            {message ? <Message message={message.message} type={message.type} /> : ''}
-            {orderDetails ?
-                <>
-                    {
-                        orderDetails.length == 0 ?
-                            <div className="fw-bold p-3 my-2 text-center" style={{ backgroundColor: "#d9d9d9" }}>
-                                There are no Orders placed yet
-                            </div>
 
-                            : ''
-                    }
+        <>
+            {orders ?
+                orders.map((order, index) =>
 
-                    {
-                        orderDetails.map((order, index) =>
-                            <div className="shadow-sm rounded card mb-5" key={index}>
-
-                                <div className="card-header d-flex justify-content-between align-items-center">
-                                    <div className="h4">Order</div>
-
-                                    <span className="fst-italic">
-                                        {moment(order.created_at).fromNow()}
-                                    </span>
+                    <div key={index} className="mb-5">
+                        <div class="" type="button" data-bs-toggle="collapse" data-bs-target={"#collapse" + index} >
+                            <div className="summary-grid " style={{ gridTemplateColumns: 'repeat(3,1fr)' }}>
+                                <div className="item d-flex flex-column">
+                                    <span className="d-flex"><b>Order placed:{' '}</b>{moment(order.created_at).calendar()}</span>
+                                    <span className="d-flex"><b>Last action took in :{' '}</b>{moment(order.updated_at).calendar()}</span>
                                 </div>
-
-                                <div className="card-body py-1 px-3">
-
-                                    <div className="row fw-bold p-3 mb-1" style={{ backgroundColor: "#d9d9d9" }}>
-                                        <div className="col-md-2">Image</div>
-                                        <div className="col">Detail</div>
-                                        <div className="col-md-2">Price</div>
-                                        <div className="col-md-2">Quantity</div>
-                                        <div className="col-md-1">Total</div>
-                                    </div>
-
-
-                                    {
-                                        order.order_items.map((item, index) =>
-                                            <div className="row p-3 mb-1 d-flex align-items-center" style={{ backgroundColor: "#d9d9d9" }}>
-                                                <div className="col-md-2"><img src={item.product.images[0].image} alt="" style={{ width: "100px" }} /></div>
-                                                <div className="col">
-                                                    <div className="d-block"><b>Name: </b>
-                                                        <Link to={"/product/" + item.product.id}>
-                                                            <u>{item.product.name}</u>
-                                                        </Link>
-                                                    </div>
-                                                    <div className="d-block"><b>Category: </b>{item.product.category.name}</div>
-                                                    <div className="d-block"><b>Brand: </b>{item.product.brand.name}</div>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <div className="d-block"><b>Discount: </b>{item.product.discount ? item.product.discount.discount_percent : "No"}%</div>
-                                                    <div className="d-block"><b>Price: </b><s>{item.product.price}</s></div>
-                                                    <div className="d-block"><b>Calculated Price: </b>{item.product.discount ? getDiscountedPrice(item.product.price, item.product.discount.discount_percent) : "No"}</div>
-                                                </div>
-                                                <div className="col-md-2">
-                                                    <div className="d-block"><b>Selected: </b>{item.quantity}</div>
-                                                    <div className="d-block"><b>Available: </b>{item.product.inventory.quantity}</div>
-                                                </div>
-
-                                                <div className="col-md-1 fw-bold">
-                                                    {getTotalPrice(getDiscountedPrice(item.product.price, item.product.discount.discount_percent), item.quantity)}
-                                                </div>
-
-
-
-                                            </div>
-                                        )
-                                    }
-
-
-                                    {
-                                        order.length !== 0 ?
-                                            <div className="row p-3 fw-bold  d-flex align-items-center" style={{ backgroundColor: "#d9d9d9" }}>
-                                                <div className="col-md-2">
-                                                    <div>
-                                                        <div className="btn btn-danger" onClick={e => handleOrderCancellation(order.id)}>Cancel Order</div>
-                                                    </div>
-                                                </div>
-                                                <div className="col"></div>
-                                                <div className="col-md-2"></div>
-                                                <div className="col-md-2">
-                                                    <div className="d-block">Ordered Total</div>
-                                                    <div className="d-block">Current Total</div>
-                                                </div>
-                                                <div className="col-md-1 text-nowrap">
-                                                    <div className="d-block">{order.total}</div>
-                                                    <div className="d-block">{getCurrentTotal(order)}</div>
-                                                </div>
-                                                <div className="col-12 text-end fw-normal mt-3">
-                                                    <div className="small">Your paying price is ordered total.<br />Current total is for comparison only.</div>
-                                                </div>
-                                            </div>
-                                            : ''
-                                    }
+                                <div className="item price">
+                                    <span className="d-flex"><b>Total: </b>Rs. { order.total}</span>
                                 </div>
-
+                                <div className="item">
+                                    <div className="btn btn-outline-danger">Cancel order</div>
+                                </div>
                             </div>
+                            {getProgressBar(order.status)}
+                        </div>
+                        <div class="collapse border rounded mt-2 p-2" id={"collapse" + index}>
+                            <div className="summary-grid" style={{ gridTemplateColumns: 'repeat(6,1fr)' }}>
 
-                        )
-                    }
+                                <>
+                                    <div className="item header">Image</div>
+                                    <div className="item header">Quantity</div>
+                                    <div className="item header">Price</div>
+                                    <div className="item header">Discount</div>
+                                    <div className="item header">Buying Price</div>
+                                    <div className="item header">Total Price</div>
+                                </>
+                                {
+                                    order.order_items.map((item, index) =>
+                                        <React.Fragment key={index}>
+                                            <div className="item">
+                                                <img src={getImageURl(item.product.images[0])} alt={"Image of " + item.product.name} />
+                                            </div>
+
+                                            <div className="item">
+                                                {item.quantity}
+                                            </div>
+
+                                            <div className="item price">
+                                                Rs. {item.inventory.price}
+                                            </div>
+
+                                            <div className="item">
+                                                {item.inventory.discount ? item.inventory.discount.discount_percent + "%" : '-'}
+                                            </div>
+
+                                            <div className="item price">
+                                                Rs. {getCalculatedPrice(item.inventory)}
+                                            </div>
+                                            <div className="item price">
+                                                Rs. {getTotalPrice(item.quantity, item.inventory)}
+                                            </div>
+                                        </React.Fragment>
+                                    )
+                                }
+                            </div>
+                        </div>
+                    </div>
 
 
 
-                </>
-                : <Loading />}
-        </div>
+                )
+
+                : <Loading />
+            }
+
+        </>
+
     );
 }
