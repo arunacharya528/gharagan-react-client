@@ -46,7 +46,7 @@ export const postAddress = (bearerToken, addressData) => {
     return axios(config)
 }
 
-export const updateAddress = (bearerToken, addressId, addressData) => {
+export const putAddress = (bearerToken, addressId, addressData) => {
     let data = qs.stringify(addressData);
     let config = {
         method: 'put',
@@ -57,6 +57,20 @@ export const updateAddress = (bearerToken, addressId, addressData) => {
         },
         maxRedirects: 0,
         data: data
+    };
+
+    return axios(config)
+}
+
+export const deleteAddress = (bearerToken, id) => { 
+    let config = {
+        method: 'delete',
+        url: `${apiURL}/userAddress/${id}`,
+        headers: {
+            'Authorization': `Bearer ${bearerToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0
     };
 
     return axios(config)

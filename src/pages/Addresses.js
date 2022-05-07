@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import { getUser } from "../adapters/profile";
+import { deleteAddress, getUser } from "../adapters/profile";
 import { AddAddress, AddAdvertisement } from "../components/Addresses/Add";
+import { EditAddress } from "../components/Addresses/Edit";
 import { ModalContext } from "../context/ModalContext";
 import { UserContext } from "../context/UserContext";
 import { EditIcon, PlusIcon, TrashIcon } from "../icons";
@@ -27,6 +28,34 @@ export const Addresses = () => {
             });
         openModal();
     }
+    const handleEditButtonClick = (address) => {
+        setModalData(
+            {
+                title: "Edit address",
+                body: <EditAddress refresh={() => { setRefresh(!isRefreshed); closeModal(); }} address={address} />
+            });
+        openModal();
+    }
+
+    const handleDeleteButtonClick = (address) => {
+        const confirmDeletion = () => {
+            deleteAddress('', address.id)
+                .then(response => { closeModal(); setRefresh(!isRefreshed) })
+                .catch(error => console.log(error));
+        }
+        setModalData(
+            {
+                title: "Delete address",
+                body: <>
+                    <p>Are you sure you want to delete this address<br /><b>It would be permanently deleted from database</b></p>
+
+                    <button className="btn btn-danger" onClick={e => confirmDeletion()}>Confirm deletion</button>
+                </>
+            });
+
+        openModal();
+    }
+
 
     return (
         <>
@@ -51,10 +80,10 @@ export const Addresses = () => {
                             <td>{address.mobile}</td>
                             <td >
                                 <div className="d-flex flex-row flex-no-wrap">
-                                    <button className="btn btn-outline-primary mx-2">
+                                    <button className="btn btn-outline-primary btn-sm mx-2" onClick={e => handleEditButtonClick(address)}>
                                         <EditIcon />
                                     </button>
-                                    <button className="btn btn-outline-danger">
+                                    <button className="btn btn-outline-danger btn-sm" onClick={e => handleDeleteButtonClick(address)}>
                                         <TrashIcon />
                                     </button>
                                 </div>
