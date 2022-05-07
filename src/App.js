@@ -26,6 +26,7 @@ import { Brand } from "./pages/Brand";
 import { UserProvider } from "./context/UserContext";
 import { CartProvider } from "./context/CartContext";
 import { Addresses } from "./pages/Addresses";
+import { ModalProvider } from "./context/ModalContext";
 
 function App() {
 
@@ -33,22 +34,24 @@ function App() {
     <BrowserRouter>
       <Nav />
       {/* <ScrollToTop> */}
-      <Routes>
-        <Route element={<Home />} path="/" index />
-        <Route element={<Product />} path="/product">
-          <Route element={<Product />} path=":product_id" />
-        </Route>
-        <Route element={<ProductFilter />} path="/filter" />
-        <Route element={<Brand />} path="/brand/:brandId" />
-        <Route element={<Login />} path="/login" />
+      <ModalProvider>
+        <Routes>
+          <Route element={<Home />} path="/" index />
+          <Route element={<Product />} path="/product">
+            <Route element={<Product />} path=":product_id" />
+          </Route>
+          <Route element={<ProductFilter />} path="/filter" />
+          <Route element={<Brand />} path="/brand/:brandId" />
+          <Route element={<Login />} path="/login" />
 
-        <Route path="/user">
-          <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
-          <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
-          <Route element={<UserLayout component={<Order />} />} path="orders" exact />
-          <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
-        </Route>
-      </Routes>
+          <Route path="/user">
+            <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
+            <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
+            <Route element={<UserLayout component={<Order />} />} path="orders" exact />
+            <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
+          </Route>
+          </Routes>
+      </ModalProvider>
 
       {/* <UserProvider>
         <CartProvider>
