@@ -1,7 +1,7 @@
-import React,{ useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getUser } from "../adapters/profile";
 import { AddAddress, AddAdvertisement } from "../components/Addresses/Add";
-import { Modal } from "../components/Modal";
+import { ModalContext } from "../context/ModalContext";
 import { UserContext } from "../context/UserContext";
 import { EditIcon, PlusIcon, TrashIcon } from "../icons";
 
@@ -9,14 +9,23 @@ export const Addresses = () => {
 
     const { user } = useContext(UserContext)
     const [addresses, setAddresses] = useState([]);
+    const [isRefreshed, setRefresh] = useState(false)
 
     useEffect(() => {
         getUser('', user.id, 'addresses')
             .then(response => setAddresses(response.data))
             .catch(error => console.log(error))
-    }, [])
+    }, [isRefreshed])
+
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
     const handleAddButtonClick = () => {
+        setModalData(
+            {
+                title: "Add new address",
+                body: <AddAddress refresh={() => { setRefresh(!isRefreshed); closeModal(); }} userId={user.id} />
+            });
+        openModal();
     }
 
     return (
@@ -58,26 +67,6 @@ export const Addresses = () => {
             <button type="button" className={"btn btn-primary d-flex align-items-center"} style={{ width: "auto" }} onClick={handleAddButtonClick}>
                 <PlusIcon style={{ width: "2rem" }} /> Add new address
             </button>
-
-            {/* <div class="collapse" id="add">
-                <div class="card card-body">
-                    Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
-                </div>
-            </div> */}
-
-
-            {/* <SweetAlert title="Here's a message!" onConfirm={this.onConfirm} onCancel={this.onCancel} /> */}
-            {/* <Modal
-                button={{
-                    icon: PlusIcon,
-                    value: "Add new address",
-
-                }}
-                modal={{
-                    title: "Add new Address",
-                    body: <AddAdvertisement />,
-                    size: ''
-                }} /> */}
         </>
     );
 }

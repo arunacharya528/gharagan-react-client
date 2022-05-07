@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { postAddress } from "../../adapters/profile";
 import { AdvertisementForm } from "./Form";
 
-export const AddAddress = () => {
+export const AddAddress = ({ refresh, userId }) => {
     const [addressLine1, setAddressLine1] = useState('');
     const [addressLine2, setAddressLine2] = useState('');
     const [city, setCity] = useState('');
@@ -10,7 +11,16 @@ export const AddAddress = () => {
 
     const handleSubmission = (e) => {
         e.preventDefault();
-
+        postAddress('', {
+            user_id: userId,
+            address_line1: addressLine1,
+            address_line2: addressLine2,
+            city: city,
+            telephone: telephone,
+            mobile: mobile
+        })
+            .then(response => refresh())
+            .catch(error => console.log(error))
     }
 
     return (<AdvertisementForm

@@ -29,6 +29,23 @@ export const updateUser = (bearerToken, userId, userData) => {
     return axios(config)
 }
 
+
+export const postAddress = (bearerToken, addressData) => {
+    let data = qs.stringify(addressData);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/userAddress`,
+        headers: {
+            'Authorization': `Bearer ${bearerToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}
+
 export const updateAddress = (bearerToken, addressId, addressData) => {
     let data = qs.stringify(addressData);
     let config = {
