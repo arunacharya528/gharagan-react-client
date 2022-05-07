@@ -25,6 +25,7 @@ import { Profile } from "./pages/Profile";
 import { Brand } from "./pages/Brand";
 import { UserProvider } from "./context/UserContext";
 import { CartProvider } from "./context/CartContext";
+import { Addresses } from "./pages/Addresses";
 
 function App() {
 
@@ -40,19 +41,26 @@ function App() {
         <Route element={<ProductFilter />} path="/filter" />
         <Route element={<Brand />} path="/brand/:brandId" />
         <Route element={<Login />} path="/login" />
+
+        <Route path="/user">
+          <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
+          <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
+          <Route element={<UserLayout component={<Order />} />} path="orders" exact />
+          <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
+        </Route>
       </Routes>
 
-      <UserProvider>
+      {/* <UserProvider>
         <CartProvider>
           <Routes>
             <Route path="/user">
               <Route element={<Profile />} path="profile" exact />
               <Route element={<Cart />} path="cart" exact />
-              <Route element={<Order />} path="order" exact />
+              <Route element={<Order />} path="orders" exact />
             </Route>
           </Routes>
         </CartProvider>
-      </UserProvider>
+      </UserProvider> */}
       {/* </ScrollToTop> */}
       <Social />
       <Footer />
