@@ -7,15 +7,21 @@ export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
 
-    const [session, setSession] = useState([]);
+    const [session, setSession] = useState(null);
 
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
+    const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
-        getUser('', user.id, 'session')
-            .then(response => setSession(response.data))
-            .catch(error => console.log(error))
-    }, [user])
+        if (user !== null) {
+            getUser('', user.id, 'session')
+                .then(response => setSession(response.data))
+                .catch(error => console.log(error))
+        }
 
-    return <CartContext.Provider value={{ session }}>{children}</CartContext.Provider>
+    }, [isRefreshed])
+    const updateSession = () => {
+        setRefresh(!isRefreshed)
+    }
+    return <CartContext.Provider value={{ session, updateSession }}>{children}</CartContext.Provider>
 }

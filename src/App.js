@@ -1,7 +1,7 @@
 // import './App.scss';
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.css";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./app.scss";
 import { CarouselView } from "./components/OwlCarousel";
 import { Banner } from "./components/Advertisement/Banner";
@@ -32,39 +32,30 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Nav />
-      {/* <ScrollToTop> */}
       <ModalProvider>
-        <Routes>
-          <Route element={<Home />} path="/" index />
-          <Route element={<Product />} path="/product">
-            <Route element={<Product />} path=":product_id" />
-          </Route>
-          <Route element={<ProductFilter />} path="/filter" />
-          <Route element={<Brand />} path="/brand/:brandId" />
-          <Route element={<Login />} path="/login" />
+        <UserProvider>
+          <CartProvider>
+            <Nav />
+            {/* <ScrollToTop> */}
+            <Routes>
+              <Route element={<Home />} path="/" index />
+              <Route element={<Product />} path="/product">
+                <Route element={<Product />} path=":product_id" />
+              </Route>
+              <Route element={<ProductFilter />} path="/filter" />
+              <Route element={<Brand />} path="/brand/:brandId" />
+              <Route element={<Login />} path="/login" />
 
-          <Route path="/user">
-            <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
-            <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
-            <Route element={<UserLayout component={<Order />} />} path="orders" exact />
-            <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
-          </Route>
-          </Routes>
+              <Route path="/user">
+                <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
+                <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
+                <Route element={<UserLayout component={<Order />} />} path="orders" exact />
+                <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
+              </Route>
+            </Routes>
+          </CartProvider>
+        </UserProvider>
       </ModalProvider>
-
-      {/* <UserProvider>
-        <CartProvider>
-          <Routes>
-            <Route path="/user">
-              <Route element={<Profile />} path="profile" exact />
-              <Route element={<Cart />} path="cart" exact />
-              <Route element={<Order />} path="orders" exact />
-            </Route>
-          </Routes>
-        </CartProvider>
-      </UserProvider> */}
-      {/* </ScrollToTop> */}
       <Social />
       <Footer />
     </BrowserRouter>

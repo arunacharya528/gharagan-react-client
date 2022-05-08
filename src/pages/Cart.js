@@ -38,11 +38,13 @@ export const Cart = () => {
             return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
         }
     }
+
+    console.log(session)
     return (
 
         <div>
             {
-                session ?
+                session !== null ?
 
                     <>
 

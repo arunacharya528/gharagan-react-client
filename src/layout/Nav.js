@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getCategories } from "../adapters/category";
 import { getProducts } from "../adapters/product";
 import { getShoppingSession } from "../adapters/shoppingSession";
 import { ProductThumbnail } from "../components/ProductThumbnail";
+import { CartContext } from "../context/CartContext";
+import { UserContext, UserProvider } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
+import { CartIcon, PersonIcon } from "../icons";
 import { AuthLink, AuthUser } from "../pages/Authenticate";
 
 
@@ -21,12 +24,17 @@ export const Nav = () => {
     const [mostViewedProductLink, setMostViewedProductLink] = useState('');
 
 
-    const [session, setSession] = useState(undefined);
+    // const [session, setSession] = useState(undefined);
     const navigate = useNavigate();
     const cookie = new Cookies()
     const [userData, setUserData] = useState(undefined);
 
     const [isCategoryShown, toggleCategory] = useState(false);
+
+    const { user, setUser } = useContext(UserContext);
+    const { session, updateSession } = useContext(CartContext);
+    // console.log(user.id);
+    // console.log(session.cart_items.length)
 
     useEffect(() => {
         getCategories()
@@ -38,22 +46,6 @@ export const Nav = () => {
             })
     }, [])
 
-    // useEffect(() => {
-    //     if (!userData) {
-    //         setUserData(cookie.get('userData'));
-    //     }
-    // })
-
-    // const [cartQuantity, setCartQuantity] = useState(undefined);
-
-    // useEffect(() => {
-    //     getShoppingSession(cookie.get('access_token'), cookie.get('session_id'))
-    //         .then(response => {
-    //             const cartSize = response.data.cart_items.length;
-    //             setCartQuantity(cartSize);
-    //         })
-    //         .catch(error => console.log(error))
-    // })
 
     const handleCategorySelection = (category) => {
         // extract ids of child categories in an array
@@ -76,8 +68,30 @@ export const Nav = () => {
         setMostViewedProductLink("/filter/?" + mostViewedLink);
         setSelectedCategory(category);
 
-        setTimeout()
     }
+
+    const handleLogin = () => {
+        setUser(
+            {
+                "id": 1,
+                "email": "eoconner@example.net",
+                "first_name": "Lyla",
+                "last_name": "Kassulke",
+                "contact": "737.557.3779",
+                "type": 2,
+                "created_at": "2022-05-04T09:13:12.000000Z",
+                "updated_at": "2022-05-04T09:13:12.000000Z"
+            }
+        )
+        updateSession();
+
+    }
+
+    const handleLogout = () => {
+        setUser(null)
+        updateSession();
+    }
+
 
     return (
         <div id="nav">
@@ -101,32 +115,35 @@ export const Nav = () => {
                             </div>
                         </div>
                         <div class="col-sm-3 d-flex justify-content-between">
-
                             {
-                                userData ?
+                                user !== null && session !== null ?
                                     <div className="">
-                                        <Link to={"/cart"} class="icon-btn">
-                                            <span id="badge"></span>
-                                            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+                                        <Link to={"/user/cart"} class="icon-btn">
+                                            <span id="badge">{session.cart_items.length}</span>
+                                            <CartIcon />
                                             <span id="label">Cart</span>
                                         </Link>
-
-                                        {
-                                            session ?
-                                                <div className="position-absolute card border-0 p-3 shadow" style={{ width: '400px', left: '-2rem' }}>
-                                                    <div className="d-flex justify-content-end">
-                                                        <button className="btn btn-close text-white" onClick={e =>
-                                                            setSession(undefined)
-                                                        }></button>
-                                                    </div>
-                                                </div>
-                                                : ''
-                                        }
 
                                     </div>
                                     : ''
                             }
-                            <AuthUser />
+
+                            <div class="profile d-flex align-items-center">
+                                <PersonIcon />
+                                <div>
+                                    <div class="user">{user ? user.first_name : 'user'}</div>
+                                    {user !== null ?
+                                        <Link to={'/user/profile'}>Profile</Link>
+                                        :
+                                        <Link to={'/login'}>Login</Link>}
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col">
+                            <div class="vstack gap-2 col-md-5 mx-auto">
+                                <button type="button" class="btn btn-outline-primary" onClick={handleLogin}>Login</button>
+                                <button type="button" class="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+                            </div>
                         </div>
                     </div>
                 </div>
