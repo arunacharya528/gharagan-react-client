@@ -16,17 +16,11 @@ export const ModalProvider = ({ children }) => {
     }
 
     return <ModalContext.Provider value={{ setModalData, openModal, closeModal }}>
-        <div class={"modal fade " + (isModalOpen ? "show" : '')} id="modal" tabIndex="-1" style={{ display: isModalOpen ? 'block' : 'none' }} aria-modal="true" role="dialog">
-            <div class={"modal-dialog modal-dialog-centered modal-dialog-scrollable " + modalData.size}>
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">{modalData.title}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={e=>closeModal()}></button>
-                    </div>
-                    <div class="modal-body">
-                        {modalData.body}
-                    </div>
-                </div>
+        <div class={"modal modal-bottom sm:modal-middle pointer-events-auto pb-2 " + (isModalOpen ? "visible opacity-100" : "invisible")}>
+            <div class={"modal-box relative" + modalData.size}>
+                <button class="btn btn-sm btn-circle absolute right-2 top-2" onClick={e => setIsModalOpen(false)}>✕</button>
+                <h3 class="font-bold text-lg">{modalData.title}</h3>
+                <div className="py-4">{modalData.body}</div>
             </div>
         </div>
         {children}
