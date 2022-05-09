@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { postAddress } from "../../adapters/profile";
-import { AdvertisementForm } from "./Form";
+import { AddressForm } from "./Form";
 
 export const AddAddress = ({ refresh, userId }) => {
     const [addressLine1, setAddressLine1] = useState('');
@@ -23,7 +23,7 @@ export const AddAddress = ({ refresh, userId }) => {
             .catch(error => console.log(error))
     }
 
-    return (<AdvertisementForm
+    return (<AddressForm
         address_line1={{ value: addressLine1, setValue: setAddressLine1 }}
         address_line2={{ value: addressLine2, setValue: setAddressLine2 }}
         city={{ value: city, setValue: setCity }}

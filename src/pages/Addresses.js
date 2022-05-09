@@ -49,7 +49,7 @@ export const Addresses = () => {
                 body: <>
                     <p>Are you sure you want to delete this address<br /><b>It would be permanently deleted from database</b></p>
 
-                    <button className="btn btn-danger" onClick={e => confirmDeletion()}>Confirm deletion</button>
+                    <button className="btn btn-error" onClick={e => confirmDeletion()}>Confirm deletion</button>
                 </>
             });
 
@@ -59,43 +59,48 @@ export const Addresses = () => {
 
     return (
         <>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Address 1</th>
-                        <th scope="col">Address 2</th>
-                        <th scope="col">City</th>
-                        <th scope="col">Telephone</th>
-                        <th scope="col">Mobile</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {addresses.map((address, index) =>
-                        <tr key={index}>
-                            <td>{address.address_line1}</td>
-                            <td>{address.address_line2}</td>
-                            <td>{address.city}</td>
-                            <td>{address.telephone}</td>
-                            <td>{address.mobile}</td>
-                            <td >
-                                <div className="d-flex flex-row flex-no-wrap">
-                                    <button className="btn btn-outline-primary btn-sm mx-2" onClick={e => handleEditButtonClick(address)}>
-                                        <EditIcon />
-                                    </button>
-                                    <button className="btn btn-outline-danger btn-sm" onClick={e => handleDeleteButtonClick(address)}>
-                                        <TrashIcon />
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            <div className="flex justify-between p-2">
+                <div className="text-3xl font-extrabold">Addresses</div>
+                <div className="tooltip tooltip-left" data-tip="Add new address">
+                    <button className="btn btn-square btn-outline" onClick={handleAddButtonClick}>
+                        <PlusIcon />
+                    </button>
+                </div>
 
-            <button type="button" className={"btn btn-primary d-flex align-items-center"} style={{ width: "auto" }} onClick={handleAddButtonClick}>
-                <PlusIcon style={{ width: "2rem" }} /> Add new address
-            </button>
+            </div>
+            <div className="grid md:grid-cols-4 gap-5">
+                {addresses.map((address, index) =>
+
+                    <div class="card bg-base-100 hover:shadow-xl border-2" key={index}>
+                        <div class="card-body flex flex-col">
+                            <h2 class="card-title">{address.city}</h2>
+                            <div className="flex flex-col grow">
+                                <span>{address.address_line1}</span>
+                                <span>{address.address_line2}</span>
+                                <span>{address.city}</span>
+                                <span>{address.telephone}</span>
+                                <span>{address.mobile}</span>
+                            </div>
+                            <div class="card-actions justify-end">
+                                <div className="flex flex-row">
+                                    <div className="tooltip" data-tip="Edit">
+                                        <button className="btn btn-sm mx-1 btn-secondary btn-square btn-outline" onClick={e => handleEditButtonClick(address)}>
+                                            <EditIcon />
+                                        </button>
+                                    </div>
+                                    <div className="tooltip" data-tip="Delete">
+                                        <button className="btn btn-sm mx-1 btn-error btn-square btn-outline" onClick={e => handleDeleteButtonClick(address)}>
+                                            <TrashIcon />
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+
         </>
     );
 }

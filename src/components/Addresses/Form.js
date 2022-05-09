@@ -1,4 +1,4 @@
-export const AdvertisementForm = (props = {
+export const AddressForm = (props = {
     address_line1: { value: String, setValue: Function },
     address_line2: { value: String, setValue: Function },
     city: { value: String, setValue: Function },
@@ -9,43 +9,38 @@ export const AdvertisementForm = (props = {
 
     return (
         <>
-            <div class="form-group mb-3">
-                <label className="fw-bold">Address Line 1</label>
-                <input type="text"
-                    class="form-control" placeholder="Enter address line 1"
-                    value={props.address_line1.value}
+            <div className="form-control">
+                <label className="label pb-0">Address line 1</label>
+                <input type="text" placeholder="Enter your address line 1" class="input input-bordered input-secondary w-full" value={props.address_line1.value}
                     onChange={e => props.address_line1.setValue(e.target.value)} />
             </div>
-            <div class="form-group mb-3">
-                <label className="fw-bold">Address Line 2</label>
-                <input type="text"
-                    class="form-control" placeholder="Enter address line 2"
-                    value={props.address_line2.value}
+
+            <div className="form-control">
+                <label className="label pb-0">Address line 2</label>
+                <input type="text" placeholder="Enter your address line 2" class="input input-bordered input-secondary  w-full" value={props.address_line2.value}
                     onChange={e => props.address_line2.setValue(e.target.value)} />
+
             </div>
-            <div class="form-group mb-3">
-                <label className="fw-bold">City</label>
-                <input type="text"
-                    class="form-control" placeholder="Enter city"
-                    value={props.city.value}
+
+            <div className="form-control">
+                <label className="label pb-0">City</label>
+                <input type="text" placeholder="Enter your city" class="input input-bordered input-secondary w-full" value={props.city.value}
                     onChange={e => props.city.setValue(e.target.value)} />
+
             </div>
-            <div class="form-group mb-3">
-                <label className="fw-bold">Telephone</label>
-                <input type="text"
-                    class="form-control" placeholder="Enter telephone"
-                    value={props.telephone.value}
+
+            <div className="form-control">
+                <label className="label pb-0">Telephone</label>
+                <input type="text" placeholder="Enter your telephone number" class="input input-bordered input-secondary w-full" value={props.telephone.value}
                     onChange={e => props.telephone.setValue(e.target.value)} />
             </div>
-            <div class="form-group mb-3">
-                <label className="fw-bold">Mobile</label>
-                <input type="text"
-                    class="form-control" placeholder="Enter mobile"
-                    value={props.mobile.value}
+            <div className="form-control">
+                <label className="label pb-0">Mobile</label>
+                <input type="text" placeholder="Enter your mobile number" class="input input-bordered input-secondary w-full" value={props.mobile.value}
                     onChange={e => props.mobile.setValue(e.target.value)} />
             </div>
 
-            <button class="btn btn-primary" onClick={props.submit.click}>{props.submit.value}</button>
+            <button class="btn btn-primary mt-4" onClick={props.submit.click}>{props.submit.value}</button>
         </>
     );
 }
