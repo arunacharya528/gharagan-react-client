@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CartProvider } from "../context/CartContext";
 import { UserContext, UserProvider } from "../context/UserContext";
-import { BagIcon, CartIcon, CreditCardIcon, MapPinIcon, PersonIcon } from "../icons";
+import { BagIcon, CartIcon, CreditCardIcon, ListIcon, MapPinIcon, PersonIcon } from "../icons";
 import bag from "../icons/bag.svg"
 import { Login } from "../pages/Authenticate";
 
@@ -14,13 +14,11 @@ export const UserLayout = ({ component }) => {
                 {
                     icon: <BagIcon />,
                     name: "Orders",
-                    value: '',
                     path: "orders"
                 },
                 {
                     icon: <CartIcon />,
                     name: "Cart",
-                    value: '',
                     path: "cart"
                 }
             ]
@@ -31,19 +29,16 @@ export const UserLayout = ({ component }) => {
                 {
                     icon: <PersonIcon />,
                     name: "Profile",
-                    value: '',
                     path: "profile"
                 },
                 {
                     icon: <MapPinIcon />,
                     name: "Addresses",
-                    value: '',
                     path: "addresses"
                 },
                 {
                     icon: <CreditCardIcon />,
                     name: "Payment Methods",
-                    value: '',
                     path: "payments"
                 }
 
@@ -63,53 +58,49 @@ export const UserLayout = ({ component }) => {
         <>
             {
                 user !== null ?
-                
-                    <div className="container my-4">
-                        <div className="row">
-                            <div className="col-lg-3">
-                                <div id="profile-card">
-
-                                    <div id="profile">
-                                        <div className="name">{user.first_name + " " + user.last_name}</div>
-                                        <div className="email">{user.email}</div>
-                                    </div>
-
-                                    {
-                                        routes.map((route, index) =>
-
-                                            <React.Fragment key={index}>
-                                                <div className="header">{route.title}</div>
-                                                <div className="grid">
-
-
-                                                    {
-                                                        route.items.map((item, index) =>
-                                                            <div className={"item " + getIfActive(item.path)} key={index}>
-                                                                <div className="detail">
-                                                                    <div className="icon">
-                                                                        {item.icon}
-                                                                    </div>
-                                                                    <Link to={"/user/" + item.path} >{item.name}</Link>
-                                                                </div>
-                                                                <div className="value">
-                                                                    {item.value}
-                                                                </div>
-                                                            </div>
-                                                        )
-                                                    }
-                                                </div>
-
-                                            </React.Fragment>
-                                        )
-                                    }
-                                </div>
+                    <div class="drawer drawer-mobile">
+                        <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+                        <div class="drawer-content">
+                            <div className="flex justify-between my-2">
+                                <label for="my-drawer" class="btn gap-2 btn-ghost drawer-button md:hidden">
+                                    <ListIcon className="h-6 w-6" />
+                                    Menu
+                                </label>
                             </div>
-                            <div className="col-lg-9">
-                                {component}
-                            </div>
+
+                            {component}
+                        </div>
+                        <div class="drawer-side">
+                            <label for="my-drawer" class="drawer-overlay"></label>
+                            <ul class="menu  w-64 bg-base-100 p-2 " >
+
+                                {
+                                    routes.map((route, index) =>
+
+                                        <React.Fragment key={index}>
+                                            <li class="menu-title">
+                                                <span>{route.title}</span>
+                                            </li>
+                                            {
+                                                route.items.map((item, index) =>
+                                                    <li key={index}>
+
+                                                        <Link to={"/user/" + item.path} className={getIfActive(item.path) + " relative"}>
+                                                            {item.icon}
+                                                            {item.name}
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            }
+
+                                        </React.Fragment>
+                                    )
+                                }
+
+                            </ul>
                         </div>
                     </div>
-                    :<Login/>
+                    : <Login />
             }
         </>
     );

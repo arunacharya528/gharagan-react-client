@@ -12,6 +12,7 @@ import moment from 'moment'
 import { getUser } from "../adapters/profile";
 import { UserContext } from "../context/UserContext";
 import { CloseIcon } from "../icons";
+import { OrderView } from "../components/Order/OrderView";
 
 export const Order = () => {
 
@@ -29,41 +30,8 @@ export const Order = () => {
         getUser('', user.id, 'orders')
             .then(response => setOrders(response.data))
             .catch(error => console.log(error))
-        // getOrderDetailByUser(cookie.get('access_token'), cookie.get('userData').id)
-        //     .then(response => {
-        //         setOrderDetails(response.data.order_details);
-        //     })
-        //     .catch(error => console.log(error))
     }, []);
 
-    console.log(orders)
-    // const getDiscountedPrice = (price, discountP) => {
-    //     return price - Math.ceil(0.01 * discountP * price);
-    // }
-
-    // const getTotalPrice = (price, quantity) => {
-    //     return price * quantity
-    // }
-
-    // const getCurrentTotal = (order) => {
-    //     var total = 0;
-
-    //     order.order_items.map((item) => {
-    //         total += getTotalPrice(getDiscountedPrice(item.product.price, item.product.discount.discount_percent), item.quantity)
-    //     })
-    //     return total;
-    // }
-
-    // const handleOrderCancellation = (orderId) => {
-    //     cancelOrder(cookie.get('access_token'), orderId)
-    //         .then((response) => {
-    //             setMessage({ message: <> <strong>Success!!</strong> Successfully cancelled Order</>, type: 'success' })
-    //             setRefresh(!refresh);
-    //         })
-    //         .catch((error) => {
-    //             setMessage({ message: <> <strong>Error!!</strong> There was an error deleting your order please try again.</>, type: 'danger' })
-    //         });
-    // }
 
     const getImageURl = (productImage) => {
         return productImage.file ? process.env.REACT_APP_FILE_PATH + productImage.file.path : productImage.image_url;
@@ -87,20 +55,21 @@ export const Order = () => {
         return Math.round(((quantity * getCalculatedPrice(inventory)) + Number.EPSILON) * 100) / 100;
     }
 
-    const getProgressBar = (status) => {
+    const getSteps = (status) => {
 
-        const getResponse = () => {
-            switch (status) {
-                case 1: return 'Order Placed';
-                case 2: return 'Product collected for delivery';
-                case 3: return 'Product being Shipped';
-                case 4: return 'Product Received';
+        const getResponse = (place) => {
+            if (place <= status) {
+                return 'step-primary';
             }
         }
-
-        return (<div class="progress" style={{ height: 1.5 + "rem" }}>
-            <div class="progress-bar" role="progressbar" style={{ width: (status * 25) + "%" }} aria-valuenow={status * 25} aria-valuemin="0" aria-valuemax="100">{getResponse()}</div>
-        </div>);
+        return (
+            <ul class="steps steps-vertical lg:steps-horizontal lg:w-full my-5">
+                <li class={"step " + getResponse(1)}>Order placed</li>
+                <li class={"step " + getResponse(2)}>Product Collected for delivery</li>
+                <li class={"step " + getResponse(3)}>Product being shipped</li>
+                <li class={"step " + getResponse(4)}>Product received</li>
+            </ul>
+        );
     }
 
     return (
@@ -108,68 +77,57 @@ export const Order = () => {
         <>
             {orders ?
                 orders.map((order, index) =>
+                    <div className="p-2 mb-8">
+                        <div className="block text-2xl font-extrabold">Order Detail</div>
+                        <div className="flex justify-between">
+                            <div className="flex w-full">
+                                <span className="text-gray-400">Order number</span>
+                                <div className="font-bold ml-1">{order.id}</div>
+                                &bull;
+                                <div className="font-semibold ml-1">{moment(order.created_at).format("MMM D YYYY")}</div>
+                            </div>
 
-                    <div key={index} className="mb-5">
-                        <div class="" type="button" data-bs-toggle="collapse" data-bs-target={"#collapse" + index} >
-                            <div className="summary-grid " style={{ gridTemplateColumns: 'repeat(3,1fr)' }}>
-                                <div className="item d-flex flex-column">
-                                    <span className="d-flex"><b>Order placed:{' '}</b>{moment(order.created_at).calendar()}</span>
-                                    <span className="d-flex"><b>Last action took in :{' '}</b>{moment(order.updated_at).calendar()}</span>
-                                </div>
-                                <div className="item price">
-                                    <span className="d-flex"><b>Total: </b>Rs. { order.total}</span>
-                                </div>
-                                <div className="item">
-                                    <div className="btn btn-outline-danger">Cancel order</div>
+                            <a className="whitespace-nowrap text-primary font-semibold">View invoice</a>
+                        </div>
+                        <div className="divider"></div>
+                        <OrderView order={order} />
+                        <div className="divider" />
+                        <div className="font-semibold">Latest action took place in {moment(order.updated_at).format("MMMM D YYYY")}</div>
+                        {getSteps(order.status)}
+                        <div className="grid md:grid-cols-3 p-5 m-1 rounded-lg bg-slate-400/10">
+                            <div className="flex flex-col">
+                                <span className="font-semibold my-5">Billing/Shipping Address</span>
+                                <div className="text-sm flex flex-col">
+                                    <span>{order.address.address_line1}</span>
+                                    <span>{order.address.address_line2}</span>
+                                    <span>{order.address.city}</span>
+                                    <span>{order.address.telephone}</span>
+                                    <span>{order.address.mobile}</span>
                                 </div>
                             </div>
-                            {getProgressBar(order.status)}
-                        </div>
-                        <div class="collapse border rounded mt-2 p-2" id={"collapse" + index}>
-                            <div className="summary-grid" style={{ gridTemplateColumns: 'repeat(6,1fr)' }}>
+                            <div className="flex flex-col">
+                                <span className="font-semibold my-5">Payment Information</span>
 
-                                <>
-                                    <div className="item header">Image</div>
-                                    <div className="item header">Quantity</div>
-                                    <div className="item header">Price</div>
-                                    <div className="item header">Discount</div>
-                                    <div className="item header">Buying Price</div>
-                                    <div className="item header">Total Price</div>
-                                </>
-                                {
-                                    order.order_items.map((item, index) =>
-                                        <React.Fragment key={index}>
-                                            <div className="item">
-                                                <img src={getImageURl(item.product.images[0])} alt={"Image of " + item.product.name} />
-                                            </div>
+                            </div>
 
-                                            <div className="item">
-                                                {item.quantity}
-                                            </div>
+                            <div className="flex flex-col divide-y-2">
+                                <div className="flex justify-between px-2 py-5">
+                                    <span>Subtotal</span>
+                                    <span className="font-semibold">Rs.1000</span>
+                                </div>
+                                <div className="flex justify-between px-2 py-5">
+                                    <span>Shipping</span>
+                                    <span className="font-semibold">Rs.1000</span>
+                                </div>
+                                <div className="flex justify-between px-2 py-5">
+                                    <span className="font-semibold">Order Total</span>
+                                    <span className="text-accent font-bold">Rs.1000</span>
+                                </div>
 
-                                            <div className="item price">
-                                                Rs. {item.inventory.price}
-                                            </div>
 
-                                            <div className="item">
-                                                {item.inventory.discount ? item.inventory.discount.discount_percent + "%" : '-'}
-                                            </div>
-
-                                            <div className="item price">
-                                                Rs. {getCalculatedPrice(item.inventory)}
-                                            </div>
-                                            <div className="item price">
-                                                Rs. {getTotalPrice(item.quantity, item.inventory)}
-                                            </div>
-                                        </React.Fragment>
-                                    )
-                                }
                             </div>
                         </div>
                     </div>
-
-
-
                 )
 
                 : <Loading />

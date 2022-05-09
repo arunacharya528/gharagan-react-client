@@ -4,6 +4,7 @@ import Cookies from "universal-cookie";
 import { removeCartItem } from "../adapters/cartItems";
 
 import { createOrder, getShoppingSession } from "../adapters/shoppingSession";
+import { CartItem } from "../components/Cart/CartItem";
 import { ProductImage } from "../components/ProductImage";
 import { CartContext } from "../context/CartContext";
 import { UserContext } from "../context/UserContext";
@@ -21,11 +22,6 @@ export const Cart = () => {
 
     const { session } = useContext(CartContext);
 
-
-    const getImageURl = (productImage) => {
-        return productImage.file ? process.env.REACT_APP_FILE_PATH + productImage.file.path : productImage.image_url;
-    }
-
     const getTotalPrice = (inventory) => {
         if (!inventory.discount) {
             return inventory.price;
@@ -39,59 +35,58 @@ export const Cart = () => {
         }
     }
 
-    console.log(session)
+    const getSumTotal = (price, quantity) => {
+        const total = price * quantity;
+        return Math.round((total + Number.EPSILON) * 100) / 100
+
+    }
+
+    const getSubTotal = (items) => {
+        var sum = 0;
+        items.map((item) => {
+            sum += getSumTotal(getTotalPrice(item.inventory), item.quantity)
+        })
+        return sum;
+    }
     return (
+        <>
 
-        <div>
-            {
-                session !== null ?
+            <div className="flex flex-col justify-center items-center p-2">
+                <div className="text-2xl font-extrabold text-left w-full md:w-1/2 mb-4">Cart</div>
 
-                    <>
+                {
+                    session !== null ?
 
-                        <div className="summary-grid" style={{ gridTemplateColumns: 'repeat(6,1fr) !important' }}>
-
-                            <>
-                                <div className="item header">Image</div>
-                                <div className="item header">Quantity</div>
-                                <div className="item header">Price</div>
-                                <div className="item header">Discount</div>
-                                <div className="item header">Calculated Price</div>
-                                <div className="item header">Action</div>
-                            </>
+                        <div className="w-full md:w-1/2">
                             {
                                 session.cart_items.map((item, index) =>
-                                    <React.Fragment key={index}>
-                                        <div className="item">
-                                            <img src={getImageURl(item.product.images[0])} alt={"Image of " + item.product.name} />
-                                        </div>
-
-                                        <div className="item">
-                                            {item.quantity}
-                                        </div>
-
-                                        <div className="item price">
-                                            Rs. {item.inventory.price}
-                                        </div>
-
-                                        <div className="item">
-                                            {item.inventory.discount ? item.inventory.discount.discount_percent + "%" : '-'}
-                                        </div>
-
-                                        <div className="item price">
-                                            Rs. {getTotalPrice(item.inventory)}
-                                        </div>
-                                        <div className="item">
-                                            <button>
-                                                <CloseIcon />
-                                            </button>
-                                        </div>
-                                    </React.Fragment>
+                                    <CartItem item={item} key={index} />
                                 )
                             }
                         </div>
-                    </>
-                    : ''
-            }
-        </div>
+                        : ''
+                }
+
+
+                <div className="w-full md:w-1/2 mt-8">
+                    <div className="flex justify-between">
+                        <span className="font-semibold">Subtotal</span>
+                        <span className="font-bold">{
+                            session !== null ?
+                                "Rs. " + getSubTotal(session.cart_items)
+                                : ''
+                        }</span>
+                    </div>
+                    <div className="font-light">
+                        Shipping charges and promo discount would be calculated at checkout
+                    </div>
+
+                    <button className="btn btn-block btn-accent mt-4">
+                        Checkout
+                    </button>
+                </div>
+            </div>
+
+        </>
     );
 }

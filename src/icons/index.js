@@ -7,6 +7,7 @@ import { ReactComponent as CloseIcon } from './close.svg';
 import { ReactComponent as EditIcon } from './pen.svg';
 import { ReactComponent as TrashIcon } from './trash.svg';
 import { ReactComponent as PlusIcon } from './plus.svg';
+import { ReactComponent as ListIcon } from './list.svg';
 
 export {
     BagIcon,
@@ -17,5 +18,6 @@ export {
     CloseIcon,
     EditIcon,
     TrashIcon,
-    PlusIcon
+    PlusIcon,
+    ListIcon
 }

@@ -94,140 +94,178 @@ export const Nav = () => {
 
 
     return (
-        <div id="nav">
-            <div id="nav-search">
-                <div class="container">
-                    <div class="row d-flex align-items-center">
-                        <div class="col-sm-2">
-                            <img src="https://via.placeholder.com/150x70" alt="gharagan logo" />
-                        </div>
-                        <div class="col">
-                            <div id="search" class="d-flex align-items-center justify-content-center">
-                                <div class="d-flex" id="container">
-                                    <div id="search-icon">
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="search-input">
-                                        <input type="text" placeholder="Search for Products" />
-                                    </div>
-                                </div>
 
-                            </div>
-                        </div>
-                        <div class="col-sm-3 d-flex justify-content-between">
-                            {
-                                user !== null && session !== null ?
-                                    <div className="">
-                                        <Link to={"/user/cart"} class="icon-btn">
-                                            <span id="badge">{session.cart_items.length}</span>
-                                            <CartIcon />
-                                            <span id="label">Cart</span>
-                                        </Link>
-
-                                    </div>
-                                    : ''
-                            }
-
-                            <div class="profile d-flex align-items-center">
-                                <PersonIcon />
-                                <div>
-                                    <div class="user">{user ? user.first_name : 'user'}</div>
-                                    {user !== null ?
-                                        <Link to={'/user/profile'}>Profile</Link>
-                                        :
-                                        <Link to={'/login'}>Login</Link>}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col">
-                            <div class="vstack gap-2 col-md-5 mx-auto">
-                                <button type="button" class="btn btn-outline-primary" onClick={handleLogin}>Login</button>
-                                <button type="button" class="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="navbar bg-base-100">
+            <div class="navbar-start">
+                <div class="dropdown">
+                    <label tabindex="0" class="btn btn-ghost btn-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+                    </label>
+                    <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                        <li><a onClick={handleLogin}>Login</a></li>
+                        <li><a onClick={handleLogout}>Logout</a></li>
+                        <li><a>About</a></li>
+                    </ul>
                 </div>
-
             </div>
-            <nav id="nav-bar">
-                <div class="">
-                    <div class="d-flex flex-wrap flex-row align-items-start">
-                        <a href="#" onClick={e => toggleCategory(!isCategoryShown)}>Categories</a>
-                        <Link to="/">Home</Link>
-                        <Link to="/filter/">Filter</Link>
-                    </div>
+            <div class="navbar-center">
+                <Link to="/" class="btn btn-ghost text-xl uppercase font-bold">
+                    gaharagan
+                </Link>
+            </div>
+            <div class="navbar-end">
+                <button class="btn btn-ghost btn-circle">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </button>
 
-                    {
-                        isCategoryShown ?
-                            <div className="dropdown row">
-                                <div className="col-sm-2 d-flex flex-column">
-                                    {categories.map((category, index) =>
-                                        <a onClick={e => handleCategorySelection(category)} key={index} className={"dropdown-parent " + (selectedCategory.id === category.id ? 'active' : '')}>{category.name}</a>
-                                    )}
-                                </div>
-                                <div className="col">
-                                    <div className="col-sm-12 d-flex justify-content-end">
-                                        <button className="btn btn-close text-white" onClick={e => { setSelectedCategory([]); toggleCategory(!isCategoryShown) }
-                                        }></button>
-                                    </div>
-                                    {selectedCategory.length !== 0 ?
-
-
-                                        <div className="selectedCategory">
-                                            <div className="row">
-                                                <div className="col-sm-2 col-lg-3 d-flex flex-column">
-                                                    {
-                                                        selectedCategory.child_categories.map((category, index) =>
-                                                            <div className="dropdown-child" key={index} onClick={e => {
-                                                                navigate(`/filter/?categories=${category.id}`)
-                                                                setSelectedCategory([]);
-                                                            }}>{category.name}</div>
-                                                        )
-                                                    }
-                                                </div>
-                                                <div className="col p-3">
-                                                    <div className="d-flex justify-content-between align-items-start mb-5">
-                                                        <p>
-                                                            {selectedCategory.description}
-                                                        </p>
-                                                    </div>
-                                                    <section className="mb-4">
-                                                        <div className="d-flex justify-content-between">
-                                                            <h5>Latest Products</h5>
-                                                            <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
-                                                        </div>
-                                                        <div id="catalog-container" className="row">
-                                                            {latestProducts.length === 0 ?
-                                                                <Loading />
-                                                                : latestProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
-                                                            }
-                                                        </div>
-                                                    </section>
-                                                    <section className="mb-4">
-                                                        <div className="d-flex justify-content-between">
-                                                            <h5>Most Viewed Products</h5>
-                                                            <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
-                                                        </div>
-                                                        <div id="catalog-container" className="row">
-                                                            {mostViewedProducts.length === 0 ?
-                                                                <Loading />
-                                                                : mostViewedProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
-                                                            }
-                                                        </div>
-                                                    </section>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        : ''}
-                                </div>
+                {
+                    user !== null && session !== null ?
+                        <Link to={"/user/cart"} class="btn btn-ghost btn-circle">
+                            <div class="indicator">
+                                <CartIcon />
+                                <span class="badge badge-xs badge-primary indicator-item">
+                                    {session.cart_items.length}
+                                </span>
                             </div>
-                            : ''
-                    }
-
-                </div>
-            </nav>
+                        </Link>
+                        : ''
+                }
+            </div>
         </div>
+        // <div id="nav">
+        //     <div id="nav-search">
+        //         <div class="container">
+        //             <div class="row d-flex align-items-center">
+        //                 <div class="col-sm-2">
+        //                     <img src="https://via.placeholder.com/150x70" alt="gharagan logo" />
+        //                 </div>
+        //                 <div class="col">
+        //                     <div id="search" class="d-flex align-items-center justify-content-center">
+        //                         <div class="d-flex" id="container">
+        //                             <div id="search-icon">
+        //                                 <i class="fa fa-search" aria-hidden="true"></i>
+        //                             </div>
+        //                             <div id="search-input">
+        //                                 <input type="text" placeholder="Search for Products" />
+        //                             </div>
+        //                         </div>
+
+        //                     </div>
+        //                 </div>
+        //                 <div class="col-sm-3 d-flex justify-content-between">
+        //                     {
+        //                         user !== null && session !== null ?
+        //                             <div className="">
+        //                                 <Link to={"/user/cart"} class="icon-btn">
+        //                                     <span id="badge">{session.cart_items.length}</span>
+        //                                     <CartIcon />
+        //                                     <span id="label">Cart</span>
+        //                                 </Link>
+
+        //                             </div>
+        //                             : ''
+        //                     }
+
+        //                     <div class="profile d-flex align-items-center">
+        //                         <PersonIcon />
+        //                         <div>
+        //                             <div class="user">{user ? user.first_name : 'user'}</div>
+        //                             {user !== null ?
+        //                                 <Link to={'/user/profile'}>Profile</Link>
+        //                                 :
+        //                                 <Link to={'/login'}>Login</Link>}
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //                 <div className="col">
+        //                     <div class="vstack gap-2 col-md-5 mx-auto">
+        //                         <button type="button" class="btn btn-outline-primary" onClick={handleLogin}>Login</button>
+        //                         <button type="button" class="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>
+
+        //     </div>
+        //     <nav id="nav-bar">
+        //         <div class="">
+        //             <div class="d-flex flex-wrap flex-row align-items-start">
+        //                 <a href="#" onClick={e => toggleCategory(!isCategoryShown)}>Categories</a>
+        //                 <Link to="/">Home</Link>
+        //                 <Link to="/filter/">Filter</Link>
+        //             </div>
+
+        //             {
+        //                 isCategoryShown ?
+        //                     <div className="dropdown row">
+        //                         <div className="col-sm-2 d-flex flex-column">
+        //                             {categories.map((category, index) =>
+        //                                 <a onClick={e => handleCategorySelection(category)} key={index} className={"dropdown-parent " + (selectedCategory.id === category.id ? 'active' : '')}>{category.name}</a>
+        //                             )}
+        //                         </div>
+        //                         <div className="col">
+        //                             <div className="col-sm-12 d-flex justify-content-end">
+        //                                 <button className="btn btn-close text-white" onClick={e => { setSelectedCategory([]); toggleCategory(!isCategoryShown) }
+        //                                 }></button>
+        //                             </div>
+        //                             {selectedCategory.length !== 0 ?
+
+
+        //                                 <div className="selectedCategory">
+        //                                     <div className="row">
+        //                                         <div className="col-sm-2 col-lg-3 d-flex flex-column">
+        //                                             {
+        //                                                 selectedCategory.child_categories.map((category, index) =>
+        //                                                     <div className="dropdown-child" key={index} onClick={e => {
+        //                                                         navigate(`/filter/?categories=${category.id}`)
+        //                                                         setSelectedCategory([]);
+        //                                                     }}>{category.name}</div>
+        //                                                 )
+        //                                             }
+        //                                         </div>
+        //                                         <div className="col p-3">
+        //                                             <div className="d-flex justify-content-between align-items-start mb-5">
+        //                                                 <p>
+        //                                                     {selectedCategory.description}
+        //                                                 </p>
+        //                                             </div>
+        //                                             <section className="mb-4">
+        //                                                 <div className="d-flex justify-content-between">
+        //                                                     <h5>Latest Products</h5>
+        //                                                     <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+        //                                                 </div>
+        //                                                 <div id="catalog-container" className="row">
+        //                                                     {latestProducts.length === 0 ?
+        //                                                         <Loading />
+        //                                                         : latestProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
+        //                                                     }
+        //                                                 </div>
+        //                                             </section>
+        //                                             <section className="mb-4">
+        //                                                 <div className="d-flex justify-content-between">
+        //                                                     <h5>Most Viewed Products</h5>
+        //                                                     <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+        //                                                 </div>
+        //                                                 <div id="catalog-container" className="row">
+        //                                                     {mostViewedProducts.length === 0 ?
+        //                                                         <Loading />
+        //                                                         : mostViewedProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
+        //                                                     }
+        //                                                 </div>
+        //                                             </section>
+
+        //                                         </div>
+        //                                     </div>
+        //                                 </div>
+
+        //                                 : ''}
+        //                         </div>
+        //                     </div>
+        //                     : ''
+        //             }
+
+        //         </div>
+        //     </nav>
+        // </div>
     );
 }
