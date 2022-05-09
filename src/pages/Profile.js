@@ -15,73 +15,69 @@ export const Profile = () => {
         setEmail(user.email);
         setFirstName(user.first_name)
         setLastName(user.last_name)
-        setContact(user.conatact)
+        setContact(user.contact)
     }, []);
 
 
 
 
     return (
-        <> {
-            user ?
-                <>
-                    <div className="row mt-5">
-                        <div className="col-sm-6">
-                            <div class="form-group">
-                                <label className="fw-bold">First Name</label>
-                                <input type="text"
-                                    class="form-control" value={firstName} onChange={e => setFirstName(e.target.value)} />
-                                    
-                            </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div class="form-group">
-                                <label className="fw-bold">Last Name</label>
-                                <input type="text"
-                                    class="form-control" value={lastName} onChange={e => setLastName(e.target.value)} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row mt-5">
-                        <div className="col-sm-6">
-                            <div class="form-group">
-                                <label className="fw-bold">Email</label>
-                                <input type="text"
-                                    class="form-control" value={email} onChange={e => setEmail(e.target.value)} />
-                            </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div class="form-group">
-                                <label className="fw-bold">Contact</label>
-                                <input type="text"
-                                    class="form-control" value={contact} onChange={e => setContact(e.target.value)} />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row mt-5">
-                        <div className="col-sm-6">
-                            <div class="form-group">
-                                <label className="fw-bold">Password</label>
-                                <input type="text"
-                                    class="form-control" />
-                            </div>
-                        </div>
-                        <div className="col-sm-6">
-                            <div class="form-group">
-                                <label className="fw-bold">Confirm Password</label>
-                                <input type="text"
-                                    class="form-control" />
-                            </div>
-                        </div>
-                    </div>
+        <div className="p-2">
+            <div className="font-extrabold text-2xl">Profile</div>
 
-                    <div className="d-flex justify-content-end mt-3">
-                        <button className="brand-btn px-3 py-2 rounded">Update Profile</button>
-                    </div>
-                </>
-                : <Loading />
-        }
-        </>
+            {
+                user ?
+                    <>
+                        <div className="grid md:grid-cols-2 gap-5">
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-bold">First Name</span>
+                                </label>
+                                <input type="text" placeholder="Enter your first name" class="input input-bordered input-secondary w-full" value={firstName} onChange={e => setFirstName(e.target.value)} />
+                            </div>
+
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-bold">Last Name</span>
+                                </label>
+                                <input type="text" placeholder="Enter your last name" class="input input-bordered input-secondary w-full" value={lastName} onChange={e => setLastName(e.target.value)} />
+                            </div>
+
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-bold">Email</span>
+                                </label>
+                                <input type="text" placeholder="Enter your email" class="input input-bordered input-secondary w-full" value={email} onChange={e => setEmail(e.target.value)} />
+                            </div>
+
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-bold">Contact</span>
+                                </label>
+                                <input type="text" placeholder="Enter your contact" class="input input-bordered input-secondary w-full" value={contact} onChange={e => setContact(e.target.value)} />
+                            </div>
+
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-bold">Password</span>
+                                </label>
+                                <input type="text" placeholder="Enter new password" class="input input-bordered input-secondary w-full" />
+                            </div>
+
+                            <div class="form-control w-full">
+                                <label class="label">
+                                    <span class="label-text font-bold">Confirm password</span>
+                                </label>
+                                <input type="text" placeholder="Confirm new password" class="input input-bordered input-secondary w-full" />
+                            </div>
+
+
+                        </div>
+                        <button className="btn btn-primary mt-4">Save</button>
+                    </>
+                    : <Loading />
+            }
+        </div>
 
     );
 }
