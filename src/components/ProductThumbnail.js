@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { RateDisplay, RateDisplayByNumber } from "./Rating";
+import { RateDisplay, RateDisplayByArray, RateDisplayByNumber } from "./Rating";
 
 export const ProductThumbnail = (props) => {
 
@@ -34,7 +34,7 @@ export const ProductThumbnail = (props) => {
 
     return (
 
-        <div class="card bg-base-100 shadow-xl">
+        <div class="card bg-base-100 border-2 hover:shadow-xl ease-in-out duration-300">
             <figure>
 
 
@@ -45,11 +45,13 @@ export const ProductThumbnail = (props) => {
                 }
 
             </figure>
-            <div class="card-body">
+            <div class="card-body flex flex-col">
                 <h2 class="card-title">
                     {props.product.name}
                 </h2>
-                <div className="truncate">{props.product.summary}</div>
+
+                <RateDisplayByNumber rating={props.product.averageRating} />
+                <div className="truncate grow">{props.product.summary}</div>
 
                 <div>
                     {
