@@ -31,30 +31,33 @@ export const RatingSummary = ({ ratings }) => {
     }
 
     return (
-        <div class="rating-detail d-flex flex-column">
-            <div class="my-2 h5 d-flex flex-row">
-                <RateDisplayByArray ratings={ratings} />
+        <div class="grid md:grid-cols-2 gap-5">
+            <div class="my-2 flex flex-col justify-center items-center">
+                <div className="text-5xl">
+                    <RateDisplayByArray ratings={ratings} />
+
+                </div>
+                <div className="h6">{count} ratings</div>
+
             </div>
-            <div className="h6">{count} ratings</div>
-            <RateProgressBar percent={percent5} star={5} />
-            <RateProgressBar percent={percent4} star={4} />
-            <RateProgressBar percent={percent3} star={3} />
-            <RateProgressBar percent={percent2} star={2} />
-            <RateProgressBar percent={percent1} star={1} />
+            <div>
+                <RateProgressBar percent={percent5} star={5} />
+                <RateProgressBar percent={percent4} star={4} />
+                <RateProgressBar percent={percent3} star={3} />
+                <RateProgressBar percent={percent2} star={2} />
+                <RateProgressBar percent={percent1} star={1} />
+            </div>
+
         </div>
     );
 }
 
 export const RateProgressBar = ({ star, percent }) => {
     return (
-        <div class="row my-2">
-            <div class="col-12 col-sm-12 col-md-2 text-nowrap h6">{star} star</div>
-            <div class="col">
-                <div class="progress" style={{ height: '1.5rem' }}>
-                    <div class="progress-bar" role="progressbar" style={{ width: `${percent}%` }} aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-            </div>
-            <div class="col-12 col-sm-12 col-md-2 text-nowrap">{percent}%</div>
+        <div className="flex mb-4 items-center">
+            <span className="px-2">{star}</span>
+            <progress class="progress progress-primary " value={percent} max="100"></progress>
+            <span className="w-10 text-center">{percent}%</span>
         </div>
     );
 }
@@ -83,22 +86,21 @@ export const RateDisplayByNumber = ({ rating }) => {
 
     return (
         <div className="d-flex flex-row items-center">
-
-            <div class="rating rating-sm rating-half">
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(0, 0.5)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(0.5, 1)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(1, 1.5)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(1.5, 2)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(2, 2.5)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(2.5, 3)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(3, 3.5)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(3.5, 4)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(4, 4.5)} disabled/>
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(4.5, 5)} disabled/>
-            </div>
-            <span>
-                ({getRoundedValue(rating)})
+            <span className="font-semibold">
+                {getRoundedValue(rating)}{' '}
             </span>
+            <div class="rating rating-sm rating-half">
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(0, 0.5)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(0.5, 1)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(1, 1.5)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(1.5, 2)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(2, 2.5)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(2.5, 3)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(3, 3.5)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(3.5, 4)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(4, 4.5)} disabled />
+                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(4.5, 5)} disabled />
+            </div>
         </div>
 
     )
