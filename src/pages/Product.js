@@ -1,5 +1,6 @@
 import moment from "moment";
 import { useEffect, useState } from "react";
+import ImageGallery from "react-image-gallery";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getByProductAndSession, postToCart } from "../adapters/cartItems";
@@ -22,7 +23,7 @@ export const Product = () => {
     // const [refresh]
     const [refresh, setRefresh] = useState(false);
 
-    const [selectedTab, setSelectedTab] = useState(4);
+    const [selectedTab, setSelectedTab] = useState(1);
 
     const cookie = new Cookies()
 
@@ -91,12 +92,20 @@ export const Product = () => {
     const GeneralInfo = () => {
         return (
             <div className="grid md:grid-cols-2 gap-5">
-                <div className="grid grid-cols-3 gap-5">
-                    {
+                <div className="overflow-hidden">
+                    {/* {
                         product.images.map((image, index) =>
                             <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} alt={"Image " + (index + 1) + " of " + product.name} key={index} className="w-64 rounded-lg" />
                         )
-                    }
+                    } */}
+
+                    <ImageGallery thumbnailPosition="left" items={product.images.map((image) => {
+                        const imageURL = image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url;
+                        return {
+                            original: imageURL,
+                            thumbnail: imageURL
+                        }
+                    })} />
                 </div>
                 <div className="flex flex-col space-y-5">
                     <div className="text-3xl font-bold">{product.name}
@@ -204,7 +213,7 @@ export const Product = () => {
                         </div>
                         <div className="">{question.query}</div>
                         <div className="col">
-                            
+
 
                             {question.answers.map((answer, index) =>
                                 <div className="mx-4 py-3" key={index}>
