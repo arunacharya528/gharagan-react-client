@@ -52,12 +52,12 @@ export const Cart = () => {
         <>
 
             <div className="flex flex-col justify-center items-center p-2">
-                <div className="text-2xl font-extrabold text-left w-full md:w-1/2 mb-4">Cart</div>
+                <div className="text-2xl font-extrabold text-left w-full mb-4">Cart</div>
 
                 {
                     session !== null ?
 
-                        <div className="w-full md:w-1/2">
+                        <div className="w-full ">
                             {
                                 session.cart_items.map((item, index) =>
                                     <CartItem item={item} key={index} />
@@ -68,7 +68,7 @@ export const Cart = () => {
                 }
 
 
-                <div className="w-full md:w-1/2 mt-8">
+                <div className="w-full mt-8">
                     <div className="flex justify-between">
                         <span className="font-semibold">Subtotal</span>
                         <span className="font-bold">{

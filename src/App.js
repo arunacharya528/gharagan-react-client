@@ -34,29 +34,57 @@ function App() {
       <ModalProvider>
         <UserProvider>
           <CartProvider>
-            <Nav />
-            {/* <ScrollToTop> */}
-            <Routes>
-              <Route element={<Home />} path="/" index />
-              <Route element={<Product />} path="/product">
-                <Route element={<Product />} path=":product_id" />
-              </Route>
-              <Route element={<ProductFilter />} path="/filter" />
-              <Route element={<Brand />} path="/brand/:brandId" />
-              <Route element={<Login />} path="/login" />
+            <div class="drawer drawer-end">
+              <input id="rightDrawer" type="checkbox" class="drawer-toggle" />
+              <div class="drawer-content">
 
-              <Route path="/user">
-                <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
-                <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
-                <Route element={<UserLayout component={<Order />} />} path="orders" exact />
-                <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
-              </Route>
-            </Routes>
+                {/* <label for="rightDrawer" class="drawer-button btn btn-primary">Open drawer</label> */}
+
+
+                <Nav />
+                {/* <ScrollToTop> */}
+                <Routes>
+                  <Route element={<Home />} path="/" index />
+                  <Route element={<Product />} path="/product">
+                    <Route element={<Product />} path=":product_id" />
+                  </Route>
+                  <Route element={<ProductFilter />} path="/filter" />
+                  <Route element={<Brand />} path="/brand/:brandId" />
+                  <Route element={<Login />} path="/login" />
+
+                  <Route path="/user">
+                    <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
+                    <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
+                    <Route element={<UserLayout component={<Order />} />} path="orders" exact />
+                    <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
+                  </Route>
+                </Routes>
+                <Footer />
+
+
+
+              </div>
+              <div class="drawer-side">
+                <label for="my-drawer-4" class="drawer-overlay"></label>
+                <ul class="menu p-4 overflow-y-auto md:w-1/3 bg-base-100 text-base-content">
+                  {/* <label for="rightDrawer" class="drawer-button btn btn-primary">Close drawer</label> */}
+                  
+                  <div className="flex justify-end">
+                    <label for="rightDrawer" class="btn btn-square">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </label>
+                  </div>
+                 
+
+                  <Cart />
+                </ul>
+              </div>
+            </div>
+
           </CartProvider>
         </UserProvider>
       </ModalProvider>
       {/* <Social /> */}
-      <Footer />
     </BrowserRouter>
   );
 }

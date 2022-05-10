@@ -95,7 +95,89 @@ export const Nav = () => {
 
     return (
         <>
-            <div class="navbar bg-base-100">
+            <div className="flex justify-between items-center py-8 px-2">
+                <div>
+                    <Link to="/">
+                        <img src="http://via.placeholder.com/200x75?text=Gharagan%20logo" />
+
+                    </Link>
+
+                </div>
+
+                <div className="grow flex justify-center">
+                    <div class="form-control w-2/3">
+                        <div class="input-group w-full">
+                            <input type="text" placeholder="Search…" class="input input-bordered w-full !rounded-l-full" />
+                            <button class="btn btn-primary btn-square !rounded-r-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-row">
+
+
+                    <div>
+                        <div class="dropdown dropdown-end">
+                            <label tabindex="0" class="btn btn-ghost btn-circle">
+                                <PersonIcon className="h-5 w-5" />
+                            </label>
+                            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+
+                                {
+                                    user !== null && session !== null ?
+                                        <>
+                                            <li class="menu-title">
+                                                <span>Profile</span>
+                                            </li>
+                                            <li>
+                                                <Link to={"/user/cart"}>Cart</Link>
+                                                <Link to={"/user/order"}>Order</Link>
+                                                <Link to={"/user/profile"}>Profile</Link>
+                                            </li>
+                                        </>
+                                        : ''
+                                }
+
+                                <li class="menu-title">
+                                    <span>Account</span>
+                                </li>
+                                {
+                                    user !== null && session !== null ?
+                                        <li className="btn btn-outline btn-error"><a onClick={handleLogout}>Logout</a></li>
+                                        :
+                                        <li><a onClick={handleLogin}>Login</a></li>
+
+                                }
+
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    {/* <button class="btn btn-ghost btn-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </button> */}
+                    {/* <label for="rightDrawer" class="drawer-button btn btn-primary">Open drawer</label> */}
+
+                    {
+                        user !== null && session !== null ?
+                            <label for="rightDrawer" to={"/user/cart"} class="btn btn-ghost btn-circle">
+                                <div class="indicator">
+                                    <CartIcon />
+                                    <span class="badge badge-xs badge-primary indicator-item">
+                                        {session.cart_items.length}
+                                    </span>
+                                </div>
+                            </label>
+                            : ''
+                    }
+                </div>
+
+            </div>
+
+            {/* <div class="navbar bg-base-100">
                 <div class="navbar-start">
                     <div class="dropdown">
                         <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -107,32 +189,29 @@ export const Nav = () => {
                             <li><a>About</a></li>
                         </ul>
                     </div>
+
+                    <div className="btn btn-ghost">
+                        <img src="http://via.placeholder.com/200x50?text=Gharagan%20Logo" />
+                    </div>
+
                 </div>
                 <div class="navbar-center">
-                    <Link to="/" class="btn btn-ghost text-xl uppercase font-bold">
-                        gaharagan
-                    </Link>
+
+
+                    <div class="form-control">
+                        <div class="input-group">
+                            <input type="text" placeholder="Search…" class="input input-bordered" />
+                            <button class="btn btn-square">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="navbar-end">
-                    <button class="btn btn-ghost btn-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    </button>
-
-                    {
-                        user !== null && session !== null ?
-                            <Link to={"/user/cart"} class="btn btn-ghost btn-circle">
-                                <div class="indicator">
-                                    <CartIcon />
-                                    <span class="badge badge-xs badge-primary indicator-item">
-                                        {session.cart_items.length}
-                                    </span>
-                                </div>
-                            </Link>
-                            : ''
-                    }
+                    
                 </div>
-            </div>
-            <div className="flex justify-center">
+            </div> */}
+            <div className="flex justify-center border-b-2 ">
                 <div class="tabs flex flex-col md:flex-row">
                     {categories.map((category, index) =>
                         <button class={"tab tab-bordered font-semibold ease-in-out duration-300 w-full md:w-auto " + (selectedTab === category.id ? 'tab-active text-primary' : '')} onClick={e => { setSelectedTab(category.id); handleCategorySelection(category) }} key={index}>{category.name}</button>
