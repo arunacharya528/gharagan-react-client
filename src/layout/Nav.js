@@ -95,7 +95,7 @@ export const Nav = () => {
 
     return (
         <>
-            <div className="flex justify-between items-center py-8 px-2">
+            <div className="container mx-auto flex justify-between items-center py-8 px-2">
                 <div>
                     <Link to="/">
                         <img src="http://via.placeholder.com/200x75?text=Gharagan%20logo" />
@@ -133,7 +133,7 @@ export const Nav = () => {
                                             </li>
                                             <li>
                                                 <Link to={"/user/cart"}>Cart</Link>
-                                                <Link to={"/user/order"}>Order</Link>
+                                                <Link to={"/user/orders"}>Orders</Link>
                                                 <Link to={"/user/profile"}>Profile</Link>
                                             </li>
                                         </>
