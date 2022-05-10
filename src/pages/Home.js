@@ -4,7 +4,6 @@ import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Advertisement/Banner";
 import { BrandCarousel } from "../components/Brand";
 import { ProductContainer } from "../components/ProductContainer";
-import { ProductThumbnail } from "../components/ProductThumbnail";
 import { Loading } from "../helpers/Loading";
 
 export const Home = () => {

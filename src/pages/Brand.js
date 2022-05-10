@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getBrand } from "../adapters/brand";
 import { getProducts } from "../adapters/product";
-import { ProductThumbnail } from "../components/ProductThumbnail";
+import { ProductThumbnail } from "../components/Product/ProductThumbnail";
 import { Loading } from "../helpers/Loading";
 
 export const Brand = () => {

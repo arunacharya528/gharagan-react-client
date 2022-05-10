@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import { getCategories } from "../adapters/category";
 import { getProducts } from "../adapters/product";
 import { getShoppingSession } from "../adapters/shoppingSession";
-import { ProductThumbnail } from "../components/ProductThumbnail";
+import { ProductThumbnail } from "../components/Product/ProductThumbnail";
 import { CartContext } from "../context/CartContext";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";

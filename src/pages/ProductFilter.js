@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { FilterBar } from "../components/FilterBar";
-import { ProductThumbnail } from "../components/ProductThumbnail";
+import { ProductThumbnail } from "../components/Product/ProductThumbnail";
 import { Loading } from "../helpers/Loading";
 
 const handleURL = require('../helpers/handleURL');
@@ -12,13 +12,11 @@ export const ProductFilter = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [products, setProducts] = useState([]);
-    const [pagination, setPagination] = useState([]);
 
     useEffect(() => {
         getProducts(location.search, 'item=9')
             .then(response => {
-                setPagination(response.data.links)
-                setProducts(response.data.data)
+                setProducts(response.data)
             })
             .catch(error => console.log(error))
     }, [location]);
@@ -69,7 +67,7 @@ export const ProductFilter = () => {
                         </div>
                         <nav className="my-3">
                             <ul class="pagination justify-content-center">
-                                {pagination.map((link, index) =>
+                                {/* {pagination.map((link, index) =>
                                     <li class={"page-item "
                                         + (link.active ? 'active' : "")
                                         + (link.url == null ? ' disabled' : '')}
@@ -78,7 +76,7 @@ export const ProductFilter = () => {
                                     >
                                         <a class="page-link" dangerouslySetInnerHTML={{ __html: link.label }}></a>
                                     </li>
-                                )}
+                                )} */}
                             </ul>
                         </nav>
                     </div>

@@ -10,7 +10,6 @@ import { Footer } from "./layout/Footer";
 import { Nav } from "./layout/Nav";
 import { Social } from "./layout/Social";
 import { getProducts } from "./adapters/product";
-import { ProductThumbnail } from "./components/ProductThumbnail";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Product } from "./pages/Product";

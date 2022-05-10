@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Loading } from "../helpers/Loading";
-import { ProductThumbnail } from "./ProductThumbnail";
+import { ProductThumbnail } from "./Product/ProductThumbnail";
 
 export const ProductContainer = ({ product, title }) => {
 
