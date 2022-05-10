@@ -33,6 +33,7 @@ export const Nav = () => {
 
     const { user, setUser } = useContext(UserContext);
     const { session, updateSession } = useContext(CartContext);
+    const [selectedTab, setSelectedTab] = useState(null);
     // console.log(user.id);
     // console.log(session.cart_items.length)
 
@@ -92,46 +93,117 @@ export const Nav = () => {
         updateSession();
     }
 
-
     return (
+        <>
+            <div class="navbar bg-base-100">
+                <div class="navbar-start">
+                    <div class="dropdown">
+                        <label tabindex="0" class="btn btn-ghost btn-circle">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
+                        </label>
+                        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                            <li><a onClick={handleLogin}>Login</a></li>
+                            <li><a onClick={handleLogout}>Logout</a></li>
+                            <li><a>About</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="navbar-center">
+                    <Link to="/" class="btn btn-ghost text-xl uppercase font-bold">
+                        gaharagan
+                    </Link>
+                </div>
+                <div class="navbar-end">
+                    <button class="btn btn-ghost btn-circle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </button>
 
-        <div class="navbar bg-base-100">
-            <div class="navbar-start">
-                <div class="dropdown">
-                    <label tabindex="0" class="btn btn-ghost btn-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-                    </label>
-                    <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><a onClick={handleLogin}>Login</a></li>
-                        <li><a onClick={handleLogout}>Logout</a></li>
-                        <li><a>About</a></li>
-                    </ul>
+                    {
+                        user !== null && session !== null ?
+                            <Link to={"/user/cart"} class="btn btn-ghost btn-circle">
+                                <div class="indicator">
+                                    <CartIcon />
+                                    <span class="badge badge-xs badge-primary indicator-item">
+                                        {session.cart_items.length}
+                                    </span>
+                                </div>
+                            </Link>
+                            : ''
+                    }
                 </div>
             </div>
-            <div class="navbar-center">
-                <Link to="/" class="btn btn-ghost text-xl uppercase font-bold">
-                    gaharagan
-                </Link>
+            <div className="flex justify-center">
+                <div class="tabs flex flex-col md:flex-row">
+                    {categories.map((category, index) =>
+                        <button class={"tab tab-bordered font-semibold ease-in-out duration-300 w-full md:w-auto " + (selectedTab === category.id ? 'tab-active text-primary' : '')} onClick={e => { setSelectedTab(category.id); handleCategorySelection(category) }} key={index}>{category.name}</button>
+                    )}
+                </div>
             </div>
-            <div class="navbar-end">
-                <button class="btn btn-ghost btn-circle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                </button>
 
-                {
-                    user !== null && session !== null ?
-                        <Link to={"/user/cart"} class="btn btn-ghost btn-circle">
-                            <div class="indicator">
-                                <CartIcon />
-                                <span class="badge badge-xs badge-primary indicator-item">
-                                    {session.cart_items.length}
-                                </span>
+            <div>
+
+                {selectedCategory.length !== 0 ?
+
+
+                    <div className="selectedCategory">
+                        <div className="grid md:grid-cols-4">
+
+                            <ul class="menu bg-base-100 w-60 sm:w-full p-2">
+                                {
+                                    selectedCategory.child_categories.map((category, index) =>
+                                        <li key={index} className="w-full" ><button className=" w-full" onClick={e => {
+                                            navigate(`/filter/?categories=${category.id}`)
+                                            setSelectedCategory([]);
+                                        }} >{category.name}</button></li>
+                                    )
+                                }
+                            </ul>
+
+
+                            <div className="col-span-3 p-3 relative">
+                                <div className="text-right sticky z-10 top-0">
+                                    <button class="btn btn-sm btn-circle" onClick={e => { setSelectedCategory([]); setSelectedTab(null); }}>✕</button>
+                                </div>
+
+                                <div className="d-flex justify-content-between align-items-start mb-5">
+                                    <p>
+                                        {selectedCategory.description}
+                                    </p>
+                                </div>
+                                <section className="mb-4">
+                                    <div className="flex justify-between">
+                                        <h5>Latest Products</h5>
+                                        <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                    </div>
+                                    <div className="grid md:grid-cols-3 gap-5">
+                                        {latestProducts.length === 0 ?
+                                            <Loading />
+                                            : latestProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
+                                        }
+                                    </div>
+                                </section>
+                                <section className="mb-4">
+                                    <div className="flex justify-between">
+                                        <h5>Most Viewed Products</h5>
+                                        <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                    </div>
+                                    <div className="grid md:grid-cols-3 gap-5">
+                                        {mostViewedProducts.length === 0 ?
+                                            <Loading />
+                                            : mostViewedProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
+                                        }
+                                    </div>
+                                </section>
+
                             </div>
-                        </Link>
-                        : ''
-                }
+                        </div>
+                    </div>
+
+                    : ''}
+
             </div>
-        </div>
+
+        </>
         // <div id="nav">
         //     <div id="nav-search">
         //         <div class="container">
