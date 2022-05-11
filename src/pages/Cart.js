@@ -57,7 +57,7 @@ export const Cart = () => {
                 {
                     session !== null ?
 
-                        <div className="w-full ">
+                        <div className="w-full flex flex-col space-y-2">
                             {
                                 session.cart_items.map((item, index) =>
                                     <CartItem item={item} key={index} />

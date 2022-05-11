@@ -28,13 +28,15 @@ import { Addresses } from "./pages/Addresses";
 import { ModalProvider } from "./context/ModalContext";
 import { UserDashboard } from "./layout/UserDashboard";
 
+import toast, { Toaster } from 'react-hot-toast';
 function App() {
 
   return (
     <BrowserRouter>
-      <ModalProvider>
-        <UserProvider>
-          <CartProvider>
+      <UserProvider>
+        <CartProvider>
+          <ModalProvider>
+
             <div class="drawer drawer-end">
               <input id="rightDrawer" type="checkbox" class="drawer-toggle" />
               <div class="drawer-content">
@@ -50,6 +52,14 @@ function App() {
 
                     <Nav />
 
+                    {/* <button className="btn btn-primary" onClick={() => toast.success("Yay a toast")}>Make a toast</button> */}
+                    <Toaster
+                      position="top-center"
+                      gutter={8}
+                      toastOptions={{
+                        className: "bg-base-200 text-current shadow-xl border-2 mr-5 z-10"
+                      }}
+                    />
                     <Routes>
                       <Route element={<Home />} path="/" index />
                       <Route element={<Product />} path="/product">
@@ -103,10 +113,9 @@ function App() {
                 </ul>
               </div>
             </div>
-
-          </CartProvider>
-        </UserProvider>
-      </ModalProvider>
+          </ModalProvider>
+        </CartProvider>
+      </UserProvider>
       {/* <Social /> */}
     </BrowserRouter>
   );

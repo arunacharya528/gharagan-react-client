@@ -3,6 +3,11 @@ import { Link } from "react-router-dom";
 import { ModalContext } from "../../context/ModalContext";
 import { RateDisplay, RateDisplayByArray, RateDisplayByNumber } from "../Rating";
 import ImageGallery from 'react-image-gallery';
+import { UserContext } from "../../context/UserContext";
+import { CartContext } from "../../context/CartContext";
+import { postToCart } from "../../adapters/cartItems";
+import toast from 'react-hot-toast'
+import { success } from "daisyui/src/colors";
 
 export const ProductThumbnail = (props) => {
 
@@ -37,6 +42,25 @@ export const ProductThumbnail = (props) => {
         }, [])
 
 
+        const { session, updateSession } = useContext(CartContext)
+
+        const handleCartAddition = () => {
+
+            const data = ({ session_id: session.id, product_id: props.product.id, quantity: 1, inventory_id: selectedInventory.id })
+            toast.promise(
+                postToCart('', data),
+                {
+                    loading: `Adding ${props.product.name} (${selectedInventory.type}) to cart`,
+                    success: () => {
+                        updateSession();
+                        return 'Added product to cart'
+                    },
+                    error: 'Error adding product to cart'
+                }
+            )
+        }
+
+
         return (
             <div className="grid md:grid-cols-2 gap-5">
                 <div className="overflow-hidden">
@@ -69,11 +93,11 @@ export const ProductThumbnail = (props) => {
                         )}
                     </div>
 
-                    <div>
-                        <button className="w-full btn btn-accent mb-4">
-                            Add to cart
+                    <div className="flex flex-col space-y-2">
+                        <button className={"w-full btn btn-sm btn-accent " + (!session ? 'btn-disabled' : '')} onClick={handleCartAddition}>
+                            {session ? "Add to cart" : "Login to add to cart"}
                         </button>
-                        <Link to={"/product/" + id} className="w-full btn btn-primary" onClick={e => onChange({ type: 'EXIT' })}>
+                        <Link to={"/product/" + id} className="w-full btn btn-sm btn-primary" onClick={e => onChange({ type: 'EXIT' })}>
                             View
                         </Link>
                     </div>
@@ -104,7 +128,7 @@ export const ProductThumbnail = (props) => {
 
     return (
 
-        <div class="card bg-base-100 border-2 hover:shadow-xl ease-in-out duration-300">
+        <div class="card bg-base-200 hover:shadow-xl ease-in-out duration-300">
             <figure>
                 {
                     images.map((image, index) =>

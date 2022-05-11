@@ -1,3 +1,7 @@
+import { removeCartItem } from "../../adapters/cartItems";
+import { toast } from 'react-hot-toast'
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
 export const CartItem = (props = { item: JSON, className: String }) => {
 
     const getImageURl = (productImage) => {
@@ -15,6 +19,22 @@ export const CartItem = (props = { item: JSON, className: String }) => {
 
             return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
         }
+    }
+
+    const { updateSession } = useContext(CartContext)
+    const handleCartItemRemoval = () => {
+
+        toast.promise(
+            removeCartItem('', props.item.id)
+            , {
+                loading: "Removing item from cart",
+                success: () => {
+                    updateSession();
+                    return "Item removed from cart"
+                },
+                error: "Error removing item from cart"
+            }
+        )
     }
 
     const getSumTotal = (price, quantity) => {
@@ -38,8 +58,8 @@ export const CartItem = (props = { item: JSON, className: String }) => {
                     {props.item.inventory.type}
                 </div>
                 <div className="flex justify-between">
-                    <span>Qty {props.item.inventory.quantity}</span>
-                    <span className="text-accent font-semibold cursor-pointer">Remove</span>
+                    <span>Qty {props.item.quantity}</span>
+                    <span className="text-accent font-semibold cursor-pointer" onClick={handleCartItemRemoval}>Remove</span>
                 </div>
             </div>
 
