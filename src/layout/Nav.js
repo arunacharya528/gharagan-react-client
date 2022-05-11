@@ -8,7 +8,7 @@ import { ProductThumbnail } from "../components/Product/ProductThumbnail";
 import { CartContext } from "../context/CartContext";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
-import { CartIcon, PersonIcon } from "../icons";
+import { CartIcon, MoonIcon, PersonIcon, SunIcon } from "../icons";
 import { AuthLink, AuthUser } from "../pages/Authenticate";
 
 
@@ -93,6 +93,28 @@ export const Nav = () => {
         updateSession();
     }
 
+    const [themeIcon, setThemeIcon] = useState(<MoonIcon className="w-5 h-5" />);
+
+    const handleThemeChange = (e) => {
+
+        const htmlElement = document.documentElement;
+        const currentTheme = htmlElement.getAttribute('data-theme')
+        switch (currentTheme) {
+            case 'light':
+                htmlElement.setAttribute('data-theme', 'dark')
+                setThemeIcon(<SunIcon className="w-5 h-5" />)
+                break;
+            case 'dark':
+                htmlElement.setAttribute('data-theme', 'light')
+                setThemeIcon(<MoonIcon className="w-5 h-5" />)
+                break;
+            default:
+                htmlElement.setAttribute('data-theme', 'dark')
+                setThemeIcon(<SunIcon className="w-5 h-5" />)
+                break;
+        }
+
+    }
     return (
         <>
             <div className="container mx-auto flex justify-between items-center py-8 px-2">
@@ -117,50 +139,43 @@ export const Nav = () => {
 
                 <div className="flex flex-row">
 
+                    <button tabindex="0" class="btn btn-ghost btn-circle" onClick={handleThemeChange}>
+                        {themeIcon}
+                    </button>
+                    <div class="dropdown dropdown-end">
+                        <label tabindex="0" class="btn btn-ghost btn-circle">
+                            <PersonIcon className="h-5 w-5" />
+                        </label>
+                        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
 
-                    <div>
-                        <div class="dropdown dropdown-end">
-                            <label tabindex="0" class="btn btn-ghost btn-circle">
-                                <PersonIcon className="h-5 w-5" />
-                            </label>
-                            <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                            {
+                                user !== null && session !== null ?
+                                    <>
+                                        <li class="menu-title">
+                                            <span>Profile</span>
+                                        </li>
+                                        <li>
+                                            <Link to={"/user/cart"}>Cart</Link>
+                                            <Link to={"/user/orders"}>Orders</Link>
+                                            <Link to={"/user/profile"}>Profile</Link>
+                                        </li>
+                                    </>
+                                    : ''
+                            }
 
-                                {
-                                    user !== null && session !== null ?
-                                        <>
-                                            <li class="menu-title">
-                                                <span>Profile</span>
-                                            </li>
-                                            <li>
-                                                <Link to={"/user/cart"}>Cart</Link>
-                                                <Link to={"/user/orders"}>Orders</Link>
-                                                <Link to={"/user/profile"}>Profile</Link>
-                                            </li>
-                                        </>
-                                        : ''
-                                }
+                            <li class="menu-title">
+                                <span>Account</span>
+                            </li>
+                            {
+                                user !== null && session !== null ?
+                                    <li className="btn btn-outline btn-error"><a onClick={handleLogout}>Logout</a></li>
+                                    :
+                                    <li><a onClick={handleLogin}>Login</a></li>
 
-                                <li class="menu-title">
-                                    <span>Account</span>
-                                </li>
-                                {
-                                    user !== null && session !== null ?
-                                        <li className="btn btn-outline btn-error"><a onClick={handleLogout}>Logout</a></li>
-                                        :
-                                        <li><a onClick={handleLogin}>Login</a></li>
+                            }
 
-                                }
-
-                            </ul>
-                        </div>
-
+                        </ul>
                     </div>
-
-                    {/* <button class="btn btn-ghost btn-circle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                    </button> */}
-                    {/* <label for="rightDrawer" class="drawer-button btn btn-primary">Open drawer</label> */}
-
                     {
                         user !== null && session !== null ?
                             <label for="rightDrawer" to={"/user/cart"} class="btn btn-ghost btn-circle">
@@ -177,40 +192,6 @@ export const Nav = () => {
 
             </div>
 
-            {/* <div class="navbar bg-base-100">
-                <div class="navbar-start">
-                    <div class="dropdown">
-                        <label tabindex="0" class="btn btn-ghost btn-circle">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" /></svg>
-                        </label>
-                        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><a onClick={handleLogin}>Login</a></li>
-                            <li><a onClick={handleLogout}>Logout</a></li>
-                            <li><a>About</a></li>
-                        </ul>
-                    </div>
-
-                    <div className="btn btn-ghost">
-                        <img src="http://via.placeholder.com/200x50?text=Gharagan%20Logo" />
-                    </div>
-
-                </div>
-                <div class="navbar-center">
-
-
-                    <div class="form-control">
-                        <div class="input-group">
-                            <input type="text" placeholder="Search…" class="input input-bordered" />
-                            <button class="btn btn-square">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="navbar-end">
-                    
-                </div>
-            </div> */}
             <div className="flex justify-center border-b-2 ">
                 <div class="tabs flex flex-col md:flex-row">
                     {categories.map((category, index) =>
@@ -283,140 +264,5 @@ export const Nav = () => {
             </div>
 
         </>
-        // <div id="nav">
-        //     <div id="nav-search">
-        //         <div class="container">
-        //             <div class="row d-flex align-items-center">
-        //                 <div class="col-sm-2">
-        //                     <img src="https://via.placeholder.com/150x70" alt="gharagan logo" />
-        //                 </div>
-        //                 <div class="col">
-        //                     <div id="search" class="d-flex align-items-center justify-content-center">
-        //                         <div class="d-flex" id="container">
-        //                             <div id="search-icon">
-        //                                 <i class="fa fa-search" aria-hidden="true"></i>
-        //                             </div>
-        //                             <div id="search-input">
-        //                                 <input type="text" placeholder="Search for Products" />
-        //                             </div>
-        //                         </div>
-
-        //                     </div>
-        //                 </div>
-        //                 <div class="col-sm-3 d-flex justify-content-between">
-        //                     {
-        //                         user !== null && session !== null ?
-        //                             <div className="">
-        //                                 <Link to={"/user/cart"} class="icon-btn">
-        //                                     <span id="badge">{session.cart_items.length}</span>
-        //                                     <CartIcon />
-        //                                     <span id="label">Cart</span>
-        //                                 </Link>
-
-        //                             </div>
-        //                             : ''
-        //                     }
-
-        //                     <div class="profile d-flex align-items-center">
-        //                         <PersonIcon />
-        //                         <div>
-        //                             <div class="user">{user ? user.first_name : 'user'}</div>
-        //                             {user !== null ?
-        //                                 <Link to={'/user/profile'}>Profile</Link>
-        //                                 :
-        //                                 <Link to={'/login'}>Login</Link>}
-        //                         </div>
-        //                     </div>
-        //                 </div>
-        //                 <div className="col">
-        //                     <div class="vstack gap-2 col-md-5 mx-auto">
-        //                         <button type="button" class="btn btn-outline-primary" onClick={handleLogin}>Login</button>
-        //                         <button type="button" class="btn btn-outline-danger" onClick={handleLogout}>Logout</button>
-        //                     </div>
-        //                 </div>
-        //             </div>
-        //         </div>
-
-        //     </div>
-        //     <nav id="nav-bar">
-        //         <div class="">
-        //             <div class="d-flex flex-wrap flex-row align-items-start">
-        //                 <a href="#" onClick={e => toggleCategory(!isCategoryShown)}>Categories</a>
-        //                 <Link to="/">Home</Link>
-        //                 <Link to="/filter/">Filter</Link>
-        //             </div>
-
-        //             {
-        //                 isCategoryShown ?
-        //                     <div className="dropdown row">
-        //                         <div className="col-sm-2 d-flex flex-column">
-        //                             {categories.map((category, index) =>
-        //                                 <a onClick={e => handleCategorySelection(category)} key={index} className={"dropdown-parent " + (selectedCategory.id === category.id ? 'active' : '')}>{category.name}</a>
-        //                             )}
-        //                         </div>
-        //                         <div className="col">
-        //                             <div className="col-sm-12 d-flex justify-content-end">
-        //                                 <button className="btn btn-close text-white" onClick={e => { setSelectedCategory([]); toggleCategory(!isCategoryShown) }
-        //                                 }></button>
-        //                             </div>
-        //                             {selectedCategory.length !== 0 ?
-
-
-        //                                 <div className="selectedCategory">
-        //                                     <div className="row">
-        //                                         <div className="col-sm-2 col-lg-3 d-flex flex-column">
-        //                                             {
-        //                                                 selectedCategory.child_categories.map((category, index) =>
-        //                                                     <div className="dropdown-child" key={index} onClick={e => {
-        //                                                         navigate(`/filter/?categories=${category.id}`)
-        //                                                         setSelectedCategory([]);
-        //                                                     }}>{category.name}</div>
-        //                                                 )
-        //                                             }
-        //                                         </div>
-        //                                         <div className="col p-3">
-        //                                             <div className="d-flex justify-content-between align-items-start mb-5">
-        //                                                 <p>
-        //                                                     {selectedCategory.description}
-        //                                                 </p>
-        //                                             </div>
-        //                                             <section className="mb-4">
-        //                                                 <div className="d-flex justify-content-between">
-        //                                                     <h5>Latest Products</h5>
-        //                                                     <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
-        //                                                 </div>
-        //                                                 <div id="catalog-container" className="row">
-        //                                                     {latestProducts.length === 0 ?
-        //                                                         <Loading />
-        //                                                         : latestProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
-        //                                                     }
-        //                                                 </div>
-        //                                             </section>
-        //                                             <section className="mb-4">
-        //                                                 <div className="d-flex justify-content-between">
-        //                                                     <h5>Most Viewed Products</h5>
-        //                                                     <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
-        //                                                 </div>
-        //                                                 <div id="catalog-container" className="row">
-        //                                                     {mostViewedProducts.length === 0 ?
-        //                                                         <Loading />
-        //                                                         : mostViewedProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
-        //                                                     }
-        //                                                 </div>
-        //                                             </section>
-
-        //                                         </div>
-        //                                     </div>
-        //                                 </div>
-
-        //                                 : ''}
-        //                         </div>
-        //                     </div>
-        //                     : ''
-        //             }
-
-        //         </div>
-        //     </nav>
-        // </div>
     );
 }

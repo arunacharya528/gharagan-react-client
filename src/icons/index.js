@@ -8,6 +8,9 @@ import { ReactComponent as EditIcon } from './pen.svg';
 import { ReactComponent as TrashIcon } from './trash.svg';
 import { ReactComponent as PlusIcon } from './plus.svg';
 import { ReactComponent as ListIcon } from './list.svg';
+import { ReactComponent as SunIcon } from './sun.svg';
+import { ReactComponent as MoonIcon } from './moon.svg';
+
 
 export {
     BagIcon,
@@ -19,5 +22,7 @@ export {
     EditIcon,
     TrashIcon,
     PlusIcon,
-    ListIcon
+    ListIcon,
+    SunIcon,
+    MoonIcon
 }
