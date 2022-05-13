@@ -8,6 +8,7 @@ import { CartItem } from "../components/Cart/CartItem";
 import { ProductImage } from "../components/ProductImage";
 import { CartContext } from "../context/CartContext";
 import { UserContext } from "../context/UserContext";
+import { getSubTotal, getSumTotal, getTotalPrice } from "../helpers/calculatePrice";
 import { Loading } from "../helpers/Loading";
 import { Message } from "../helpers/Message";
 import { CloseIcon } from "../icons";
@@ -22,32 +23,31 @@ export const Cart = () => {
 
     const { session } = useContext(CartContext);
 
-    const getTotalPrice = (inventory) => {
-        if (!inventory.discount) {
-            return inventory.price;
-        } else {
-            const discountPercent = inventory.discount.discount_percent
-            const price = inventory.price;
+    // const getTotalPrice = (inventory) => {
+    //     if (!inventory.discount) {
+    //         return inventory.price;
+    //     } else {
+    //         const discountPercent = inventory.discount.discount_percent
+    //         const price = inventory.price;
 
-            const discountedPrice = price - (price * 0.01 * discountPercent)
+    //         const discountedPrice = price - (price * 0.01 * discountPercent)
 
-            return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
-        }
-    }
+    //         return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
+    //     }
+    // }
 
-    const getSumTotal = (price, quantity) => {
-        const total = price * quantity;
-        return Math.round((total + Number.EPSILON) * 100) / 100
+    // const getSumTotal = (price, quantity) => {
+    //     const total = price * quantity;
+    //     return Math.round((total + Number.EPSILON) * 100) / 100
+    // }
 
-    }
-
-    const getSubTotal = (items) => {
-        var sum = 0;
-        items.map((item) => {
-            sum += getSumTotal(getTotalPrice(item.inventory), item.quantity)
-        })
-        return sum;
-    }
+    // const getSubTotal = (items) => {
+    //     var sum = 0;
+    //     items.map((item) => {
+    //         sum += getSumTotal(getTotalPrice(item.inventory), item.quantity)
+    //     })
+    //     return sum;
+    // }
     return (
         <>
 

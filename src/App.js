@@ -29,6 +29,7 @@ import { ModalProvider } from "./context/ModalContext";
 import { UserDashboard } from "./layout/UserDashboard";
 
 import toast, { Toaster } from 'react-hot-toast';
+import { Checkout } from "./pages/Checkout";
 function App() {
 
   return (
@@ -72,6 +73,7 @@ function App() {
                       <Route path="/user">
                         <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
                         <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
+                        <Route element={<UserLayout component={<Checkout />} />} path="checkout" exact />
                         <Route element={<UserLayout component={<Order />} />} path="orders" exact />
                         <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
                       </Route>
