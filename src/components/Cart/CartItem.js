@@ -2,7 +2,7 @@ import { putToCart, removeCartItem } from "../../adapters/cartItems";
 import { toast } from 'react-hot-toast'
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
-export const CartItem = (props = { item: JSON, className: String }) => {
+export const CartItem = (props = { item: JSON, className: String}) => {
 
     const [quantity, setQuantity] = useState(0);
     useEffect(() => {
@@ -61,7 +61,7 @@ export const CartItem = (props = { item: JSON, className: String }) => {
 
 
         return (
-            <div className="flex space-x-2">
+            <div className="flex flex-col space-y-2">
                 <div class="btn-group ">
                     <button class="btn btn-sm btn-primary" onClick={e => {
                         if (quantity > 1) setQuantity(quantity - 1)
@@ -73,7 +73,10 @@ export const CartItem = (props = { item: JSON, className: String }) => {
                 </div>
                 {
                     props.item.quantity !== quantity ?
-                        <div className="btn btn-primary btn-sm" onClick={handleCartUpdate}>Save</div>
+                        <>
+                            <div className="btn btn-primary btn-outline btn-sm" onClick={handleCartUpdate}>Save</div>
+                            <div className="btn btn-secondary btn-outline btn-sm" onClick={e => setQuantity(props.item.quantity)}>Cancel</div>
+                        </>
                         : ''
                 }
             </div>
@@ -83,7 +86,10 @@ export const CartItem = (props = { item: JSON, className: String }) => {
 
     return (
         <div className="flex flex-row space-x-5 p-3 " {...props}>
-            <img src={getImageURl(props.item.product.images[0])} alt={"Image of " + props.item.product.name} className="w-32 rounded-md" />
+            <div className="h-32 w-32 flex justify-center items-center">
+                <img src={getImageURl(props.item.product.images[0])} alt={"Image of " + props.item.product.name} className="rounded-md" />
+
+            </div>
             <div className="flex flex-col w-full">
                 <div className="flex justify-between">
                     <span>{props.item.product.name}</span>
