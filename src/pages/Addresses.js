@@ -68,7 +68,7 @@ export const Addresses = () => {
                 </div>
 
             </div>
-            <div className="grid md:grid-cols-4 gap-5">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
                 {addresses.map((address, index) =>
 
                     <div class="card bg-base-100 hover:shadow-xl border-2" key={index}>
@@ -77,9 +77,11 @@ export const Addresses = () => {
                             <div className="flex flex-col grow">
                                 <span>{address.address_line1}</span>
                                 <span>{address.address_line2}</span>
-                                <span>{address.city}</span>
+                                <span>{address.delivery.region}</span>
                                 <span>{address.telephone}</span>
                                 <span>{address.mobile}</span>
+
+                                <span className="text-right font-semibold">Delivery charge: Rs.{address.delivery.price}</span>
                             </div>
                             <div class="card-actions justify-end">
                                 <div className="flex flex-row">

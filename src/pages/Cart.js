@@ -81,9 +81,9 @@ export const Cart = () => {
                         Shipping charges and promo discount would be calculated at checkout
                     </div>
 
-                    <button className="btn btn-block btn-accent mt-4">
+                    <Link to={"/user/checkout"} className="btn btn-block btn-accent mt-4">
                         Checkout
-                    </button>
+                    </Link>
                 </div>
             </div>
 

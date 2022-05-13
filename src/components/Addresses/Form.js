@@ -1,11 +1,22 @@
+import { useEffect, useState } from "react";
+import { getDeliveries } from "../../adapters/delivery";
+
 export const AddressForm = (props = {
     address_line1: { value: String, setValue: Function },
     address_line2: { value: String, setValue: Function },
-    city: { value: String, setValue: Function },
+    delivery_id: { value: Int8Array, setValue: Function },
     telephone: { value: String, setValue: Function },
     mobile: { value: String, setValue: Function },
     submit: { value: String, click: Function }
 }) => {
+
+    const [deliveries, setDeliveries] = useState([]);
+    useEffect(() => {
+        getDeliveries()
+            .then(response => setDeliveries(response.data))
+            .catch(error => console.log(error))
+    }, [])
+
 
     return (
         <>
@@ -23,10 +34,13 @@ export const AddressForm = (props = {
             </div>
 
             <div className="form-control">
-                <label className="label pb-0">City</label>
-                <input type="text" placeholder="Enter your city" class="input input-bordered input-secondary w-full" value={props.city.value}
-                    onChange={e => props.city.setValue(e.target.value)} />
-
+                <label className="label pb-0">Region</label>
+                <select class="select select-bordered select-secondary w-full" onChange={e => props.delivery_id.setValue(e.target.value)} value={props.delivery_id.value}>
+                    <option selected hidden>Select region</option>
+                    {deliveries.map((delivery, index) =>
+                        <option key={index} value={delivery.id}>{delivery.region} - Rs.{delivery.price}</option>
+                    )}
+                </select>
             </div>
 
             <div className="form-control">
