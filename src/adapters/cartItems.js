@@ -23,6 +23,22 @@ export const postToCart = (bearerToken, item) => {
 };
 
 
+export const putToCart = (bearerToken, data, id) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'put',
+        url: `${apiURL}/cartItem/${id}`,
+        headers: {
+            'Authorization': `Bearer ${bearerToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}
+
 export const getByProductAndSession = (bearerToken, product_id, session_id) => {
     let config = {
         method: 'get',

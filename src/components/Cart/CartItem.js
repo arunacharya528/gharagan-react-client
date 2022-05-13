@@ -1,9 +1,13 @@
-import { removeCartItem } from "../../adapters/cartItems";
+import { putToCart, removeCartItem } from "../../adapters/cartItems";
 import { toast } from 'react-hot-toast'
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 export const CartItem = (props = { item: JSON, className: String }) => {
 
+    const [quantity, setQuantity] = useState(0);
+    useEffect(() => {
+        setQuantity(props.item.quantity)
+    }, [])
     const getImageURl = (productImage) => {
         return productImage.file ? process.env.REACT_APP_FILE_PATH + productImage.file.path : productImage.image_url;
     }
@@ -21,7 +25,7 @@ export const CartItem = (props = { item: JSON, className: String }) => {
         }
     }
 
-    const { updateSession } = useContext(CartContext)
+    const { session, updateSession } = useContext(CartContext)
     const handleCartItemRemoval = () => {
 
         toast.promise(
@@ -43,13 +47,47 @@ export const CartItem = (props = { item: JSON, className: String }) => {
 
     }
 
+    const handleCartUpdate = () => {
+        putToCart('', {
+            'session_id': session.id,
+            'product_id': props.item.product.id,
+            'quantity': quantity
+        }, props.item.id)
+            .then(response => updateSession())
+            .catch(error => console.log(error))
+    }
+
+    const QuantityInput = () => {
+
+
+        return (
+            <div className="flex space-x-2">
+                <div class="btn-group ">
+                    <button class="btn btn-sm btn-primary" onClick={e => {
+                        if (quantity > 1) setQuantity(quantity - 1)
+                    }}>-</button>
+                    <span className="px-3 leading-loose">{quantity}</span>
+                    <button class="btn btn-sm btn-primary" onClick={e => {
+                        setQuantity(quantity + 1)
+                    }}>+</button>
+                </div>
+                {
+                    props.item.quantity !== quantity ?
+                        <div className="btn btn-primary btn-sm" onClick={handleCartUpdate}>Save</div>
+                        : ''
+                }
+            </div>
+
+        );
+    }
+
     return (
-        <div className="flex flex-row space-x-5 p-3 border rounded bg-slate-400/10" {...props}>
+        <div className="flex flex-row space-x-5 p-3 " {...props}>
             <img src={getImageURl(props.item.product.images[0])} alt={"Image of " + props.item.product.name} className="w-32 rounded-md" />
             <div className="flex flex-col w-full">
                 <div className="flex justify-between">
                     <span>{props.item.product.name}</span>
-                    <span className="font-semibold">Rs. {getSumTotal(getTotalPrice(props.item.inventory), props.item.quantity)}</span>
+                    <span className="font-semibold">Rs. {getSumTotal(getTotalPrice(props.item.inventory), quantity)}</span>
                 </div>
                 <div className="font-light">
                     {props.item.product.category.name}
@@ -58,8 +96,8 @@ export const CartItem = (props = { item: JSON, className: String }) => {
                     {props.item.inventory.type}
                 </div>
                 <div className="flex justify-between">
-                    <span>Qty {props.item.quantity}</span>
-                    <span className="text-accent font-semibold cursor-pointer" onClick={handleCartItemRemoval}>Remove</span>
+                    <QuantityInput />
+                    <span className="text-primary font-semibold cursor-pointer self-end" onClick={handleCartItemRemoval}>Remove</span>
                 </div>
             </div>
 
