@@ -1,4 +1,17 @@
 /**
+ * 
+ * @param {Number} price Price to be discounted from 
+ * @param {Number} discountPercent Discount percent
+ * @returns Discounted price
+ */
+export const getDiscountedPrice = (price, discountPercent) => {
+    const discountedPrice = price - (price * 0.01 * discountPercent)
+
+    return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
+}
+
+
+/**
  * Get total price of item in inventory by passing inventory instance from database
  * @param {JSON} inventory instance of inventory
  * @returns discounted price of inventory instance
@@ -9,10 +22,7 @@ export const getTotalPrice = (inventory) => {
     } else {
         const discountPercent = inventory.discount.discount_percent
         const price = inventory.price;
-
-        const discountedPrice = price - (price * 0.01 * discountPercent)
-
-        return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
+        return getDiscountedPrice(price, discountPercent);
     }
 }
 
