@@ -4,7 +4,7 @@ import Cookies from "universal-cookie";
 import { getCategories } from "../adapters/category";
 import { getProducts } from "../adapters/product";
 import { getShoppingSession } from "../adapters/shoppingSession";
-import { ProductThumbnail } from "../components/Product/ProductThumbnail";
+import { ShortProductThumbnail } from "../components/Product/ShortProductThumbnail";
 import { CartContext } from "../context/CartContext";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
@@ -200,68 +200,69 @@ export const Nav = () => {
                 </div>
             </div>
 
-            <div>
 
-                {selectedCategory.length !== 0 ?
+            <div className="relative">
+                <div className="absolute bg-base-200 border-b w-full z-20">
+                    {selectedCategory.length !== 0 ?
+                        <div className="container mx-auto relative">
+                            <div className="grid md:grid-cols-4">
 
+                                <div className="p-3 grid grid-cols-2">
+                                    <div className="font-bold mb-2">Categories: </div>
+                                    {
+                                        selectedCategory.child_categories.map((category, index) =>
+                                            <span key={index} className="font-semibold text-secondary cursor-pointer" onClick={e => {
+                                                navigate(`/filter/?categories=${category.id}`)
+                                                setSelectedCategory([]);
+                                            }} >{category.name}</span>
+                                        )
+                                    }
 
-                    <div className="selectedCategory">
-                        <div className="grid md:grid-cols-4">
-
-                            <ul class="menu bg-base-100 w-60 sm:w-full p-2">
-                                {
-                                    selectedCategory.child_categories.map((category, index) =>
-                                        <li key={index} className="w-full" ><button className=" w-full" onClick={e => {
-                                            navigate(`/filter/?categories=${category.id}`)
-                                            setSelectedCategory([]);
-                                        }} >{category.name}</button></li>
-                                    )
-                                }
-                            </ul>
-
-
-                            <div className="col-span-3 p-3 relative">
-                                <div className="text-right sticky z-10 top-0">
-                                    <button class="btn btn-sm btn-circle" onClick={e => { setSelectedCategory([]); setSelectedTab(null); }}>✕</button>
                                 </div>
 
-                                <div className="d-flex justify-content-between align-items-start mb-5">
-                                    <p>
-                                        {selectedCategory.description}
-                                    </p>
-                                </div>
-                                <section className="mb-4">
-                                    <div className="flex justify-between">
-                                        <h5>Latest Products</h5>
-                                        <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                <div className="col-span-3 p-3">
+                                    <div className="text-right sticky z-10 top-0">
+                                        <button class="btn btn-sm rounded-full" onClick={e => { setSelectedCategory([]); setSelectedTab(null); }}>✕ Close Nav</button>
                                     </div>
-                                    <div className="grid md:grid-cols-3 gap-5">
-                                        {latestProducts.length === 0 ?
-                                            <Loading />
-                                            : latestProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
-                                        }
+                                    <div className="d-flex justify-content-between align-items-start mb-5">
+                                        <p>
+                                            {selectedCategory.description}
+                                        </p>
                                     </div>
-                                </section>
-                                <section className="mb-4">
-                                    <div className="flex justify-between">
-                                        <h5>Most Viewed Products</h5>
-                                        <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
-                                    </div>
-                                    <div className="grid md:grid-cols-3 gap-5">
-                                        {mostViewedProducts.length === 0 ?
-                                            <Loading />
-                                            : mostViewedProducts.slice(0, 3).map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
-                                        }
-                                    </div>
-                                </section>
+                                    <section className="mb-4">
+                                        <div className="flex justify-between">
+                                            <h5>Latest Products</h5>
+                                            <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                        </div>
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 items-stretch">
+                                            {latestProducts.length === 0 ?
+                                                <Loading />
+                                                : latestProducts.slice(0, 5).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} />)
+                                            }
+                                        </div>
+                                    </section>
+                                    <section className="mb-4">
+                                        <div className="flex justify-between">
+                                            <h5>Most Viewed Products</h5>
+                                            <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                        </div>
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5  gap-5 items-stretch">
+                                            {mostViewedProducts.length === 0 ?
+                                                <Loading />
+                                                : mostViewedProducts.slice(0, 5).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} />)
+                                            }
+                                        </div>
+                                    </section>
 
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    : ''}
-
+                        : ''}
+                </div>
             </div>
+
+
+
 
         </>
     );
