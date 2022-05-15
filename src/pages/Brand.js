@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { getBrand } from "../adapters/brand";
 import { getProducts } from "../adapters/product";
-import { ProductThumbnail } from "../components/Product/ProductThumbnail";
+import { LongProductThumbnail } from "../components/Product/LongProductThumbnail";
 import { Loading } from "../helpers/Loading";
 
 export const Brand = () => {
@@ -45,7 +45,7 @@ export const Brand = () => {
                 <div id="catalog-container" className="row">
                     {products.length === 0 ?
                         <Loading />
-                        : products.slice(0, (brandsPage * 8)).map((product, index) => <ProductThumbnail key={index} product={product} />)
+                        : products.slice(0, (brandsPage * 8)).map((product, index) => <LongProductThumbnail key={index} product={product} />)
                     }
                 </div>
 

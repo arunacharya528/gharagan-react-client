@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { FilterBar } from "../components/FilterBar";
-import { ProductThumbnail } from "../components/Product/ProductThumbnail";
+import { LongProductThumbnail } from "../components/Product/LongProductThumbnail";
 import { Loading } from "../helpers/Loading";
 
 const handleURL = require('../helpers/handleURL');
@@ -62,7 +62,7 @@ export const ProductFilter = () => {
                             {products.length === 0 ?
                                 <Loading />
                                 :
-                                products.map((product, index) => <ProductThumbnail key={index} product={product} width={4} />)
+                                products.map((product, index) => <LongProductThumbnail key={index} product={product} width={4} />)
                             }
                         </div>
                         <nav className="my-3">

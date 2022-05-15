@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Loading } from "../helpers/Loading";
-import { ProductThumbnail } from "./Product/ProductThumbnail";
+import { LongProductThumbnail } from "./Product/LongProductThumbnail";
 
 export const ProductContainer = ({ product, title }) => {
 
@@ -12,7 +12,7 @@ export const ProductContainer = ({ product, title }) => {
 
                 {product.length === 0 ?
                     <Loading />
-                    : product.slice(0, (page * 8)).map((product, index) => <ProductThumbnail key={index} product={product} />)
+                    : product.slice(0, (page * 8)).map((product, index) => <LongProductThumbnail key={index} product={product} />)
                 }
             </div>
 

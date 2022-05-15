@@ -9,7 +9,7 @@ import { postToCart } from "../../adapters/cartItems";
 import toast from 'react-hot-toast'
 import { success } from "daisyui/src/colors";
 
-export const ProductThumbnail = (props) => {
+export const LongProductThumbnail = (props) => {
 
     const images = props.product.images.filter((image, index) => {
         if (index < 1) {
