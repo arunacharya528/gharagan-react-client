@@ -224,7 +224,7 @@ export const LongProductThumbnail = (props) => {
                         {props.product.name}
                     </h2>
                     <Link to={"/filter/?categories=" + props.product.category.id} className="underline underline-offset-1 text-primary font-light">{props.product.category.name}</Link>
-                    <span className="underline underline-offset-1 text-primary font-light">{props.product.brand.name}</span>
+                    <Link to={"/brand/" + props.product.brand.id} className="underline underline-offset-1 text-primary font-light">{props.product.brand.name}</Link>
                 </div>
 
 
