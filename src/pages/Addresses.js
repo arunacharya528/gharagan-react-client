@@ -59,19 +59,10 @@ export const Addresses = () => {
 
     return (
         <>
-            <div className="flex justify-between p-2">
-                <div className="text-3xl font-extrabold">Addresses</div>
-                <div className="tooltip tooltip-left" data-tip="Add new address">
-                    <button className="btn btn-square btn-outline" onClick={handleAddButtonClick}>
-                        <PlusIcon />
-                    </button>
-                </div>
-
-            </div>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
                 {addresses.map((address, index) =>
 
-                    <div class="card bg-base-100 hover:shadow-xl border-2" key={index}>
+                    <div class="card hover:shadow-xl bg-base-200 ease-in-out duration-300" key={index}>
                         <div class="card-body flex flex-col">
                             <h2 class="card-title">{address.city}</h2>
                             <div className="flex flex-col grow">
@@ -86,12 +77,12 @@ export const Addresses = () => {
                             <div class="card-actions justify-end">
                                 <div className="flex flex-row">
                                     <div className="tooltip" data-tip="Edit">
-                                        <button className="btn btn-sm mx-1 btn-secondary btn-square btn-outline" onClick={e => handleEditButtonClick(address)}>
+                                        <button className="btn btn-sm mx-1 btn-secondary btn-square" onClick={e => handleEditButtonClick(address)}>
                                             <EditIcon />
                                         </button>
                                     </div>
                                     <div className="tooltip" data-tip="Delete">
-                                        <button className="btn btn-sm mx-1 btn-error btn-square btn-outline" onClick={e => handleDeleteButtonClick(address)}>
+                                        <button className="btn btn-sm mx-1 btn-error btn-square" onClick={e => handleDeleteButtonClick(address)}>
                                             <TrashIcon />
                                         </button>
                                     </div>
@@ -103,6 +94,10 @@ export const Addresses = () => {
                 )}
             </div>
 
+                <button className="btn gap-2 btn-primary mt-4" onClick={handleAddButtonClick}>
+                    <PlusIcon className="w-6 h-6" />
+                    Add new Address
+                </button>
         </>
     );
 }

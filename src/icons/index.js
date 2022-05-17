@@ -11,6 +11,9 @@ import { ReactComponent as ListIcon } from './list.svg';
 import { ReactComponent as SunIcon } from './sun.svg';
 import { ReactComponent as MoonIcon } from './moon.svg';
 import { ReactComponent as HeartIcon } from './heart.svg';
+import { ReactComponent as FullScreenEnterIcon } from './fullscreen-enter.svg';
+import { ReactComponent as FullScreenExitIcon } from './fullscreen-exit.svg';
+
 
 
 export {
@@ -26,5 +29,7 @@ export {
     ListIcon,
     SunIcon,
     MoonIcon,
-    HeartIcon
+    HeartIcon,
+    FullScreenEnterIcon,
+    FullScreenExitIcon
 }

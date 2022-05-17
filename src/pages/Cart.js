@@ -13,8 +13,6 @@ export const Cart = () => {
         <>
 
             <div className="flex flex-col justify-center items-center p-2">
-                <div className="text-2xl font-extrabold text-left w-full mb-4">Cart</div>
-
                 {
                     session !== null ?
 

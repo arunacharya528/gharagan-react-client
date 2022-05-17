@@ -51,7 +51,7 @@ export const UserDashboard = () => {
     }
 
     return (
-        <ul class="menu w-full bg-base-100 " >
+        <ul class="menu w-80 bg-base-100 p-2" >
 
             {
                 routes.map((route, index) =>

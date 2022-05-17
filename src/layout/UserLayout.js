@@ -1,114 +1,55 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { CartProvider } from "../context/CartContext";
 import { UserContext, UserProvider } from "../context/UserContext";
-import { BagIcon, CartIcon, CreditCardIcon, ListIcon, MapPinIcon, PersonIcon } from "../icons";
+import { BagIcon, CartIcon, CreditCardIcon, FullScreenEnterIcon, FullScreenExitIcon, ListIcon, MapPinIcon, PersonIcon } from "../icons";
 import bag from "../icons/bag.svg"
 import { Login } from "../pages/Authenticate";
+import { UserDashboard } from "./UserDashboard";
 
 export const UserLayout = ({ component }) => {
-    // const routes = [
-    //     {
-    //         title: "Dashboard",
-    //         items: [
-    //             {
-    //                 icon: <BagIcon />,
-    //                 name: "Orders",
-    //                 path: "orders"
-    //             },
-    //             {
-    //                 icon: <CartIcon />,
-    //                 name: "Cart",
-    //                 path: "cart"
-    //             }
-    //         ]
-    //     },
-    //     {
-    //         title: "Account Settings",
-    //         items: [
-    //             {
-    //                 icon: <PersonIcon />,
-    //                 name: "Profile",
-    //                 path: "profile"
-    //             },
-    //             {
-    //                 icon: <MapPinIcon />,
-    //                 name: "Addresses",
-    //                 path: "addresses"
-    //             },
-    //             {
-    //                 icon: <CreditCardIcon />,
-    //                 name: "Payment Methods",
-    //                 path: "payments"
-    //             }
-
-    //         ]
-    //     }
-    // ];
-
-    // const location = useLocation();
-    // const navigate = useNavigate();
-    // const getIfActive = (path) => {
-    //     if (location.pathname.includes(path)) {
-    //         return 'active'
-    //     }
-    // }
+    const location = useLocation();
     const { user } = useContext(UserContext)
+    const [isDrawerFit, fitDrawer] = useState(false);
+
     return (
         <>
             {
                 user !== null ?
-                    <>
-                    
-                        <div className="container mx-auto">
-                            <div className="flex justify-between my-2">
-                                <label for="leftDrawer" class="btn gap-2 btn-ghost drawer-button ">
-                                    <ListIcon className="h-6 w-6" />
-                                    Dashboard Menu
-                                </label>
+                    <div class={"drawer drawer-mobile " + (isDrawerFit ? "fixed top-0 bg-base-100 z-40" : '')} >
+                        <input id="dashboardDrawer" type="checkbox" class="drawer-toggle" />
+                        <div class="drawer-content">
+
+
+                            <div class="navbar bg-base-200 border-b sticky top-0 z-50">
+                                <div class="flex-1">
+                                    <label for="dashboardDrawer" class="btn btn-ghost drawer-button lg:hidden">
+                                        <ListIcon className="w-6 h-6" />
+                                    </label>
+                                    <span className="uppercase text-xl font-bold px-5">{location.pathname.split("/")[2]}</span>
+                                </div>
+                                <div class="flex-none">
+
+                                    <div className="tooltip tooltip-left" data-tip={isDrawerFit ? "Exit Fullscreen" : "Fullscreen"}>
+                                        <button className="btn btn-ghost btn-circle" onClick={e => fitDrawer(!isDrawerFit)}>
+                                            {isDrawerFit ? <FullScreenExitIcon className="w-5 h-5" /> : <FullScreenEnterIcon className="w-5 h-5" />}
+                                        </button>
+                                    </div>
+
+                                </div>
                             </div>
-                            {component}
 
-                        </div>    
-                    
-                    </>
-                    // <div class="drawer drawer-mobile">
-                    //     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-                    //     <div class="drawer-content">
+                            <div className="p-5">
+                                {component}
+                            </div>
 
+                        </div>
+                        <div class="drawer-side">
+                            <label for="dashboardDrawer" class="drawer-overlay"></label>
+                            <UserDashboard />
+                        </div>
+                    </div>
 
-                    //         {component}
-                    //     </div>
-                    //     <div class="drawer-side">
-                    //         <label for="my-drawer" class="drawer-overlay"></label>
-                    //         {/* <ul class="menu  w-64 bg-base-100 p-2 " >
-
-                    //             {
-                    //                 routes.map((route, index) =>
-
-                    //                     <React.Fragment key={index}>
-                    //                         <li class="menu-title">
-                    //                             <span>{route.title}</span>
-                    //                         </li>
-                    //                         {
-                    //                             route.items.map((item, index) =>
-                    //                                 <li key={index}>
-
-                    //                                     <Link to={"/user/" + item.path} className={getIfActive(item.path) + " relative"}>
-                    //                                         {item.icon}
-                    //                                         {item.name}
-                    //                                     </Link>
-                    //                                 </li>
-                    //                             )
-                    //                         }
-
-                    //                     </React.Fragment>
-                    //                 )
-                    //             }
-
-                    //         </ul> */}
-                    //     </div>
-                    // </div>
                     : <Login />
             }
         </>

@@ -78,7 +78,6 @@ export const Order = () => {
             {orders ?
                 orders.map((order, index) =>
                     <div className="p-2 mb-8">
-                        <div className="block text-2xl font-extrabold">Order Detail</div>
                         <div className="flex justify-between">
                             <div className="flex w-full">
                                 <span className="text-gray-400">Order number</span>

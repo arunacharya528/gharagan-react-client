@@ -23,8 +23,6 @@ export const Profile = () => {
 
     return (
         <div className="p-2">
-            <div className="font-extrabold text-2xl">Profile</div>
-
             {
                 user ?
                     <>
