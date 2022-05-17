@@ -38,7 +38,7 @@ export const Home = () => {
             <ProductContainer product={mostViewedProducts} title={"Most Viewed Products"} />
 
 
-            {/* <BrandCarousel /> */}
+            <BrandCarousel />
         </>
     );
 }

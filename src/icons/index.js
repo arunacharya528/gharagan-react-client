@@ -13,6 +13,8 @@ import { ReactComponent as MoonIcon } from './moon.svg';
 import { ReactComponent as HeartIcon } from './heart.svg';
 import { ReactComponent as FullScreenEnterIcon } from './fullscreen-enter.svg';
 import { ReactComponent as FullScreenExitIcon } from './fullscreen-exit.svg';
+import { ReactComponent as ChevronLeftIcon } from './chevron-left.svg';
+import { ReactComponent as ChevronRightIcon } from './chevron-right.svg';
 
 
 
@@ -31,5 +33,7 @@ export {
     MoonIcon,
     HeartIcon,
     FullScreenEnterIcon,
-    FullScreenExitIcon
+    FullScreenExitIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon
 }
