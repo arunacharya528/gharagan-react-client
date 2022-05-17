@@ -4,6 +4,7 @@ import { getProducts } from "../adapters/product";
 import { FilterBar } from "../components/FilterBar";
 import { LongProductThumbnail } from "../components/Product/LongProductThumbnail";
 import { Loading } from "../helpers/Loading";
+import { ListIcon } from "../icons";
 
 const handleURL = require('../helpers/handleURL');
 
@@ -33,52 +34,39 @@ export const ProductFilter = () => {
         }
 
     }
+    const [isDrawerFit, fitDrawer] = useState(false);
     return (
         <>
-            <div id="page-ribbon">
-                <div class="container">
-                    <div class="d-flex justify-content-between my-4">
-                        <h4>Filter Products</h4>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">Library</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Data</li>
-                            </ol>
-                        </nav>
-                    </div>
-                </div>
+            <section class="">
+
+                <div class={"drawer drawer-mobile " + (isDrawerFit ? "fixed top-0 bg-base-100 z-40" : '')}>
+                    <input id="filterDrawer" type="checkbox" class="drawer-toggle" />
+                    <div class="drawer-content p-5 relative">
+
+                        <label for="filterDrawer" class="btn btn-ghost drawer-button gap-2 my-2 lg:hidden">
+                            <ListIcon />
+                            Open drawer
+                        </label>
 
 
-            </div>
-            <section class="container">
-
-                <div class="row my-5">
-                    <div class="col-lg-3">
-                        <FilterBar />
-                    </div>
-                    <div class="col-lg-9 d-flex flex-column">
-                        <div id="catalog-container" className="row">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 relative">
                             {products.length === 0 ?
                                 <Loading />
                                 :
                                 products.map((product, index) => <LongProductThumbnail key={index} product={product} width={4} />)
                             }
                         </div>
-                        <nav className="my-3">
-                            <ul class="pagination justify-content-center">
-                                {/* {pagination.map((link, index) =>
-                                    <li class={"page-item "
-                                        + (link.active ? 'active' : "")
-                                        + (link.url == null ? ' disabled' : '')}
-                                        key={index}
-                                        onClick={e => handlelinkClick(link)}
-                                    >
-                                        <a class="page-link" dangerouslySetInnerHTML={{ __html: link.label }}></a>
-                                    </li>
-                                )} */}
-                            </ul>
-                        </nav>
+                    </div>
+                    <div class="drawer-side">
+                        <label for="filterDrawer" class="drawer-overlay"></label>
+                        <ul class="p-2 overflow-y-auto w-80 bg-base-100 text-base-content">
+                            <button className="btn btn-sm rounded-full" onClick={e => fitDrawer(!isDrawerFit)}>
+                                {isDrawerFit ? "Reverse full screen" : "Fullscreen"}
+                            </button>
+                            <FilterBar />
+
+                        </ul>
+
                     </div>
                 </div>
 

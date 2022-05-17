@@ -57,104 +57,100 @@ export const FilterBar = () => {
             }
         })
 
-        if (isOpen === true) {
-            switch (TYPE) {
-                case 'TITLE':
-                    return '';
-                case 'BODY':
-                    return 'show';
-            }
-        } else {
-            switch (TYPE) {
-                case 'TITLE':
-                    return 'collapsed';
-                case 'BODY':
-                    return '';
-            }
-        }
+        return isOpen;
     }
 
     return (
-        <div id="sidebar">
-            <div class="accordion">
-                {categories.length === 0 ?
-                    <Loading size="50px" text="Loading Categories" />
-                    :
-                    categories.map((category, index) =>
-                        <div class="accordion-item" key={index}>
-                            <h2 class="accordion-header">
-                                <button class={"accordion-button " + determineIfOpen(category.child_categories, "TITLE")} type="button" data-bs-toggle="collapse" data-bs-target={"#panelsStayOpen-collapse" + category.name}>
-                                    {category.name}&emsp;{category.number_of_product}
-                                </button>
-                            </h2>
-                            <div id={"panelsStayOpen-collapse" + category.name} class={"accordion-collapse collapse " + determineIfOpen(category.child_categories, "BODY")}>
-                                <div class="accordion-body">
-                                    <div class="product-list">
-                                        {category.child_categories.map((childCategory, index) =>
-                                            <div href="#" class="product" key={index}>
-                                                <div class="name">
-                                                    <input type="checkbox" class="form-check-input" value="1"
-                                                        onChange={e => handleUpdate(childCategory.id, 'categories')}
-                                                        checked={getStatus(childCategory.id + '', 'categories')}
-                                                    /> {childCategory.name}
-                                                </div>
+        <div className="">
+            <div className="shadow-md flex flex-col divide-y rounded-xl py-2  bg-base-200">
+                <div class="flex flex-col divide-y">
+                    {categories.length === 0 ?
+                        <Loading size="50px" text="Loading Categories" />
+                        :
+                        categories.map((category, index) =>
+                            <div tabIndex="0" class="collapse collapse-arrow" key={index}>
+                                <input type="checkbox" defaultChecked={determineIfOpen(category.child_categories)} />
+                                <div class="collapse-title text-base font-medium w-full flex flex-row justify-between">
+                                    <span>{category.name}</span>
+                                    <span>{category.number_of_product}</span>
+                                </div>
+                                <div class="collapse-content">
+
+                                    {category.child_categories.map((childCategory, index) =>
+                                        <div class="product" key={index}>
+                                            <div class="form-control flex flex-row">
+                                                <label class="label cursor-pointer flex flex-row justify-start items-center space-x-3 w-full">
+                                                    <input type="checkbox" class="checkbox checkbox-primary" onChange={e => handleUpdate(childCategory.id, 'categories')} checked={getStatus(childCategory.id + '', 'categories')} />
+                                                    <span class="label-text">{childCategory.name}</span>
+
+                                                </label>
                                                 <div class="quantity">{childCategory.number_of_product}</div>
+
                                             </div>
-                                        )}
-
-                                    </div>
+                                        </div>
+                                    )}
                                 </div>
-                            </div>
-                        </div>
-                    )}
-            </div>
-            <hr />
-            <h6>Price</h6>
-            <input type="range" class="form-range" id="customRange1" />
-
-            <div class="d-flex">
-                <div class="form-group w-50  px-1">
-                    <label for="min">Min</label>
-                    <input type="number" class="form-control" min={0} onChange={e => handleUpdate(e.target.value, 'pmin', 'single')} value={getStatus(null, 'pmin', 'single')} />
-                </div>
-                <div class="form-group w-50 px-1">
-                    <label for="max">Max</label>
-                    <input type="number" class="form-control" min={0} onChange={e => handleUpdate(e.target.value, 'pmax', 'single')} value={getStatus(null, 'pmax', 'single')} />
-                </div>
-            </div>
-
-            <hr />
-            <h6>Brands</h6>
-            <div class="product-list">
-                {
-                    brands.length === 0 ?
-                        <Loading text="Loading brands" size="50px" />
-                        : brands.map((brand, index) =>
-                            <div class="product" key={index}>
-                                <div class="name">
-                                    <input type="checkbox" class="form-check-input" value="1"
-                                        onChange={e => handleUpdate(brand.id, 'brands')}
-                                        checked={getStatus(brand.id + "", 'brands')}
-                                    /> {brand.name}
-                                </div>
-                                <div class="quantity">{brand.number_of_products}</div>
                             </div>
                         )}
-            </div>
-            <hr />
-            <div class="form-group d-flex align-items-center">
-                <label for="" class="text-nowrap">Sort By</label> &emsp;
-                <select class="form-control" onChange={e => handleUpdate(e.target.value, 'sort', 'single')} value={getStatus(null, 'sort', 'single')}>
-                    <option value={0}>Select sorting method</option>
-                    <option value={'latest'}>Latest</option>
-                    <option value={'mostViewed'}>Most Viewed</option>
-                </select>
+                </div>
+
+
+                <div className="p-2">
+                    <span className="font-bold">Price</span>
+                    <input type="range" class="range range-primary" />
+                </div>
+
+
+                <div class="grid grid-cols-2 gap-3 p-2">
+                    <div class="form-control w-full">
+                        <label class="label font-bold">
+                            Min
+                        </label>
+                        <input type="number" class="input input-bordered input-primary w-full" min={0} onChange={e => handleUpdate(e.target.value, 'pmin', 'single')} value={getStatus(null, 'pmin', 'single')} />
+                    </div>
+                    <div class="form-group w-full">
+                        <label class="label font-bold">
+                            Max
+                        </label>
+                        <input type="number" class="input input-bordered input-primary w-full" min={0} onChange={e => handleUpdate(e.target.value, 'pmax', 'single')} value={getStatus(null, 'pmax', 'single')} />
+                    </div>
+                </div>
+
+                <div className="p-2">
+                    <span className="font-bold">Brands</span>
+                    <div class="p-3">
+                        {
+                            brands.length === 0 ?
+                                <Loading text="Loading brands" size="50px" />
+                                : brands.map((brand, index) =>
+                                    <div class="form-control flex flex-row" key={index}>
+                                        <label class="label cursor-pointer flex flex-row justify-start items-center space-x-3 w-full">
+                                            <input type="checkbox" class="checkbox checkbox-primary" onChange={e => handleUpdate(brand.id, 'brands')} checked={getStatus(brand.id + "", 'brands')} />
+                                            <span class="label-text">{brand.name}</span>
+
+                                        </label>
+                                        <div class="quantity">{brand.number_of_products}</div>
+
+                                    </div>
+
+                                )}
+                    </div>
+                </div>
+
+                <div class="p-2">
+                    <span className="font-bold">Sort by</span>
+                    <select class="select select-primary w-full max-w-xs" onChange={e => handleUpdate(e.target.value, 'sort', 'single')} value={getStatus(null, 'sort', 'single')}>
+                        <option value={0}>Select sorting method</option>
+                        <option value={'latest'}>Latest</option>
+                        <option value={'mostViewed'}>Most Viewed</option>
+                    </select>
+                </div>
             </div>
 
-            <button class="btn btn-primary w-100 my-2" onClick={e => handleClear()}>
+            <button class="btn btn-primary btn-block mt-4" onClick={e => handleClear()}>
                 Clear all
             </button>
-
         </div>
+
     );
 }
