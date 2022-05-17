@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getActiveAdvertisements } from "../../adapters/advertisement";
 import { Loading } from "../../helpers/Loading";
-import { CarouselView } from "../OwlCarousel";
+import { CarouselView } from "../Carousel";
 
 export const Banner = () => {
 

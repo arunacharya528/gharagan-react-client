@@ -1,9 +1,4 @@
-// import './App.scss';
-// import "bootstrap";
-// import "bootstrap/dist/css/bootstrap.css";
 import { useContext, useEffect, useState } from "react";
-// import "./app.scss";
-import { CarouselView } from "./components/OwlCarousel";
 import { Banner } from "./components/Advertisement/Banner";
 
 import { Footer } from "./layout/Footer";
