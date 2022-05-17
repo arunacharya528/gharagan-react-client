@@ -30,6 +30,7 @@ import { UserDashboard } from "./layout/UserDashboard";
 
 import toast, { Toaster } from 'react-hot-toast';
 import { Checkout } from "./pages/Checkout";
+import { WishList } from "./pages/WishList";
 function App() {
 
   return (
@@ -76,6 +77,7 @@ function App() {
                         <Route element={<UserLayout component={<Checkout />} />} path="checkout" exact />
                         <Route element={<UserLayout component={<Order />} />} path="orders" exact />
                         <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
+                        <Route element={<UserLayout component={<WishList />} />} path="wishlist" exact />
                       </Route>
                     </Routes>
                     <Footer />
