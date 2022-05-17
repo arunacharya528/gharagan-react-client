@@ -9,7 +9,7 @@ export const ShortProductThumbnail = (props) => {
         <div class="w-full flex flex-col rounded-xl">
             <figure>
                 {props.product.images.filter((image, index) => index < 1).map((image, index) =>
-                    <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} key={index} className="rounded-xl h-full" />
+                    <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} key={index} className="rounded-xl w-full h-28 object-cover" />
                 )}
             </figure>
             <div class="grow">

@@ -84,17 +84,23 @@ export const LongProductThumbnail = (props) => {
                     <div>
                         {
                             selectedInventory ?
-                                <div class="flex justify-between items-center">
-                                    <div class="flex flex-col">
-                                        <div className="text-accent text-lg font-bold">Rs. {getDiscountedPrice(selectedInventory.price, selectedInventory.discount)}</div>
-                                        {selectedInventory.discount ? <div className="font-light"><s>Rs. {selectedInventory.price}</s></div> : ''}
+                                <div className="flex space-x-5">
+                                    <div class="flex justify-between items-center w-full">
+                                        <div class="flex flex-col">
+                                            <div className="text-accent text-lg font-bold">Rs. {getDiscountedPrice(selectedInventory.price, selectedInventory.discount)}</div>
+                                            {selectedInventory.discount ? <div className="font-light"><s>Rs. {selectedInventory.price}</s></div> : ''}
+                                        </div>
+                                        {selectedInventory.discount ? <div className="badge badge-success badge-outline p-3">{selectedInventory.discount.discount_percent}% OFF</div> : ''}
                                     </div>
-                                    {selectedInventory.discount ? <div className="badge badge-success badge-outline p-3">{selectedInventory.discount.discount_percent}% OFF</div> : ''}
+                                    {determineWishListButton()}
                                 </div>
+
                                 : ''
 
                         }
                     </div>
+
+                    <div className="">{props.product.summary}</div>
                     <div className="grow flex flex-row flex-wrap content-start">
                         {inventories.map((inventory, index) =>
                             <button type="button" class={"btn btn-sm btn-primary m-2 " + determineInventoryButton(inventory)} key={index} onClick={e => { setSelectedInventory(inventory); onChange({ type: 'CHANGE', value: inventory.id }) }}>{inventory.type}</button>
@@ -163,54 +169,67 @@ export const LongProductThumbnail = (props) => {
             .catch(error => console.log(error))
     }
 
+    const determineWishListButton = () => {
+
+        return (
+            <>
+                {
+                    user !== null ?
+                        <>
+                            {
+                                wishListResponse !== null && wishListResponse.status === 200 ?
+                                    <div class="tooltip tooltip-left" data-tip="Remove from Wishlist">
+                                        <button class={"btn btn-circle btn-primary "} onClick={handleWishListRemoval}>
+                                            <HeartIcon className="w-6 h-6" />
+                                        </button>
+                                    </div>
+
+                                    :
+                                    <div class="tooltip tooltip-left" data-tip="Add to Wishlist">
+                                        <button class={"btn btn-circle btn-primary btn-outline"} onClick={handleWishListAddition}>
+                                            <HeartIcon className="w-6 h-6" />
+                                        </button>
+                                    </div>
+
+                            }
+                        </>
+                        :
+                        <div class="tooltip tooltip-left" data-tip="Login to access">
+                            <button class={"btn btn-circle btn-primary btn-outline btn-disabled"}>
+                                <HeartIcon className="w-6 h-6" />
+                            </button>
+                        </div>
+                }
+            </>
+        );
+    }
+
     return (
 
-        <div class="card bg-base-200 hover:shadow-xl ease-in-out duration-300">
-            <figure>
+        <div class="flex flex-col items-stretch bg-base-200 hover:outline hover:outline-primary hover:shadow-xl ease-in-out duration-300 rounded-xl">
+            <div className="relative">
                 {
                     images.map((image, index) =>
-                        <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} />
+                        <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} className="h-48 w-full rounded-t-xl object-cover" />
                     )
                 }
-            </figure>
-            <div class="card-body flex flex-col">
-                <div className="flex flex-row items-center space-x-2">
-                    <h2 class="card-title w-full">
+
+                <div className="absolute top-0 right-0 m-5">
+                    {determineWishListButton()}
+                </div>
+            </div>
+            <div class="flex flex-col p-5 space-y-3">
+                <div className="flex flex-col">
+                    <h2 class="text-xl font-semibold">
                         {props.product.name}
                     </h2>
-                    {
-                        session ?
-                            <>
-                                {
-                                    wishListResponse !== null && wishListResponse.status === 200 ?
-                                        <div class="tooltip" data-tip="Remove">
-                                            <button class={"btn btn-circle btn-primary "} onClick={handleWishListRemoval}>
-                                                <HeartIcon className="w-6 h-6" />
-                                            </button>
-                                        </div>
-
-                                        :
-                                        <div class="tooltip" data-tip="Add">
-                                            <button class={"btn btn-circle btn-primary btn-outline"} onClick={handleWishListAddition}>
-                                                <HeartIcon className="w-6 h-6" />
-                                            </button>
-                                        </div>
-
-                                }
-                            </>
-                            :
-                            <div class="tooltip" data-tip="Login first">
-                                <button class={"btn btn-circle btn-primary btn-disabled"}>
-                                    <HeartIcon className="w-6 h-6" />
-                                </button>
-                            </div>
-                    }
+                    <Link to={"/filter/?categories=" + props.product.category.id} className="underline underline-offset-1 text-primary font-light">{props.product.category.name}</Link>
+                    <span className="underline underline-offset-1 text-primary font-light">{props.product.brand.name}</span>
                 </div>
 
 
-                <RateDisplayByNumber rating={props.product.averageRating} />
-                <div className="truncate grow">{props.product.summary}</div>
 
+                <RateDisplayByNumber rating={props.product.averageRating} />
 
                 <div class="card-actions justify-center ">
                     <button className="w-full btn btn-accent btn-sm" onClick={e => handlePreview()}>Preview</button>

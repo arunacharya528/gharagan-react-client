@@ -128,7 +128,7 @@ export const Nav = () => {
         );
     }
 
-    // console.log(selectedCategory)
+
     return (
         <>
             <div className="container mx-auto flex justify-between items-center py-8 px-2">
@@ -172,6 +172,7 @@ export const Nav = () => {
                                             <Link to={"/user/cart"}>Cart</Link>
                                             <Link to={"/user/orders"}>Orders</Link>
                                             <Link to={"/user/profile"}>Profile</Link>
+                                            <Link to={"/user/wishlist"}>Wish List</Link>
                                         </li>
                                     </>
                                     : ''
@@ -236,7 +237,15 @@ export const Nav = () => {
                     {selectedCategory.length !== 0 ?
                         <div className="container mx-auto relative">
                             <div className="grid md:grid-cols-4">
+                                
+                                <div className="md:col-span-4 text-right sticky z-10 top-0">
+                                    <button class="btn btn-sm btn-ghost rounded-full gap-2 bg-base-200 mt-1" onClick={e => { setSelectedCategory([]); setSelectedTab(null); }}>
+                                        Close Nav
+                                        ✕
+                                    </button>
+                                </div>
 
+                                
                                 <div className="p-2">
                                     <div className="py-3 grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
                                         {
@@ -253,18 +262,16 @@ export const Nav = () => {
                                 
 
                                 <div className="md:col-span-3 p-3">
-                                    <div className="text-right sticky z-10 top-0">
-                                        <button class="btn btn-sm rounded-full" onClick={e => { setSelectedCategory([]); setSelectedTab(null); }}>✕ Close Nav</button>
-                                    </div>
+                                    
                                     <div className="d-flex justify-content-between align-items-start mb-5">
                                         <p>
                                             {selectedCategory.description}
                                         </p>
                                     </div>
                                     <section className="mb-4">
-                                        <div className="flex justify-between">
-                                            <h5>Latest Products</h5>
-                                            <Link to={latestProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                        <div className="flex justify-between py-3">
+                                            <span className="text-xl font-bold">Latest Products</span>
+                                            <Link to={latestProductLink} className="btn btn-sm btn-ghost rounded-full">More</Link>
                                         </div>
                                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 items-stretch">
                                             {latestProducts.length === 0 ?
@@ -274,9 +281,9 @@ export const Nav = () => {
                                         </div>
                                     </section>
                                     <section className="mb-4">
-                                        <div className="flex justify-between">
-                                            <h5>Most Viewed Products</h5>
-                                            <Link to={mostViewedProductLink}>More <i class="fa fa-arrow-circle-right" aria-hidden="true"></i></Link>
+                                        <div className="flex justify-between py-3">
+                                            <span className="text-xl font-bold">Most Viewed Products</span>
+                                            <Link to={mostViewedProductLink} className="btn btn-sm btn-ghost rounded-full">More</Link>
                                         </div>
                                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5  gap-5 items-stretch">
                                             {mostViewedProducts.length === 0 ?

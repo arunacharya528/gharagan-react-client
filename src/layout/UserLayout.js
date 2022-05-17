@@ -21,7 +21,7 @@ export const UserLayout = ({ component }) => {
                         <div class="drawer-content">
 
 
-                            <div class="navbar bg-base-200 border-b sticky top-0 z-50">
+                            <div class="navbar bg-base-200 shadow-lg sticky top-0 z-50">
                                 <div class="flex-1">
                                     <label for="dashboardDrawer" class="btn btn-ghost drawer-button lg:hidden">
                                         <ListIcon className="w-6 h-6" />

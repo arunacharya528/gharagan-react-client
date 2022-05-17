@@ -18,7 +18,7 @@ export const WishList = () => {
 
 
     return (
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4  gap-5">
             {
                 wishList.map((wish, index) =>
                     <LongProductThumbnail product={wish.product} key={index} />

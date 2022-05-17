@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BagIcon, CartIcon, CreditCardIcon, ListIcon, MapPinIcon, PersonIcon } from "../icons";
+import { BagIcon, CartIcon, CreditCardIcon, HeartIcon, ListIcon, MapPinIcon, PersonIcon } from "../icons";
 
 export const UserDashboard = () => { 
     const routes = [
@@ -16,6 +16,11 @@ export const UserDashboard = () => {
                     icon: <CartIcon />,
                     name: "Cart",
                     path: "cart"
+                },
+                {
+                    icon: <HeartIcon />,
+                    name: "Wish List",
+                    path: "wishlist"
                 }
             ]
         },
