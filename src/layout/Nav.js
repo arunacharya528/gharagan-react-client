@@ -95,6 +95,12 @@ export const Nav = () => {
 
     const [themeIcon, setThemeIcon] = useState(<MoonIcon className="w-5 h-5" />);
 
+    const forwardTo = (link) => {
+        setSelectedCategory([])
+        navigate(link)
+        setSelectedTab(null)
+    }
+
     const handleThemeChange = (e) => {
 
         const htmlElement = document.documentElement;
@@ -237,7 +243,7 @@ export const Nav = () => {
                     {selectedCategory.length !== 0 ?
                         <div className="container mx-auto relative">
                             <div className="grid md:grid-cols-4">
-                                
+
                                 <div className="md:col-span-4 text-right sticky z-10 top-0">
                                     <button class="btn btn-sm btn-ghost rounded-full gap-2 bg-base-200 mt-1" onClick={e => { setSelectedCategory([]); setSelectedTab(null); }}>
                                         Close Nav
@@ -245,24 +251,21 @@ export const Nav = () => {
                                     </button>
                                 </div>
 
-                                
+
                                 <div className="p-2">
                                     <div className="py-3 grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
                                         {
                                             selectedCategory.child_categories.map((category, index) =>
-                                                <span key={index} className="font-semibold cursor-pointer" onClick={e => {
-                                                    navigate(`/filter/?categories=${category.id}`)
-                                                    setSelectedCategory([]);
-                                                }} >{category.name}</span>
+                                                <span key={index} className="font-semibold cursor-pointer" onClick={e => forwardTo(`/filter/?categories=${category.id}`)} >{category.name}</span>
                                             )
                                         }
 
                                     </div>
                                 </div>
-                                
+
 
                                 <div className="md:col-span-3 p-3">
-                                    
+
                                     <div className="d-flex justify-content-between align-items-start mb-5">
                                         <p>
                                             {selectedCategory.description}
@@ -276,7 +279,7 @@ export const Nav = () => {
                                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 items-stretch">
                                             {latestProducts.length === 0 ?
                                                 <Loading />
-                                                : latestProducts.slice(0, 5).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} />)
+                                                : latestProducts.slice(0, 5).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} moveForward={link => forwardTo(link)} />)
                                             }
                                         </div>
                                     </section>

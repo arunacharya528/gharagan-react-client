@@ -19,7 +19,7 @@ export const ShortProductThumbnail = (props) => {
                         {props.product.name}
                     </div>
                     <RateDisplayByNumber rating={props.product.averageRating} />
-                    <div className="btn btn-primary btn-sm mt-4">View</div>
+                    <div className="btn btn-primary btn-sm mt-4" onClick={e => { props.moveForward("/product/" + props.product.id) }}>View</div>
                 </div>
             </div>
         </div>
