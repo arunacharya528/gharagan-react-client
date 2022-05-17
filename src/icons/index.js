@@ -10,6 +10,7 @@ import { ReactComponent as PlusIcon } from './plus.svg';
 import { ReactComponent as ListIcon } from './list.svg';
 import { ReactComponent as SunIcon } from './sun.svg';
 import { ReactComponent as MoonIcon } from './moon.svg';
+import { ReactComponent as HeartIcon } from './heart.svg';
 
 
 export {
@@ -24,5 +25,6 @@ export {
     PlusIcon,
     ListIcon,
     SunIcon,
-    MoonIcon
+    MoonIcon,
+    HeartIcon
 }

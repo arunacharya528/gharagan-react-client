@@ -8,6 +8,8 @@ import { CartContext } from "../../context/CartContext";
 import { postToCart } from "../../adapters/cartItems";
 import toast from 'react-hot-toast'
 import { success } from "daisyui/src/colors";
+import { postWishList, productExistsInWishList, removeFromWishList } from "../../adapters/wishlist";
+import { HeartIcon } from "../../icons";
 
 export const LongProductThumbnail = (props) => {
 
@@ -23,6 +25,13 @@ export const LongProductThumbnail = (props) => {
 
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
+
+    const [isWishRefreshed, refreshWish] = useState(false)
+    const [wishListResponse, setWishlistResponse] = useState(null);
+
+    const { user } = useContext(UserContext);
+    const { session } = useContext(CartContext);
+
 
     const Preview = ({ id, images, inventories, onChange }) => {
 
@@ -59,7 +68,6 @@ export const LongProductThumbnail = (props) => {
                 }
             )
         }
-
 
         return (
             <div className="grid md:grid-cols-2 gap-5">
@@ -126,6 +134,35 @@ export const LongProductThumbnail = (props) => {
         openModal();
     }
 
+    //=======================
+    //
+    //  Wishlist
+    //
+    //=======================
+
+    useEffect(() => {
+        if (session) {
+            productExistsInWishList(props.product.id, user.id)
+                .then(response => setWishlistResponse(response))
+                .catch(error => setWishlistResponse(error.response))
+        }
+    }, [session, isWishRefreshed]);
+
+
+    const handleWishListRemoval = () => {
+        removeFromWishList(wishListResponse.data.id)
+            .then(response => {
+                refreshWish(!isWishRefreshed);
+            })
+            .catch(error => console.log(error))
+    }
+
+    const handleWishListAddition = () => {
+        postWishList({ product_id: props.product.id, user_id: user.id })
+            .then(response => refreshWish(!isWishRefreshed))
+            .catch(error => console.log(error))
+    }
+
     return (
 
         <div class="card bg-base-200 hover:shadow-xl ease-in-out duration-300">
@@ -137,19 +174,52 @@ export const LongProductThumbnail = (props) => {
                 }
             </figure>
             <div class="card-body flex flex-col">
-                <h2 class="card-title">
-                    {props.product.name}
-                </h2>
+                <div className="flex flex-row items-center space-x-2">
+                    <h2 class="card-title w-full">
+                        {props.product.name}
+                    </h2>
+                    {
+                        session ?
+                            <>
+                                {
+                                    wishListResponse !== null && wishListResponse.status === 200 ?
+                                        <div class="tooltip" data-tip="Remove">
+                                            <button class={"btn btn-circle btn-primary "} onClick={handleWishListRemoval}>
+                                                <HeartIcon className="w-6 h-6" />
+                                            </button>
+                                        </div>
+
+                                        :
+                                        <div class="tooltip" data-tip="Add">
+                                            <button class={"btn btn-circle btn-primary btn-outline"} onClick={handleWishListAddition}>
+                                                <HeartIcon className="w-6 h-6" />
+                                            </button>
+                                        </div>
+
+                                }
+                            </>
+                            :
+                            <div class="tooltip" data-tip="Login first">
+                                <button class={"btn btn-circle btn-primary btn-disabled"}>
+                                    <HeartIcon className="w-6 h-6" />
+                                </button>
+                            </div>
+                    }
+                </div>
+
 
                 <RateDisplayByNumber rating={props.product.averageRating} />
                 <div className="truncate grow">{props.product.summary}</div>
 
-                <div class="card-actions justify-center">
+
+                <div class="card-actions justify-center ">
                     <button className="w-full btn btn-accent btn-sm" onClick={e => handlePreview()}>Preview</button>
                     <Link to={"/product/" + props.product.id} className="w-full btn btn-primary btn-sm">
                         View
                     </Link>
                 </div>
+
+
             </div>
         </div>
     );
