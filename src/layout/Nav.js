@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getCategories } from "../adapters/category";
@@ -8,7 +8,7 @@ import { ShortProductThumbnail } from "../components/Product/ShortProductThumbna
 import { CartContext } from "../context/CartContext";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
-import { CartIcon, MoonIcon, PersonIcon, SunIcon } from "../icons";
+import { CartIcon, MoonIcon, PersonIcon, SunIcon, ListIcon } from "../icons";
 import { AuthLink, AuthUser } from "../pages/Authenticate";
 
 
@@ -115,6 +115,20 @@ export const Nav = () => {
         }
 
     }
+
+    const categoryContent = () => {
+        return (
+            <>
+                {categories.map((category, index) =>
+                    <li class={""} onClick={e => { setSelectedTab(category.id); handleCategorySelection(category) }} key={index}>
+                        <a className={(selectedTab === category.id ? 'active' : '')}>{category.name}</a>
+                    </li>
+                )}
+            </>
+        );
+    }
+
+    // console.log(selectedCategory)
     return (
         <>
             <div className="container mx-auto flex justify-between items-center py-8 px-2">
@@ -192,12 +206,28 @@ export const Nav = () => {
 
             </div>
 
-            <div className="flex justify-center border-b-2 ">
-                <div class="tabs flex flex-col md:flex-row">
-                    {categories.map((category, index) =>
-                        <button class={"tab tab-bordered font-semibold ease-in-out duration-300 w-full md:w-auto " + (selectedTab === category.id ? 'tab-active text-primary' : '')} onClick={e => { setSelectedTab(category.id); handleCategorySelection(category) }} key={index}>{category.name}</button>
-                    )}
+            <div class="container mx-auto navbar bg-base-100">
+
+
+                <div class="navbar-start">
+                    <div class="dropdown">
+                        <label tabindex="0" class="btn btn-ghost gap-2 lg:hidden">
+                            <ListIcon />
+                            Categories
+                        </label>
+                        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                            {categoryContent()}
+                        </ul>
+                    </div>
+                    {/* <a class="btn btn-ghost normal-case text-xl">daisyUI</a> */}
                 </div>
+                <div class="navbar-center hidden lg:flex">
+                    <ul class="menu menu-horizontal p-0">
+                        {categoryContent()}
+                    </ul>
+                </div>
+
+                <div className="navbar-end"></div>
             </div>
 
 
@@ -207,20 +237,22 @@ export const Nav = () => {
                         <div className="container mx-auto relative">
                             <div className="grid md:grid-cols-4">
 
-                                <div className="p-3 grid grid-cols-2">
-                                    <div className="font-bold mb-2">Categories: </div>
-                                    {
-                                        selectedCategory.child_categories.map((category, index) =>
-                                            <span key={index} className="font-semibold text-secondary cursor-pointer" onClick={e => {
-                                                navigate(`/filter/?categories=${category.id}`)
-                                                setSelectedCategory([]);
-                                            }} >{category.name}</span>
-                                        )
-                                    }
+                                <div className="p-2">
+                                    <div className="py-3 grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                                        {
+                                            selectedCategory.child_categories.map((category, index) =>
+                                                <span key={index} className="font-semibold cursor-pointer" onClick={e => {
+                                                    navigate(`/filter/?categories=${category.id}`)
+                                                    setSelectedCategory([]);
+                                                }} >{category.name}</span>
+                                            )
+                                        }
 
+                                    </div>
                                 </div>
+                                
 
-                                <div className="col-span-3 p-3">
+                                <div className="md:col-span-3 p-3">
                                     <div className="text-right sticky z-10 top-0">
                                         <button class="btn btn-sm rounded-full" onClick={e => { setSelectedCategory([]); setSelectedTab(null); }}>✕ Close Nav</button>
                                     </div>
