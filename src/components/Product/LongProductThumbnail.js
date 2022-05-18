@@ -84,7 +84,7 @@ export const LongProductThumbnail = (props) => {
                     <div>
                         {
                             selectedInventory ?
-                                <div className="flex space-x-5">
+                                <div className="flex space-x-5 items-center">
                                     <div class="flex justify-between items-center w-full">
                                         <div class="flex flex-col">
                                             <div className="text-accent text-lg font-bold">Rs. {getDiscountedPrice(selectedInventory.price, selectedInventory.discount)}</div>
@@ -179,15 +179,15 @@ export const LongProductThumbnail = (props) => {
                             {
                                 wishListResponse !== null && wishListResponse.status === 200 ?
                                     <div class="tooltip tooltip-left" data-tip="Remove from Wishlist">
-                                        <button class={"btn btn-circle btn-primary "} onClick={handleWishListRemoval}>
-                                            <HeartIcon className="w-6 h-6" />
+                                        <button class={"btn btn-circle btn-primary btn-active btn-sm "} onClick={handleWishListRemoval}>
+                                            <HeartIcon className="" />
                                         </button>
                                     </div>
 
                                     :
                                     <div class="tooltip tooltip-left" data-tip="Add to Wishlist">
-                                        <button class={"btn btn-circle btn-primary btn-outline"} onClick={handleWishListAddition}>
-                                            <HeartIcon className="w-6 h-6" />
+                                        <button class={"btn btn-circle btn-ghost btn-active btn-sm text-white"} onClick={handleWishListAddition}>
+                                            <HeartIcon className="" />
                                         </button>
                                     </div>
 
@@ -195,8 +195,8 @@ export const LongProductThumbnail = (props) => {
                         </>
                         :
                         <div class="tooltip tooltip-left" data-tip="Login to access">
-                            <button class={"btn btn-circle btn-primary btn-outline btn-disabled"}>
-                                <HeartIcon className="w-6 h-6" />
+                            <button class={"btn btn-circle btn-ghost btn-disabled btn-sm text-white"}>
+                                <HeartIcon className="" />
                             </button>
                         </div>
                 }
@@ -214,7 +214,7 @@ export const LongProductThumbnail = (props) => {
                     )
                 }
 
-                <div className="absolute top-0 right-0 m-5">
+                <div className="absolute top-0 right-0 m-3">
                     {determineWishListButton()}
                 </div>
             </div>
