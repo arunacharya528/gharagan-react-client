@@ -1,20 +1,31 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getCategories } from "../adapters/category";
 import { getProducts } from "../adapters/product";
 import { getShoppingSession } from "../adapters/shoppingSession";
+import { CategoryMenu } from "../components/Nav/CategoryContent";
+import { UserMenu } from "../components/Nav/UserMenu";
 import { ShortProductThumbnail } from "../components/Product/ShortProductThumbnail";
 import { CartContext } from "../context/CartContext";
+import { CategoryContext } from "../context/CategoryContext";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
 import { CartIcon, MoonIcon, PersonIcon, SunIcon, ListIcon } from "../icons";
 import { AuthLink, AuthUser } from "../pages/Authenticate";
+const queryString = require('query-string')
 
 
 export const Nav = () => {
 
-    const [categories, setCategories] = useState([]);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const parsedData = queryString.parse(location.search);
+
+    const { user } = useContext(UserContext);
+    const { session } = useContext(CartContext);
+    const { categories } = useContext(CategoryContext);
+
     const [selectedCategory, setSelectedCategory] = useState([]);
 
     const [latestProducts, setLatestProducts] = useState([]);
@@ -24,28 +35,19 @@ export const Nav = () => {
     const [mostViewedProductLink, setMostViewedProductLink] = useState('');
 
 
-    // const [session, setSession] = useState(undefined);
-    const navigate = useNavigate();
-    const cookie = new Cookies()
-    const [userData, setUserData] = useState(undefined);
-
-    const [isCategoryShown, toggleCategory] = useState(false);
-
-    const { user, setUser } = useContext(UserContext);
-    const { session, updateSession } = useContext(CartContext);
     const [selectedTab, setSelectedTab] = useState(null);
-    // console.log(user.id);
-    // console.log(session.cart_items.length)
 
+    const selectedCategoryNumber = parsedData.selectedCategory;
     useEffect(() => {
-        getCategories()
-            .then(response => {
-                setCategories(response.data)
+        if (parsedData.selectedCategory && categories.length !== 0) {
+            categories.map((category) => {
+                if (category.id + "" === parsedData.selectedCategory) {
+                    setSelectedCategory(category);
+                    handleCategorySelection(category);
+                }
             })
-            .catch(error => {
-                console.log(error)
-            })
-    }, [])
+        }
+    }, [selectedCategoryNumber])
 
 
     const handleCategorySelection = (category) => {
@@ -71,29 +73,6 @@ export const Nav = () => {
 
     }
 
-    const handleLogin = () => {
-        setUser(
-            {
-                "id": 1,
-                "email": "eoconner@example.net",
-                "first_name": "Lyla",
-                "last_name": "Kassulke",
-                "contact": "737.557.3779",
-                "type": 2,
-                "created_at": "2022-05-04T09:13:12.000000Z",
-                "updated_at": "2022-05-04T09:13:12.000000Z"
-            }
-        )
-        updateSession();
-
-    }
-
-    const handleLogout = () => {
-        setUser(null)
-        updateSession();
-    }
-
-    const [themeIcon, setThemeIcon] = useState(<MoonIcon className="w-5 h-5" />);
 
     const forwardTo = (link) => {
         setSelectedCategory([])
@@ -101,136 +80,78 @@ export const Nav = () => {
         setSelectedTab(null)
     }
 
-    const handleThemeChange = (e) => {
-
-        const htmlElement = document.documentElement;
-        const currentTheme = htmlElement.getAttribute('data-theme')
-        switch (currentTheme) {
-            case 'light':
-                htmlElement.setAttribute('data-theme', 'dark')
-                setThemeIcon(<SunIcon className="w-5 h-5" />)
-                break;
-            case 'dark':
-                htmlElement.setAttribute('data-theme', 'light')
-                setThemeIcon(<MoonIcon className="w-5 h-5" />)
-                break;
-            default:
-                htmlElement.setAttribute('data-theme', 'dark')
-                setThemeIcon(<SunIcon className="w-5 h-5" />)
-                break;
-        }
-
-    }
-
-    const categoryContent = () => {
-        return (
-            <>
-                {categories.map((category, index) =>
-                    <li class={""} onClick={e => { setSelectedTab(category.id); handleCategorySelection(category) }} key={index}>
-                        <a className={(selectedTab === category.id ? 'active' : '')}>{category.name}</a>
-                    </li>
-                )}
-            </>
-        );
-    }
-
-
     return (
         <>
-            <div className="container mx-auto flex justify-between items-center py-8 px-2">
-                <div>
-                    <Link to="/">
-                        <img src="http://via.placeholder.com/200x75?text=Gharagan%20logo" />
+            <div className="shadow-md sticky top-0 z-40 bg-base-100">
+                <div className="lg:container mx-auto flex justify-between items-center p-2 space-x-2 flex-nowrap">
 
-                    </Link>
+                    <div className="flex flex-row space-x-2 items-stretch flex-grow-0 flex-nowrap">
+                        <div className="lg:hidden ">
+                            <label for="leftDrawer" class="btn btn-ghost btn-square drawer-button">
+                                <ListIcon className="w-6 h-6" />
+                            </label>
+                        </div>
 
-                </div>
+                        <Link to="/">
+                            <img src="http://via.placeholder.com/150x50?text=Gharagan%20logo" class="hidden md:block h-full" />
+                            <img src="http://via.placeholder.com/50x50?text=Gharagan%20logo" class="block md:hidden h-12 w-max" />
+                        </Link>
 
-                <div className="grow flex justify-center">
-                    <div class="form-control w-2/3">
-                        <div class="input-group w-full">
-                            <input type="text" placeholder="Search…" class="input input-bordered w-full !rounded-l-full" />
-                            <button class="btn btn-primary btn-square !rounded-r-full">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                    </div>
+
+                    <div className="md:grow flex justify-center">
+                        <div className="bg-base-100 flex space-x-2 items-center border rounded-full p-2 w-full">
+                            <input className="rounded-full bg-base-100 outline-none px-2 w-full" placeholder="Search at Gharagan" />
+
+                            <button class="btn btn-primary btn-circle btn-xs">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
                             </button>
                         </div>
+
                     </div>
-                </div>
 
-                <div className="flex flex-row">
+                    <div className="flex flex-row space-x-2">
 
-                    <button tabindex="0" class="btn btn-ghost btn-circle" onClick={handleThemeChange}>
-                        {themeIcon}
-                    </button>
-                    <div class="dropdown dropdown-end">
-                        <label tabindex="0" class="btn btn-ghost btn-circle">
-                            <PersonIcon className="h-5 w-5" />
-                        </label>
-                        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                        {
+                            user !== null && session !== null ?
+                                <label for="rightDrawer" to={"/user/cart"} class="btn btn-ghost btn-circle">
+                                    <div class="indicator">
+                                        <CartIcon className="w-6 h-6"/>
+                                        <span class="badge badge-xs badge-primary indicator-item">
+                                            {session.cart_items.length}
+                                        </span>
+                                    </div>
+                                </label>
+                                : ''
+                        }
 
-                            {
-                                user !== null && session !== null ?
-                                    <>
-                                        <li class="menu-title">
-                                            <span>Profile</span>
-                                        </li>
-                                        <li>
-                                            <Link to={"/user/cart"}>Cart</Link>
-                                            <Link to={"/user/orders"}>Orders</Link>
-                                            <Link to={"/user/profile"}>Profile</Link>
-                                            <Link to={"/user/wishlist"}>Wish List</Link>
-                                        </li>
-                                    </>
-                                    : ''
-                            }
+                        <div className="hidden lg:flex flex-row space-x-2">
 
-                            <li class="menu-title">
-                                <span>Account</span>
-                            </li>
-                            {
-                                user !== null && session !== null ?
-                                    <li className="btn btn-outline btn-error"><a onClick={handleLogout}>Logout</a></li>
-                                    :
-                                    <li><a onClick={handleLogin}>Login</a></li>
-
-                            }
-
-                        </ul>
-                    </div>
-                    {
-                        user !== null && session !== null ?
-                            <label for="rightDrawer" to={"/user/cart"} class="btn btn-ghost btn-circle">
-                                <div class="indicator">
-                                    <CartIcon />
-                                    <span class="badge badge-xs badge-primary indicator-item">
-                                        {session.cart_items.length}
-                                    </span>
+                            <div class="dropdown dropdown-end hidden lg:block">
+                                <label tabindex="0" class="btn btn-ghost btn-circle">
+                                    <PersonIcon className="h-6 w-6" />
+                                </label>
+                                <div className="dropdown-content w-52 py-2 rounded-xl shadow-md">
+                                    <UserMenu />
                                 </div>
-                            </label>
-                            : ''
-                    }
-                </div>
+                            </div>
+                        </div>
 
+                    </div>
+
+                </div>
             </div>
 
-            <div class="container mx-auto navbar bg-base-100">
+
+            <div class="container mx-auto navbar bg-base-100 hidden lg:flex">
 
 
                 <div class="navbar-start">
-                    <div class="dropdown">
-                        <label tabindex="0" class="btn btn-ghost gap-2 lg:hidden">
-                            <ListIcon />
-                            Categories
-                        </label>
-                        <ul tabindex="0" class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                            {categoryContent()}
-                        </ul>
-                    </div>
-                    {/* <a class="btn btn-ghost normal-case text-xl">daisyUI</a> */}
+
                 </div>
                 <div class="navbar-center hidden lg:flex">
                     <ul class="menu menu-horizontal p-0">
-                        {categoryContent()}
+                        <CategoryMenu setSelectedTab={setSelectedTab} handleCategorySelection={handleCategorySelection} selectedTab={selectedTab} />
                     </ul>
                 </div>
 
@@ -239,7 +160,7 @@ export const Nav = () => {
 
 
             <div className="relative">
-                <div className="absolute bg-base-200 border-b w-full z-20">
+                <div className="absolute bg-base-200 w-full z-20 shadow-md">
                     {selectedCategory.length !== 0 ?
                         <div className="container mx-auto relative">
                             <div className="grid md:grid-cols-4">
