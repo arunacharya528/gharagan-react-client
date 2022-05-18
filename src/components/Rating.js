@@ -85,22 +85,23 @@ export const RateDisplayByNumber = ({ rating }) => {
     }
 
     return (
-        <div className="d-flex flex-row items-center">
-            <span className="font-semibold">
-                {getRoundedValue(rating)}{' '}
+        <div className="flex flex-row items-center space-x-3">
+            <span className="">
+            {getRoundedValue(rating)}
             </span>
-            <div class="rating rating-sm rating-half">
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(0, 0.5)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(0.5, 1)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(1, 1.5)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(1.5, 2)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(2, 2.5)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(2.5, 3)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(3, 3.5)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(3.5, 4)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-1" checked={getStatus(4, 4.5)} disabled />
-                <input type="radio" class="bg-accent mask mask-star-2 mask-half-2" checked={getStatus(4.5, 5)} disabled />
+            <div class="rating rating-sm rating-half justify-self-stretch">
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(0, 0.5)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(0.5, 1)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(1, 1.5)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(1.5, 2)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(2, 2.5)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(2.5, 3)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(3, 3.5)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(3.5, 4)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(4, 4.5)} disabled />
+                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(4.5, 5)} disabled />
             </div>
+            
         </div>
 
     )

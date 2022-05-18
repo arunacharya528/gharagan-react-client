@@ -9,7 +9,7 @@ import { postToCart } from "../../adapters/cartItems";
 import toast from 'react-hot-toast'
 import { success } from "daisyui/src/colors";
 import { postWishList, productExistsInWishList, removeFromWishList } from "../../adapters/wishlist";
-import { HeartIcon } from "../../icons";
+import { EyeIcon, HeartIcon } from "../../icons";
 
 export const LongProductThumbnail = (props) => {
 
@@ -178,25 +178,25 @@ export const LongProductThumbnail = (props) => {
                         <>
                             {
                                 wishListResponse !== null && wishListResponse.status === 200 ?
-                                    <div class="tooltip tooltip-left" data-tip="Remove from Wishlist">
-                                        <button class={"btn btn-circle btn-primary btn-active btn-sm "} onClick={handleWishListRemoval}>
-                                            <HeartIcon className="" />
+                                    <div class="tooltip tooltip-top" data-tip="Remove from Wishlist">
+                                        <button class={"btn btn-square btn-primary btn-active  btn-sm"} onClick={handleWishListRemoval}>
+                                            <HeartIcon className="h-4 w-4" />
                                         </button>
                                     </div>
 
                                     :
-                                    <div class="tooltip tooltip-left" data-tip="Add to Wishlist">
-                                        <button class={"btn btn-circle btn-ghost btn-active btn-sm text-white"} onClick={handleWishListAddition}>
-                                            <HeartIcon className="" />
+                                    <div class="tooltip tooltip-top" data-tip="Add to Wishlist">
+                                        <button class={"btn btn-square btn-ghost btn-active text-white btn-sm"} onClick={handleWishListAddition}>
+                                            <HeartIcon className="h-4 w-4" />
                                         </button>
                                     </div>
 
                             }
                         </>
                         :
-                        <div class="tooltip tooltip-left" data-tip="Login to access">
-                            <button class={"btn btn-circle btn-ghost btn-disabled btn-sm text-white"}>
-                                <HeartIcon className="" />
+                        <div class="tooltip tooltip-top" data-tip="Login to access">
+                            <button class={"btn btn-square btn-ghost btn-disabled text-white btn-sm"}>
+                                <HeartIcon className="h-4 w-4" />
                             </button>
                         </div>
                 }
@@ -204,40 +204,46 @@ export const LongProductThumbnail = (props) => {
         );
     }
 
+    const [isButtonPanelShown, showButtonPanel] = useState(false);
     return (
 
-        <div class="flex flex-col items-stretch bg-base-200 hover:outline hover:outline-primary hover:shadow-xl ease-in-out duration-300 rounded-xl">
+        <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl" onMouseEnter={e=>showButtonPanel(true)} onMouseLeave={e=>showButtonPanel(false)}>
             <div className="relative">
                 {
                     images.map((image, index) =>
+                        // <img src={"https://www.zdnet.com/a/img/resize/02787d7bc465479b902d22a59c5ff66a5af2bf31/2021/12/22/34c47f00-33c7-4c4e-9691-cba142be72b9/iphone-13-pro.png?width=1200&fit=bounds&format=pjpg&auto=webp"} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} className="h-48 w-full rounded-t-xl object-cover" />
+
                         <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} className="h-48 w-full rounded-t-xl object-cover" />
+
                     )
                 }
 
-                <div className="absolute top-0 right-0 m-3">
-                    {determineWishListButton()}
-                </div>
+                {
+                    isButtonPanelShown ?
+                        <div className="absolute top-0 w-full bg-base-100/40 h-full flex items-center justify-center space-x-3">
+
+                            <div class="tooltip tooltip-top" data-tip="Preview">
+                                <button className="btn btn-square btn-ghost btn-active btn-sm text-white" onClick={e => handlePreview()}>
+                                    <EyeIcon className="h-5 w-5" />
+                                </button>
+                            </div>
+                            {determineWishListButton()}
+                        </div>
+                        : ''
+                }
+
+
             </div>
             <div class="flex flex-col p-5 space-y-3">
-                <div className="flex flex-col">
-                    <h2 class="text-xl font-semibold">
+                <div className="flex flex-col space-y-1">
+                    <Link to={"/filter/?categories=" + props.product.category.id} className="text-gray-500 font-semibold text-xs uppercase tracking-widest hover:text-gray-700">{props.product.category.name}</Link>
+                    <Link to={"/product/" + props.product.id} class="text-xl font-semibold">
                         {props.product.name}
-                    </h2>
-                    <Link to={"/filter/?categories=" + props.product.category.id} className="underline underline-offset-1 text-primary font-light">{props.product.category.name}</Link>
-                    <Link to={"/brand/" + props.product.brand.id} className="underline underline-offset-1 text-primary font-light">{props.product.brand.name}</Link>
+                    </Link>
+                    <Link to={"/brand/" + props.product.brand.id} className="text-gray-500 font-semibold text-xs uppercase tracking-widest hover:text-gray-700">{props.product.brand.name}</Link>
                 </div>
-
-
 
                 <RateDisplayByNumber rating={props.product.averageRating} />
-
-                <div class="card-actions justify-center ">
-                    <button className="w-full btn btn-accent btn-sm" onClick={e => handlePreview()}>Preview</button>
-                    <Link to={"/product/" + props.product.id} className="w-full btn btn-primary btn-sm">
-                        View
-                    </Link>
-                </div>
-
 
             </div>
         </div>

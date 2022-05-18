@@ -8,11 +8,11 @@ export const ProductContainer = ({ product, title }) => {
     return (
         <div className="container mx-auto mb-8 p-5">
             <div className="py-5 text-xl font-bold text-center sticky top-0 bg-base-100 z-10">{title}</div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 justify-center py-2">
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 justify-center py-2">
 
                 {product.length === 0 ?
                     <Loading />
-                    : product.slice(0, (page * 8)).map((product, index) => <LongProductThumbnail key={index} product={product} />)
+                    : product.slice(0, (page * 10)).map((product, index) => <LongProductThumbnail key={index} product={product} />)
                 }
             </div>
 
