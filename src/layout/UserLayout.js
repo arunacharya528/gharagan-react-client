@@ -23,7 +23,7 @@ export const UserLayout = ({ component }) => {
 
                             <div class="navbar bg-base-200 shadow-lg sticky top-0 z-50">
                                 <div class="flex-1">
-                                    <label for="dashboardDrawer" class="btn btn-ghost drawer-button lg:hidden">
+                                    <label for="dashboardDrawer" class="btn btn-ghost btn-square drawer-button lg:hidden">
                                         <ListIcon className="w-6 h-6" />
                                     </label>
                                     <span className="uppercase text-xl font-bold px-5">{location.pathname.split("/")[2]}</span>
