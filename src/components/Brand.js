@@ -31,7 +31,7 @@ export const BrandCarousel = () => {
         }
         return (
             <div onMouseEnter={e => showDetail(true)} onMouseLeave={e => showDetail(false)} className="relative">
-                <img src={getImageLink()} className="rounded-xl px-2  h-40 w-72" />
+                <img src={getImageLink()} className="rounded-xl h-32 w-auto" />
                 {
                     isDetailShown ?
                         <div className="absolute top-0 flex items-center justify-center w-full h-full bg-base-200/50">
@@ -60,62 +60,12 @@ export const BrandCarousel = () => {
             )
         }
 
-        // return (Array(5).fill({}).map(() =>
-        //     <div class=" shadow rounded-md p-4 max-w-sm w-full mx-3">
-        //         <div class="animate-pulse flex space-x-4">
-
-        //             <div className="h-52 w-full p-3 rounded bg-slate-700"></div>
-        //         </div>
-        //     </div>
-        // ))
     }
 
 
     return (
         <CarouselView items={loadingData()} displayItems={5}></CarouselView>
 
-        // <div class="carousel w-full">
-
-        //     {
-        //         brands.map((brand, index) =>
-        //             <div id="slide1" class="carousel-item relative w-full">
-        //                 <img src="https://api.lorem.space/image/car?w=800&h=200&hash=8B7BCDC2" class="w-full" />
-        //                 <div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-        //                     <a href={"#slide" + (index === 0 ? brands.length - 1 : index - 1)} class="btn btn-circle">❮</a>
-        //                     <a href={"#slide" + (index === brands.length - 1 ? 0 : index + 1)} class="btn btn-circle">❯</a>
-        //                 </div>
-        //             </div>
-        //         )
-        //     }
-        //     {/* <div id="slide1" class="carousel-item relative w-full">
-        //         <img src="https://api.lorem.space/image/car?w=800&h=200&hash=8B7BCDC2" class="w-full" />
-        //         <div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-        //             <a href="#slide4" class="btn btn-circle">❮</a>
-        //             <a href="#slide2" class="btn btn-circle">❯</a>
-        //         </div>
-        //     </div>
-        //     <div id="slide2" class="carousel-item relative w-full">
-        //         <img src="https://api.lorem.space/image/car?w=800&h=200&hash=500B67FB" class="w-full" />
-        //         <div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-        //             <a href="#slide1" class="btn btn-circle">❮</a>
-        //             <a href="#slide3" class="btn btn-circle">❯</a>
-        //         </div>
-        //     </div>
-        //     <div id="slide3" class="carousel-item relative w-full">
-        //         <img src="https://api.lorem.space/image/car?w=800&h=200&hash=A89D0DE6" class="w-full" />
-        //         <div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-        //             <a href="#slide2" class="btn btn-circle">❮</a>
-        //             <a href="#slide4" class="btn btn-circle">❯</a>
-        //         </div>
-        //     </div>
-        //     <div id="slide4" class="carousel-item relative w-full">
-        //         <img src="https://api.lorem.space/image/car?w=800&h=200&hash=225E6693" class="w-full" />
-        //         <div class="absolute flex justify-between transform -translate-y-1/2 left-5 right-5 top-1/2">
-        //             <a href="#slide3" class="btn btn-circle">❮</a>
-        //             <a href="#slide1" class="btn btn-circle">❯</a>
-        //         </div>
-        //     </div> */}
-        // </div>
     );
 
 }

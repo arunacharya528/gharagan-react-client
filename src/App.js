@@ -23,6 +23,7 @@ import { Addresses } from "./pages/Addresses";
 import { ModalProvider } from "./context/ModalContext";
 import { UserDashboard } from "./layout/UserDashboard";
 
+import { CloseIcon } from "./icons"
 import toast, { Toaster } from 'react-hot-toast';
 import { Checkout } from "./pages/Checkout";
 import { WishList } from "./pages/WishList";
@@ -80,21 +81,16 @@ function App() {
                         </Route>
                       </Routes>
                       <Footer />
-
-                      {/* <label for="my-drawer" class="btn btn-primary drawer-button">Open drawer</label> */}
                     </div>
                     <div class="drawer-side">
                       <label for="leftDrawer" class="drawer-overlay"></label>
                       <ul class="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-
-                        {/* <li><a>Sidebar Item 1</a></li>
-                      <li><a>Sidebar Item 2</a></li> */}
                         <div className="flex justify-end">
-                          <label for="leftDrawer" class="btn btn-square">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                          <label for="leftDrawer" class="btn btn-square btn-ghost">
+                            <CloseIcon />
                           </label>
                         </div>
-                        {/* <UserDashboard /> */}
+
 
                         <div class="collapse collapse-arrow border rounded-xl ease-in-out duration-300 bg-base-200">
                           <input type="checkbox" />
