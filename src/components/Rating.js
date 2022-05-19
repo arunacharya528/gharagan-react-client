@@ -31,13 +31,14 @@ export const RatingSummary = ({ ratings }) => {
     }
 
     return (
-        <div class="grid md:grid-cols-2 gap-5">
-            <div class="my-2 flex flex-col justify-center items-center">
-                <div className="text-5xl">
-                    <RateDisplayByArray ratings={ratings} />
+        <div class="flex flex-col space-y-7">
+            <div class="my-2 flex space-x-3 px-2 font-bold">
+                {/* <div className="text-5xl"> */}
+                <RateDisplayByArray ratings={ratings} />
 
-                </div>
-                <div className="h6">{count} ratings</div>
+                <div className="font-semibold text-primary">Based on {ratings.length} reviews</div>
+                {/* </div> */}
+                {/* <div className="h6">{count} ratings</div> */}
 
             </div>
             <div>
@@ -54,10 +55,16 @@ export const RatingSummary = ({ ratings }) => {
 
 export const RateProgressBar = ({ star, percent }) => {
     return (
-        <div className="flex mb-4 items-center">
-            <span className="px-2">{star}</span>
-            <progress class="progress progress-primary " value={percent} max="100"></progress>
-            <span className="w-10 text-center">{percent}%</span>
+        <div className="flex mb-4 items-center space-x-5">
+            <div className="flex flex-row items-center space-x-1">
+                <span className="px-2">{star}</span>
+                <div class="rating rating-sm">
+                    <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
+                </div>
+            </div>
+           
+            <progress class="progress progress-primary h-4" value={percent} max="100"></progress>
+            <span className=" w-10 text-center">{percent}%</span>
         </div>
     );
 }
@@ -87,7 +94,7 @@ export const RateDisplayByNumber = ({ rating }) => {
     return (
         <div className="flex flex-row items-center space-x-3">
             <span className="">
-            {getRoundedValue(rating)}
+                {getRoundedValue(rating)}
             </span>
             <div class="rating rating-sm rating-half justify-self-stretch">
                 <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(0, 0.5)} disabled />
@@ -101,7 +108,7 @@ export const RateDisplayByNumber = ({ rating }) => {
                 <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(4, 4.5)} disabled />
                 <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(4.5, 5)} disabled />
             </div>
-            
+
         </div>
 
     )

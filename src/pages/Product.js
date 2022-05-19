@@ -9,6 +9,7 @@ import { RateAndComment } from "../components/Product/RateAndComment";
 import { ProductImage } from "../components/ProductImage";
 import { RateDisplayByArray, RateDisplayByNumber, RateInput, RatingSummary } from "../components/Rating";
 import { Loading } from "../helpers/Loading";
+import { HeartIcon } from "../icons";
 import { AuthRedirect } from "./Authenticate";
 
 export const Product = () => {
@@ -93,12 +94,6 @@ export const Product = () => {
         return (
             <div className="grid md:grid-cols-2 gap-5">
                 <div className="overflow-hidden">
-                    {/* {
-                        product.images.map((image, index) =>
-                            <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} alt={"Image " + (index + 1) + " of " + product.name} key={index} className="w-64 rounded-lg" />
-                        )
-                    } */}
-
                     <ImageGallery thumbnailPosition="left" items={product.images.map((image) => {
                         const imageURL = image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url;
                         return {
@@ -113,7 +108,7 @@ export const Product = () => {
                     </div>
                     <div className="flex space-x-5">
                         <RateDisplayByArray ratings={product.ratings} />
-                        <a className="font-semibold text-primary">See all {product.ratings.length} reviews</a>
+                        <a className="font-semibold text-primary cursor-pointer" onClick={e => setSelectedTab(3)}>See all {product.ratings.length} reviews</a>
                     </div>
 
                     {
@@ -129,18 +124,23 @@ export const Product = () => {
 
                     }
 
-                    <div className="grid grid-cols-5 gap-2">
+                    <div className="flex flex-row flex-wrap">
 
                         {
                             product.inventories.map((inventory, index) =>
-                                <button key={index} className={"btn btn-secondary " + determineInventoryButton(inventory)} onClick={e => setSelectedInventory(inventory)}>
+                                <button key={index} className={"btn btn-primary btn-sm m-1 no-animation " + determineInventoryButton(inventory)} onClick={e => setSelectedInventory(inventory)}>
                                     {inventory.type}
                                 </button>
                             )
                         }
                     </div>
 
-                    <div className="btn btn-block btn-primary">Add to cart</div>
+                    <div className="flex space-x-2">
+                        <div className="btn btn-primary grow">Add to cart</div>
+                        <button className="btn btn-ghost">
+                            <HeartIcon className="w-5 h-5" />
+                        </button>
+                    </div>
 
                     <div>
                         <div className="my-5 font-semibold">Summary</div>
@@ -165,34 +165,58 @@ export const Product = () => {
 
     const Reviews = () => {
         return (
-            <div className="flex flex-col space-y-8">
-                <RatingSummary ratings={product.ratings} />
-                {product.ratings.map((rating, index) =>
-                    <div className="flex flex-col space-y-2 border-2 p-3 rounded-xl">
-                        <div class="flex flex-row items-center space-x-2" key={index}>
-                            <img src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${rating.user.first_name}%20${rating.user.last_name}&size=200`} className="rounded-full w-10 h-10" />
+            <div className="grid md:grid-cols-5 gap-20">
+                <div className="md:col-span-2 flex flex-col">
+                    <div className="font-bold text-2xl px-2">Customer Reviews</div>
+                    <RatingSummary ratings={product.ratings} />
 
-                            <div className="flex flex-col">
-                                <div className="flex flex-row space-x-3">
-                                    <span className="font-semibold">{rating.user.first_name} {rating.user.last_name}</span>
-                                    <span className="fst-italic">{moment(rating.created_at).fromNow()}</span>
+                    <div class="collapse">
+                        <input type="checkbox"/>
+                        <div class="collapse-title p-4">
+                            <button className="btn btn-ghost btn-outline btn-block">
+                                Write a review
 
-                                </div>
-                                <div className="d-block">{<RateDisplayByNumber rating={rating.rate} />}</div>
-                            </div>
+                            </button>
                         </div>
-                        <div>
-                            <div class="col d-flex flex-column">
-                                <div className="d-block">
-
-                                </div>
-
-                                <p>{rating.comment}</p>
-                            </div>
+                        <div class="collapse-content flex flex-col space-y-4">
+                            <textarea class="textarea textarea-primary mt-1" rows={10} placeholder="Enter your review comment"></textarea>
+                            <button className="btn btn-block btn-primary">Post Review</button>
                         </div>
                     </div>
+                    
+                </div>
 
-                )}
+
+                <div className="md:col-span-3 divide-y-2 space-y-10">
+                    {product.ratings.map((rating, index) =>
+                        <div className="flex flex-col pt-10 space-y-5">
+
+                            <div class="flex flex-row items-center space-x-2" key={index}>
+                                <img src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${rating.user.first_name}%20${rating.user.last_name}&size=200`} className="rounded-full w-10 h-10" />
+
+                                <div className="flex flex-col">
+                                    <div className="flex flex-row space-x-3">
+                                        <span className="font-semibold">{rating.user.first_name} {rating.user.last_name}</span>
+                                        <span className="fst-italic">{moment(rating.created_at).fromNow()}</span>
+
+                                    </div>
+                                    <div className="d-block">{<RateDisplayByNumber rating={rating.rate} />}</div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="col d-flex flex-column">
+                                    <div className="d-block">
+
+                                    </div>
+
+                                    <p>{rating.comment}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    )}
+                </div>
+
             </div>
         );
     }
@@ -201,19 +225,22 @@ export const Product = () => {
 
 
         return (
+            <div className="grid md:grid-cols-5 gap-10">
+                <div className="md:col-span-2 flex flex-col space-y-5">
+                    <div className="font-bold text-2xl px-2">Questions and Answers</div>
+                    <textarea class="textarea textarea-primary" rows={10} placeholder="Write your question. Admin would answer shortly."></textarea>
+                    <button className="btn btn-block btn-primary">Post question</button>
+                </div>
+                <div className="md:col-span-3 flex flex-col divide-y-2 space-y-5">
+                    {product.questions.map((question, index) =>
 
-            <div className="flex flex-col space-y-8">
-                {product.questions.map((question, index) =>
-
-                    <div className="flex flex-col space-y-2 border-2 rounded-lg p-3">
-                        <div className="flex flex-row space-x-3 items-center">
-                            <img src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${question.user.first_name}%20${question.user.last_name}&size=200`} className="rounded-full w-10 h-10" />
-                            <span className="font-semibold">{question.user.first_name + " " + question.user.last_name}</span>
-                            <div className="">{moment(question.created_at).fromNow()}</div>
-                        </div>
-                        <div className="">{question.query}</div>
-                        <div className="col">
-
+                        <div className="flex flex-col pt-5 space-y-5">
+                            <div className="flex flex-row space-x-3 items-center">
+                                <img src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${question.user.first_name}%20${question.user.last_name}&size=200`} className="rounded-full w-10 h-10" />
+                                <span className="font-semibold">{question.user.first_name + " " + question.user.last_name}</span>
+                                <div className="">{moment(question.created_at).fromNow()}</div>
+                            </div>
+                            <div className="">{question.query}</div>
 
                             {question.answers.map((answer, index) =>
                                 <div className="mx-4 py-3" key={index}>
@@ -231,9 +258,9 @@ export const Product = () => {
                             )}
 
                         </div>
-                    </div>
 
-                )}
+                    )}
+                </div>
             </div>
         )
     }
@@ -246,6 +273,25 @@ export const Product = () => {
         }
     }
 
+    const buttons = [
+        {
+            name: "General Info",
+            value: 1
+        },
+        {
+            name: "Specifications",
+            value: 2
+        },
+        {
+            name: "Reviews",
+            value: 3
+        },
+        {
+            name: "Question Answers",
+            value: 4
+        }
+    ];
+
     return (
         <section class="" >
 
@@ -254,16 +300,19 @@ export const Product = () => {
 
                     <>
 
-                        <div class="card container mx-auto bg-base-100 border-2 my-5">
-                            <div class="card-body">
-                                <div class="tabs m-auto grid grid-cols-4 w-full ">
-                                    <button class={"tab tab-bordered font-semibold ease-in-out duration-300 " + (selectedTab === 1 ? 'tab-active text-primary' : '')} onClick={e => setSelectedTab(1)} >General Info</button>
-                                    <button class={"tab tab-bordered font-semibold ease-in-out duration-300 " + (selectedTab === 2 ? 'tab-active text-primary' : '')} onClick={e => setSelectedTab(2)} >Specifications</button>
-                                    <button class={"tab tab-bordered font-semibold ease-in-out duration-300 " + (selectedTab === 3 ? 'tab-active text-primary' : '')} onClick={e => setSelectedTab(3)} >Reviews</button>
-                                    <button class={"tab tab-bordered font-semibold ease-in-out duration-300 " + (selectedTab === 4 ? 'tab-active text-primary' : '')} onClick={e => setSelectedTab(4)} >Question Answers</button>
-                                </div>
+                        <div class="card  md:container mx-3 md:mx-auto bg-base-200 shadow-md">
+                            <div class="card-body px-3 py-5">
+                                <ul class="menu bg-base-100 flex flex-row items-stretch justify-between bg-transparent">
+                                    {
+                                        buttons.map((button, index) =>
+                                            <li className={"grow border-b-4 ease-in-out duration-300 " + (selectedTab === button.value ? ' border-primary' : '')} onClick={e => setSelectedTab(button.value)}>
+                                                <a className="block text-center h-full font-semibold">{button.name}</a>
+                                            </li>
+                                        )
+                                    }
+                                </ul>
 
-                                <div className="mt-4">
+                                <div className="p-5">
                                     {getSelectedTab()}
                                 </div>
                             </div>
