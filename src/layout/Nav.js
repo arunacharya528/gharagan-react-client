@@ -114,26 +114,26 @@ export const Nav = () => {
                             <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
 
                             <button class="btn btn-ghost btn-circle btn-sm">
-                                <SearchIcon className="w-6 h-6 text-gray-400"/>
+                                <SearchIcon className="w-6 h-6 text-gray-400" />
                             </button>
                         </div>
 
                     </div>
 
-                    <div className="flex flex-row space-x-2">
+                    <div className="flex flex-row items-center space-x-2">
 
-                        {/* {
+                        {
                             user !== null && session !== null ?
-                                <label for="rightDrawer" to={"/user/cart"} class="btn btn-ghost btn-circle">
+                                <label for="rightDrawer" to={"/user/cart"} class="hidden lg:flex btn btn-ghost btn-circle">
                                     <div class="indicator">
-                                        <CartIcon className="w-6 h-6"/>
+                                        <CartIcon className="w-6 h-6" />
                                         <span class="badge badge-xs badge-primary indicator-item">
                                             {session.cart_items.length}
                                         </span>
                                     </div>
                                 </label>
                                 : ''
-                        } */}
+                        }
 
                         <div className="flex-row space-x-2">
 
