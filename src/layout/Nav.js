@@ -11,8 +11,12 @@ import { CartContext } from "../context/CartContext";
 import { CategoryContext } from "../context/CategoryContext";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
-import { CartIcon, MoonIcon, PersonIcon, SunIcon, ListIcon } from "../icons";
+import { CartIcon, MoonIcon, PersonIcon, SunIcon, ListIcon, SearchIcon } from "../icons";
 import { AuthLink, AuthUser } from "../pages/Authenticate";
+
+import logo from "../assets/image/logo.png";
+import lgLogo from "../assets/image/lg-logo.png";
+
 const queryString = require('query-string')
 
 
@@ -82,8 +86,8 @@ export const Nav = () => {
 
     return (
         <>
-            <div className="shadow-md sticky top-0 z-40 bg-base-100">
-                <div className="lg:container mx-auto flex justify-between items-center p-2 space-x-2 flex-nowrap">
+            <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
+                <div className="lg:container mx-auto flex justify-between items-center space-x-10 p-2 flex-nowrap w-full">
 
                     <div className="flex flex-row space-x-2 items-stretch flex-grow-0 flex-nowrap">
                         <div className="lg:hidden ">
@@ -92,19 +96,25 @@ export const Nav = () => {
                             </label>
                         </div>
 
-                        <Link to="/">
-                            <img src="http://via.placeholder.com/150x50?text=Gharagan%20logo" class="hidden md:block h-full" />
-                            <img src="http://via.placeholder.com/50x50?text=Gharagan%20logo" class="block md:hidden h-12 w-max" />
+                        <Link to="/" className="hidden lg:block">
+                            {/* <img src={logo} className="w-10" /> */}
+                            <img src={lgLogo} className="w-32" />
                         </Link>
 
                     </div>
 
                     <div className="md:grow flex justify-center">
-                        <div className="bg-base-100 flex space-x-2 items-center border rounded-full p-2 w-full">
-                            <input className="rounded-full bg-base-100 outline-none px-2 w-full" placeholder="Search at Gharagan" />
 
-                            <button class="btn btn-primary btn-circle btn-xs">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        <Link to="/" className="block lg:hidden">
+                            {/* <img src={logo} className="w-10" /> */}
+                            <img src={lgLogo} className="w-32" />
+                        </Link>
+
+                        <div className="bg-base-200 hidden lg:flex space-x-2 items-center rounded-lg p-2 w-full">
+                            <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
+
+                            <button class="btn btn-ghost btn-circle btn-sm">
+                                <SearchIcon className="w-6 h-6 text-gray-400"/>
                             </button>
                         </div>
 
@@ -112,7 +122,7 @@ export const Nav = () => {
 
                     <div className="flex flex-row space-x-2">
 
-                        {
+                        {/* {
                             user !== null && session !== null ?
                                 <label for="rightDrawer" to={"/user/cart"} class="btn btn-ghost btn-circle">
                                     <div class="indicator">
@@ -123,11 +133,11 @@ export const Nav = () => {
                                     </div>
                                 </label>
                                 : ''
-                        }
+                        } */}
 
-                        <div className="hidden lg:flex flex-row space-x-2">
+                        <div className="flex-row space-x-2">
 
-                            <div class="dropdown dropdown-end hidden lg:block">
+                            <div class="dropdown dropdown-end">
                                 <label tabindex="0" class="btn btn-ghost btn-circle">
                                     <PersonIcon className="h-6 w-6" />
                                 </label>
@@ -139,6 +149,15 @@ export const Nav = () => {
 
                     </div>
 
+                </div>
+                <div className="block lg:hidden  lg:container mx-auto w-full py-2 px-5">
+                    <div className="bg-base-200 flex space-x-2 items-center rounded-lg p-2  w-full">
+                        <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
+
+                        <button class="btn btn-ghost btn-circle btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
 

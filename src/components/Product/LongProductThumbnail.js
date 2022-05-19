@@ -207,7 +207,7 @@ export const LongProductThumbnail = (props) => {
     const [isButtonPanelShown, showButtonPanel] = useState(false);
     return (
 
-        <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl" onMouseEnter={e=>showButtonPanel(true)} onMouseLeave={e=>showButtonPanel(false)}>
+        <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl w-full" onMouseEnter={e=>showButtonPanel(true)} onMouseLeave={e=>showButtonPanel(false)}>
             <div className="relative">
                 {
                     images.map((image, index) =>

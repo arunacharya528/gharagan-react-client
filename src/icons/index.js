@@ -16,6 +16,9 @@ import { ReactComponent as FullScreenEnterIcon } from './fullscreen-enter.svg';
 import { ReactComponent as FullScreenExitIcon } from './fullscreen-exit.svg';
 import { ReactComponent as ChevronLeftIcon } from './chevron-left.svg';
 import { ReactComponent as ChevronRightIcon } from './chevron-right.svg';
+import { ReactComponent as HomeIcon } from './home.svg';
+import { ReactComponent as SearchIcon } from './search.svg';
+
 
 
 
@@ -37,5 +40,7 @@ export {
     FullScreenExitIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
-    EyeIcon
+    EyeIcon,
+    HomeIcon,
+    SearchIcon
 }
