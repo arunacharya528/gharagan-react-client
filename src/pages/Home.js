@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Advertisement/Banner";
+import BannerForHomePage from "../components/Advertisement/BannerForHomePage";
 import { BrandCarousel } from "../components/Brand";
 import { ProductContainer } from "../components/ProductContainer";
 import { Loading } from "../helpers/Loading";
@@ -33,7 +34,7 @@ export const Home = () => {
 
     return (
         <>
-
+            <BannerForHomePage />
             <ProductContainer product={latestProducts} title={"Latest Products"} />
             <ProductContainer product={mostViewedProducts} title={"Most Viewed Products"} />
 
