@@ -64,7 +64,7 @@ export const RateProgressBar = ({ star, percent }) => {
             </div>
            
             <progress class="progress progress-primary h-4" value={percent} max="100"></progress>
-            <span className=" w-10 text-center">{percent}%</span>
+            <span className="w-16 text-center">{percent}%</span>
         </div>
     );
 }

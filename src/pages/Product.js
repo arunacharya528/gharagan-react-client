@@ -165,8 +165,8 @@ export const Product = () => {
 
     const Reviews = () => {
         return (
-            <div className="grid md:grid-cols-5 gap-20">
-                <div className="md:col-span-2 flex flex-col">
+            <div className="grid lg:grid-cols-5 gap-20">
+                <div className="lg:col-span-2 flex flex-col">
                     <div className="font-bold text-2xl px-2">Customer Reviews</div>
                     <RatingSummary ratings={product.ratings} />
 
@@ -187,7 +187,7 @@ export const Product = () => {
                 </div>
 
 
-                <div className="md:col-span-3 divide-y-2 space-y-10">
+                <div className="lg:col-span-3 divide-y-2 space-y-10">
                     {product.ratings.map((rating, index) =>
                         <div className="flex flex-col pt-10 space-y-5">
 
@@ -225,13 +225,13 @@ export const Product = () => {
 
 
         return (
-            <div className="grid md:grid-cols-5 gap-10">
-                <div className="md:col-span-2 flex flex-col space-y-5">
+            <div className="grid lg:grid-cols-5 gap-10">
+                <div className="lg:col-span-2 flex flex-col space-y-5">
                     <div className="font-bold text-2xl px-2">Questions and Answers</div>
                     <textarea class="textarea textarea-primary" rows={10} placeholder="Write your question. Admin would answer shortly."></textarea>
                     <button className="btn btn-block btn-primary">Post question</button>
                 </div>
-                <div className="md:col-span-3 flex flex-col divide-y-2 space-y-5">
+                <div className="lg:col-span-3 flex flex-col divide-y-2 space-y-5">
                     {product.questions.map((question, index) =>
 
                         <div className="flex flex-col pt-5 space-y-5">
