@@ -1,5 +1,5 @@
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ImageGallery from "react-image-gallery";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
@@ -44,7 +44,7 @@ export const Product = () => {
                 console.log(error);
             });
 
-    }, []);
+    }, [url[2]]);
 
     // useEffect(() => {
     //     getByProductAndSession(cookie.get('access_token'), url[2], cookie.get('session_id'))

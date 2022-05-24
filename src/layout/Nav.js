@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getCategories } from "../adapters/category";
@@ -16,6 +16,7 @@ import { AuthLink, AuthUser } from "../pages/Authenticate";
 
 import logo from "../assets/image/logo.png";
 import lgLogo from "../assets/image/lg-logo.png";
+import { SearchBar } from "../components/Search";
 
 const queryString = require('query-string')
 
@@ -84,6 +85,52 @@ export const Nav = () => {
         setSelectedTab(null)
     }
 
+    // const [focused, setFocused] = useState(true)
+    // const onFocus = () => setFocused(true)
+    // const onBlur = () => setFocused(false)
+    // const [searchResult, setSearchResult] = useState([]);
+    // useEffect(() => {
+    //     getProducts("sort=rating&orderBy=desc")
+    //         .then((response) => {
+    //             setSearchResult(response.data);
+    //         })
+    //         .catch((error) => {
+    //             console.log(error);
+    //         });
+    // }, [focused]);
+
+
+
+    // console.log(focused);
+
+    // const SearchBar = () => {
+        // return (
+        //     <div className="flex flex-col grow">
+
+        //         <div className="flex">
+        //             <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" onFocus={onFocus} onBlur={onBlur} />
+
+        //             <button class="btn btn-ghost btn-circle btn-sm">
+        //                 <SearchIcon className="w-6 h-6 text-gray-400" />
+        //             </button>
+        //         </div>
+        //         {
+        //             focused ?
+        //                 <div className="relative">
+        //                     <div className="absolute w-full h-64 bg-base-200 inset-y-2 rounded-b-xl shadow-md flex flex-col divide-x-2">
+        //                         {searchResult.map((product, index) => {
+
+        //                         })}
+        //                     </div>
+        //                 </div>
+        //                 : ''
+        //         }
+
+
+        //     </div>
+        // );
+    // }
+
     return (
         <>
             <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
@@ -111,11 +158,12 @@ export const Nav = () => {
                         </Link>
 
                         <div className="bg-base-200 hidden lg:flex space-x-2 items-center rounded-lg p-2 w-full">
-                            <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
+                            <SearchBar />
+                            {/* <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
 
                             <button class="btn btn-ghost btn-circle btn-sm">
                                 <SearchIcon className="w-6 h-6 text-gray-400" />
-                            </button>
+                            </button> */}
                         </div>
 
                     </div>
@@ -152,11 +200,12 @@ export const Nav = () => {
                 </div>
                 <div className="block lg:hidden  lg:container mx-auto w-full py-2 px-5">
                     <div className="bg-base-200 flex space-x-2 items-center rounded-lg p-2  w-full">
-                        <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
+                        {/* <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
 
                         <button class="btn btn-ghost btn-circle btn-sm">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                        </button>
+                        </button> */}
+                        <SearchBar />
                     </div>
                 </div>
             </div>
