@@ -205,9 +205,11 @@ export const LongProductThumbnail = (props) => {
     }
 
     const [isButtonPanelShown, showButtonPanel] = useState(false);
+
+    // console.log(props.product.ratings_avg_rate);
     return (
 
-        <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl w-full" onMouseEnter={e=>showButtonPanel(true)} onMouseLeave={e=>showButtonPanel(false)}>
+        <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl w-full" onMouseEnter={e => showButtonPanel(true)} onMouseLeave={e => showButtonPanel(false)}>
             <div className="relative">
                 {
                     images.map((image, index) =>
@@ -243,7 +245,7 @@ export const LongProductThumbnail = (props) => {
                     <Link to={"/brand/" + props.product.brand.id} className="text-gray-500 font-semibold text-xs uppercase tracking-widest hover:text-gray-700">{props.product.brand.name}</Link>
                 </div>
 
-                <RateDisplayByNumber rating={props.product.averageRating} />
+                <RateDisplayByNumber rating={props.product.ratings_avg_rate ? parseFloat(props.product.ratings_avg_rate) : 0} />
 
             </div>
         </div>

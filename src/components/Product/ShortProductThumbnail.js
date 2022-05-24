@@ -18,7 +18,8 @@ export const ShortProductThumbnail = (props) => {
                     <div className="text-xl">
                         {props.product.name}
                     </div>
-                    <RateDisplayByNumber rating={props.product.averageRating} />
+                    <RateDisplayByNumber rating={props.product.ratings_avg_rate ? parseFloat(props.product.ratings_avg_rate) : 0} />
+
                     <div className="btn btn-primary btn-sm mt-4" onClick={e => { props.moveForward("/product/" + props.product.id) }}>View</div>
                 </div>
             </div>
