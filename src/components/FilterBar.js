@@ -15,8 +15,8 @@ export const FilterBar = () => {
     const [categories, setCategories] = useState([]);
     const [brands, setBrands] = useState([]);
 
-    const handleUpdate = (value, type, stat) => {
-        handleURL.handleURLUpdate(value, type, stat, location, navigate)
+    const handleUpdate = (data, stat) => {
+        handleURL.handleURLUpdate(data, stat, location, navigate)
     }
 
     const getStatus = (id, type, status) => {
@@ -60,6 +60,34 @@ export const FilterBar = () => {
         return isOpen;
     }
 
+    const determinePrice = (from, to) => {
+        if (parseInt(getStatus(null, 'pmax', 'single')) <= to && parseInt(getStatus(null, 'pmin', 'single')) >= from) {
+            return true;
+        }
+    }
+
+    const prices = [
+        {
+            min: 1000,
+            max: 10000,
+            value: '1,000 - 10,000'
+        },
+        {
+            min: 10000,
+            max: 30000,
+            value: '10,000 - 30,000'
+        },
+        {
+            min: 30000,
+            max: 70000,
+            value: '30,000 - 70,000'
+        },
+        {
+            min: 70000,
+            max: 150000,
+            value: '70,000 - 150,000'
+        }
+    ];
     return (
         <div className="">
             <div className="shadow-md flex flex-col divide-y rounded-xl py-2  bg-base-200">
@@ -80,7 +108,7 @@ export const FilterBar = () => {
                                         <div class="product" key={index}>
                                             <div class="form-control flex flex-row">
                                                 <label class="label cursor-pointer flex flex-row justify-start items-center space-x-3 w-full">
-                                                    <input type="checkbox" class="checkbox checkbox-primary" onChange={e => handleUpdate(childCategory.id, 'categories')} checked={getStatus(childCategory.id + '', 'categories')} />
+                                                    <input type="checkbox" class="checkbox checkbox-primary" onChange={e => handleUpdate([{ type: 'categories', value: childCategory.id }])} checked={getStatus(childCategory.id + '', 'categories')} />
                                                     <span class="label-text">{childCategory.name}</span>
 
                                                 </label>
@@ -95,26 +123,38 @@ export const FilterBar = () => {
                 </div>
 
 
-                <div className="p-2">
-                    <span className="font-bold">Price</span>
-                    <input type="range" class="range range-primary" />
-                </div>
+                <div className="flex flex-col">
+                    <div className="p-2">
+                        <span className="font-bold">Price</span>
+                    </div>
 
 
-                <div class="grid grid-cols-2 gap-3 p-2">
-                    <div class="form-control w-full">
-                        <label class="label font-bold">
-                            Min
-                        </label>
-                        <input type="number" class="input input-bordered input-primary w-full" min={0} onChange={e => handleUpdate(e.target.value, 'pmin', 'single')} value={getStatus(null, 'pmin', 'single')} />
-                    </div>
-                    <div class="form-group w-full">
-                        <label class="label font-bold">
-                            Max
-                        </label>
-                        <input type="number" class="input input-bordered input-primary w-full" min={0} onChange={e => handleUpdate(e.target.value, 'pmax', 'single')} value={getStatus(null, 'pmax', 'single')} />
+                    {/* <div className="flex flex-col">
+                        {prices.map((price, index) =>
+                            <label class="label cursor-pointer flex flex-row justify-start items-center space-x-3 w-full" key={index}>
+                                <input type="radio" class="radio radio-primary" name="price-range" onChange={e => {
+                                    handleUpdate([{ value: price.min, type: 'pmin' }, { value: price.max, type: 'pmax' }], 'single');
+                                }} defaultChecked={determinePrice(price.min, price.max)} />
+                                <span class="label-text">{price.value}</span>
+                            </label>
+                        )}
+                    </div> */}
+                    <div class="grid grid-cols-2 gap-3 p-2">
+                        <div class="form-control w-full">
+                            <label class="label font-bold">
+                                Min
+                            </label>
+                            <input type="number" class="input input-bordered input-primary w-full" min={0} onChange={e => handleUpdate([{ value: e.target.value, type: 'pmin' }], 'single')} value={getStatus(null, 'pmin', 'single')} />
+                        </div>
+                        <div class="form-group w-full">
+                            <label class="label font-bold">
+                                Max
+                            </label>
+                            <input type="number" class="input input-bordered input-primary w-full" min={0} onChange={e => handleUpdate([{ value: e.target.value, type: 'pmax' }], 'single')} value={getStatus(null, 'pmax', 'single')} />
+                        </div>
                     </div>
                 </div>
+               
 
                 <div className="p-2">
                     <span className="font-bold">Brands</span>
@@ -125,7 +165,7 @@ export const FilterBar = () => {
                                 : brands.map((brand, index) =>
                                     <div class="form-control flex flex-row" key={index}>
                                         <label class="label cursor-pointer flex flex-row justify-start items-center space-x-3 w-full">
-                                            <input type="checkbox" class="checkbox checkbox-primary" onChange={e => handleUpdate(brand.id, 'brands')} checked={getStatus(brand.id + "", 'brands')} />
+                                            <input type="checkbox" class="checkbox checkbox-primary" onChange={e => handleUpdate([{ value: brand.id, type: 'brands' }])} checked={getStatus(brand.id + "", 'brands')} />
                                             <span class="label-text">{brand.name}</span>
 
                                         </label>
@@ -137,14 +177,28 @@ export const FilterBar = () => {
                     </div>
                 </div>
 
-                <div class="p-2">
-                    <span className="font-bold">Sort by</span>
-                    <select class="select select-primary w-full max-w-xs" onChange={e => handleUpdate(e.target.value, 'sort', 'single')} value={getStatus(null, 'sort', 'single')}>
-                        <option value={0}>Select sorting method</option>
-                        <option value={'latest'}>Latest</option>
-                        <option value={'mostViewed'}>Most Viewed</option>
-                    </select>
+                <div className="flex flex-col p-2 space-y-2">
+                    <div class="grow">
+                        <span className="font-bold">Sort by</span>
+                        <select class="select select-primary w-full max-w-xs" onChange={e => handleUpdate([{ value: e.target.value, type: 'sort' }], 'single')} value={getStatus(null, 'sort', 'single')}>
+                            <option value={0}>None</option>
+                            <option value={'latest'}>Latest</option>
+                            <option value={'controversial'}>Controversial</option>
+                            <option value={'popular'}>Popular</option>
+                            <option value={'rating'}>Rating</option>
+                        </select>
+                    </div>
+                    <div class="">
+                        <span className="font-bold">Order</span>
+                        <select class="select select-primary w-full max-w-xs" onChange={e => handleUpdate([{ value: e.target.value, type: 'orderBy' }], 'single')} value={getStatus(null, 'orderBy', 'single')}>
+                            <option value={0}>None</option>
+                            <option value={'desc'}>Descending</option>
+                            <option value={'asc'}>Ascending</option>
+                        </select>
+                    </div>
+
                 </div>
+
             </div>
 
             <button class="btn btn-primary btn-block mt-4" onClick={e => handleClear()}>

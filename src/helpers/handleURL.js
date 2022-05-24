@@ -6,45 +6,47 @@ const queryString = require('query-string')
  * @param {*} type The element type from address bar
  * @param {*} status [single/multiple] [single is single string value to element] [multiple is array to element]
  */
-const handleURLUpdate = (value, type, status = "multiple", location, navigate) => {
+const handleURLUpdate = (data = [{ value: String, type: String }], status = "multiple", location, navigate) => {
 
-    // converting value to string
-    value += ""
+    // console.log(location.search);
     const parsedData = queryString.parse(location.search);
-    // if there is no sub-component, create sub component
-    var list;
-    if (!parsedData[type]) {
-        parsedData[type] = ''
-        list = []
-    } else {
-        // else split the list into array
-        list = parsedData[type].split(",")
-    }
 
-    // see if the array has value
-    if (list.includes(value + "")) {
-        // remove if exists
-        list.splice(list.indexOf(value), 1)
-    } else {
-        // add if not
-        list = [...list, value]
-    }
+    data.map((item) => {
+        // var list = !parsedData
+        // converting value to string
+        // value += ""
+        // if there is no sub-component, create sub component
+        var list;
+        if (!parsedData[item.type]) {
+            parsedData[item.type] = ''
+            list = []
+        } else {
+            // else split the list into array
+            list = parsedData[item.type].split(",")
+        }
 
-    // remove the element from object if length of array is 0
-    if (list.length === 0) {
-        delete parsedData[type];
-    } else {
-        // else join array and concatenate with element of object
-        parsedData[type] = list.join(',')
-    }
+        // see if the array has value
+        if (list.includes(item.value + "")) {
+            // remove if exists
+            list.splice(list.indexOf(item.value), 1)
+        } else {
+            // add if not
+            list = [...list, item.value]
+        }
 
-    // if provided status is single then assign single string value to object element
-    if (status === 'single') {
-        parsedData[type] = value;
-    }
+        // remove the element from object if length of array is 0
+        if (list.length === 0) {
+            delete parsedData[item.type];
+        } else {
+            // else join array and concatenate with element of object
+            parsedData[item.type] = list.join(',')
+        }
 
-    // setQuery(parsedData);
-    // navigate page to required path
+        // if provided status is single then assign single string value to object element
+        if (status === 'single') {
+            parsedData[item.type] = item.value;
+        }
+    })
     navigate('?' + queryString.stringify(parsedData))
 
 }
