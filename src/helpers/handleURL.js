@@ -68,7 +68,7 @@ const getURLStatus = (id, type, status, location) => {
         }
     } else {
         if (status === 'single') {
-            return 0;
+            return '';
         }
     }
 }

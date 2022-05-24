@@ -91,6 +91,9 @@ export const FilterBar = () => {
     return (
         <div className="">
             <div className="shadow-md flex flex-col divide-y rounded-xl py-2  bg-base-200">
+
+                <input type="text" placeholder="Product name" class="input input-bordered input-primary w-full my-2" onChange={e => handleUpdate([{ type: 'name', value: e.target.value }], 'single')} value={getStatus(null, 'name', 'single')} />
+                
                 <div class="flex flex-col divide-y">
                     {categories.length === 0 ?
                         <Loading size="50px" text="Loading Categories" />
@@ -154,7 +157,7 @@ export const FilterBar = () => {
                         </div>
                     </div>
                 </div>
-               
+
 
                 <div className="p-2">
                     <span className="font-bold">Brands</span>
