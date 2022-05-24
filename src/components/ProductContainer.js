@@ -35,9 +35,6 @@ export const ProductContainer = ({ product, title }) => {
             </div>
 
             <div class="flex md:hidden carousel carousel-center p-4 space-x-4  rounded-box">
-                {/* <div class="carousel-item">
-                </div> */}
-
                 {product.length === 0 ?
                     <Loading />
                     : product.slice(0, (page * 10)).map((product, index) =>

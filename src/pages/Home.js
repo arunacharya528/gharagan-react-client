@@ -10,12 +10,13 @@ import { Loading } from "../helpers/Loading";
 export const Home = () => {
 
     const [latestProducts, setLatestProducts] = useState([]);
-    const [mostViewedProducts, setMostViewedProducts] = useState([]);
-    const [latestPage, setLatestPage] = useState(1);
-    const [mostViewedPage, setMostViewedPage] = useState(1);
+    const [popularProducts, setPopularProducts] = useState([]);
+    const [controversialProducts, setControversialProducts] = useState([]);
+    const [topRatedProducts, setTopRatedProducts] = useState([]);
+
 
     useEffect(() => {
-        getProducts("sort=latest")
+        getProducts("sort=latest&orderBy=desc")
             .then((response) => {
                 setLatestProducts(response.data);
             })
@@ -23,9 +24,25 @@ export const Home = () => {
                 console.log(error);
             });
 
-        getProducts("sort=mostViewed")
+        getProducts("sort=popular&orderBy=desc")
             .then((response) => {
-                setMostViewedProducts(response.data);
+                setPopularProducts(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        getProducts("sort=controversial&orderBy=desc")
+            .then((response) => {
+                setControversialProducts(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        getProducts("sort=rating&orderBy=desc")
+            .then((response) => {
+                setTopRatedProducts(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -35,9 +52,11 @@ export const Home = () => {
     return (
         <>
             <BannerForHomePage />
-            <ProductContainer product={latestProducts} title={"Latest Products"} />
-            <ProductContainer product={mostViewedProducts} title={"Most Viewed Products"} />
 
+            <ProductContainer product={latestProducts} title={"Latest Products"} />
+            <ProductContainer product={topRatedProducts} title={"Top Rated Products"} />
+            <ProductContainer product={popularProducts} title={"Popular Products"} />
+            <ProductContainer product={controversialProducts} title={"Controversial Products"} />
 
             <BrandCarousel />
         </>

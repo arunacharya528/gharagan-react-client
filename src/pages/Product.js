@@ -4,8 +4,9 @@ import ImageGallery from "react-image-gallery";
 import { Link, useLocation } from "react-router-dom";
 import Cookies from "universal-cookie";
 import { getByProductAndSession, postToCart } from "../adapters/cartItems";
-import { getproduct } from "../adapters/product";
+import { getproduct, getProducts } from "../adapters/product";
 import { RateAndComment } from "../components/Product/RateAndComment";
+import { ProductContainer } from "../components/ProductContainer";
 import { ProductImage } from "../components/ProductImage";
 import { RateDisplayByArray, RateDisplayByNumber, RateInput, RatingSummary } from "../components/Rating";
 import { Loading } from "../helpers/Loading";
@@ -29,10 +30,20 @@ export const Product = () => {
     const cookie = new Cookies()
 
     const [selectedInventory, setSelectedInventory] = useState(null);
+    const [relatedProducts, setRelatedProducts] = useState([]);
     useEffect(() => {
         getproduct(url[2])
             .then(response => setProduct(response.data))
             .catch(error => console.log(error))
+
+        getProducts("mode=related&product_id=" + url[2])
+            .then((response) => {
+                setRelatedProducts(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
     }, []);
 
     // useEffect(() => {
@@ -171,7 +182,7 @@ export const Product = () => {
                     <RatingSummary ratings={product.ratings} />
 
                     <div class="collapse">
-                        <input type="checkbox"/>
+                        <input type="checkbox" />
                         <div class="collapse-title p-4">
                             <button className="btn btn-ghost btn-outline btn-block">
                                 Write a review
@@ -183,7 +194,7 @@ export const Product = () => {
                             <button className="btn btn-block btn-primary">Post Review</button>
                         </div>
                     </div>
-                    
+
                 </div>
 
 
@@ -317,6 +328,9 @@ export const Product = () => {
                                 </div>
                             </div>
                         </div>
+
+                        <ProductContainer product={relatedProducts} title="Related Products" />
+
                     </>
                     : <Loading />
             }
