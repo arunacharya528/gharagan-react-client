@@ -2,51 +2,43 @@ import React, { useEffect, useState } from "react";
 
 export const RatingSummary = ({ ratings }) => {
 
-    const [percent5, setPercent5] = useState(0);
-    const [percent4, setPercent4] = useState(0);
-    const [percent3, setPercent3] = useState(0);
-    const [percent2, setPercent2] = useState(0);
-    const [percent1, setPercent1] = useState(0);
-    const [count, setCount] = useState(0);
+    const [percent, setPercent] = useState({
+        1: 0,
+        2: 0,
+        3: 0,
+        4: 0,
+        5: 0,
+    })
 
     useEffect(() => {
-        const rated5 = extractByRate(ratings, 5);
-        const rated4 = extractByRate(ratings, 4);
-        const rated3 = extractByRate(ratings, 3);
-        const rated2 = extractByRate(ratings, 2);
-        const rated1 = extractByRate(ratings, 1);
-        const ratingCount = ratings.length;
-
-        setPercent5(Math.floor((rated5 / ratingCount) * 100))
-        setPercent4(Math.floor((rated4 / ratingCount) * 100))
-        setPercent3(Math.floor((rated3 / ratingCount) * 100))
-        setPercent2(Math.floor((rated2 / ratingCount) * 100))
-        setPercent1(Math.floor((rated1 / ratingCount) * 100))
-        setCount(ratingCount);
+        setPercent({
+            1: extractByRate(ratings, 1),
+            2: extractByRate(ratings, 2),
+            3: extractByRate(ratings, 3),
+            4: extractByRate(ratings, 4),
+            5: extractByRate(ratings, 5),
+        })
 
     }, [])
 
     const extractByRate = (collection, rate) => {
-        return collection.filter((item) => { return item.rate == rate }).length;
+        const rateValue = collection.filter((item) => { return item.rate == rate }).length;
+        const value = Math.floor((rateValue / ratings.length) * 100)
+        return isNaN(value) ? 0 : value;
     }
 
     return (
         <div class="flex flex-col space-y-7">
             <div class="my-2 flex space-x-3 px-2 font-bold">
-                {/* <div className="text-5xl"> */}
                 <RateDisplayByArray ratings={ratings} />
-
                 <div className="font-semibold text-primary">Based on {ratings.length} reviews</div>
-                {/* </div> */}
-                {/* <div className="h6">{count} ratings</div> */}
-
             </div>
             <div>
-                <RateProgressBar percent={percent5} star={5} />
-                <RateProgressBar percent={percent4} star={4} />
-                <RateProgressBar percent={percent3} star={3} />
-                <RateProgressBar percent={percent2} star={2} />
-                <RateProgressBar percent={percent1} star={1} />
+                <RateProgressBar percent={percent[5]} star={5} />
+                <RateProgressBar percent={percent[4]} star={4} />
+                <RateProgressBar percent={percent[3]} star={3} />
+                <RateProgressBar percent={percent[2]} star={2} />
+                <RateProgressBar percent={percent[1]} star={1} />
             </div>
 
         </div>
@@ -62,7 +54,7 @@ export const RateProgressBar = ({ star, percent }) => {
                     <input type="radio" name="rating-2" class="mask mask-star-2 bg-orange-400" />
                 </div>
             </div>
-           
+
             <progress class="progress progress-primary h-4" value={percent} max="100"></progress>
             <span className="w-16 text-center">{percent}%</span>
         </div>
@@ -81,32 +73,38 @@ export const RateDisplayByNumber = ({ rating }) => {
         return Math.round((rating + Number.EPSILON) * 10) / 10;
     }
 
-    const getStatus = (from, to) => {
-
-        // return 
-        if (getRoundedValue(rating) >= from && getRoundedValue(rating) <= to) {
-            return true;
-        } else {
-            return undefined;
-        }
+    const getRoundedStarValue = (rating) => {
+        return Math.round(rating * 2)
     }
 
+    const allStars = Array(10).fill({}).map((key, index) => {
+
+        const mask = index % 2 === 0 ? 1 : 2
+        // const selected = index + 1 == getRoundedStarValue(rating) ? true : false
+        var selected = false;
+        if (index + 1 == getRoundedStarValue(rating)) {
+            selected = true
+        } else if (getRoundedStarValue(rating) === 0) {
+            selected = false;
+        } else {
+            selected = false;   
+        }
+
+
+
+        return { mask, selected }
+    })
     return (
         <div className="flex flex-row items-center space-x-3">
             <span className="">
                 {getRoundedValue(rating)}
             </span>
-            <div class="rating rating-sm rating-half justify-self-stretch">
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(0, 0.5)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(0.5, 1)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(1, 1.5)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(1.5, 2)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(2, 2.5)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(2.5, 3)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(3, 3.5)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(3.5, 4)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-1" checked={getStatus(4, 4.5)} disabled />
-                <input type="radio" class="bg-orange-400 mask mask-star-2 mask-half-2" checked={getStatus(4.5, 5)} disabled />
+            <div class="rating rating-sm rating-half">
+                {
+                    allStars.map((star, index) =>
+                        <input type="radio" class={"bg-orange-400 mask mask-star-2 mask-half-" + star.mask} defaultChecked={star.selected} disabled />
+                    )
+                }
             </div>
 
         </div>
@@ -122,17 +120,13 @@ export const RateDisplayByNumber = ({ rating }) => {
 export const RateDisplayByArray = ({ ratings }) => {
 
     const getAverageRating = (ratingCollection) => {
-        const collection = ratingCollection.map((rating) => {
-            return rating.rate;
+        var sum = 0;
+        ratingCollection.map((rating) => {
+            sum += rating.rate;
         })
 
-        var sum = 0;
-        for (let i = 0; i < collection.length; i++) {
-            sum += collection[i];
-        }
-
-        const rating = sum / collection.length;
-        return rating;
+        const rating = sum / ratings.length;
+        return isNaN(rating) ? 0 : rating;
     }
 
     return (
