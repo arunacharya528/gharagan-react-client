@@ -17,6 +17,7 @@ import { AuthLink, AuthUser } from "../pages/Authenticate";
 import logo from "../assets/image/logo.png";
 import lgLogo from "../assets/image/lg-logo.png";
 import { SearchBar } from "../components/Search";
+import { NavProductContainer } from "../components/Nav/NavProductContainer";
 
 const queryString = require('query-string')
 
@@ -33,11 +34,8 @@ export const Nav = () => {
 
     const [selectedCategory, setSelectedCategory] = useState([]);
 
-    const [latestProducts, setLatestProducts] = useState([]);
-    const [latestProductLink, setLatetstProductlink] = useState('');
-
-    const [mostViewedProducts, setMostViewedProducts] = useState([]);
-    const [mostViewedProductLink, setMostViewedProductLink] = useState('');
+    const [latestProducts, setLatestProducts] = useState({ link: '', products: [] });
+    const [topRatedProducts, setTopRatedProducts] = useState({ link: '', products: [] });
 
 
     const [selectedTab, setSelectedTab] = useState(null);
@@ -62,18 +60,27 @@ export const Nav = () => {
         })
 
         // implode the array by joining with string and fetch data with contructed link
-        const latestLink = "categories=" + childCategories.join(',') + "&sort=latest";
+        const latestLink = "categories=" + childCategories.join(',') + "&sort=latest&orderBy=desc";
         getProducts(latestLink)
-            .then(response => setLatestProducts(response.data))
+            .then(response => {
+                setLatestProducts({
+                    products: response.data,
+                    link: "/filter/?" + latestLink
+                })
+            })
             .catch(error => console.log(error))
-        setLatetstProductlink("/filter/?" + latestLink);
 
-
-        const mostViewedLink = "categories=" + childCategories.join(',') + "&sort=mostViewed";
-        getProducts(mostViewedLink)
-            .then(response => setMostViewedProducts(response.data))
+        const topRatedLink = "categories=" + childCategories.join(',') + "&sort=rating&orderBy=desc";
+        getProducts(topRatedLink)
+            .then(response => {
+                setTopRatedProducts({
+                    products: response.data,
+                    link: "/filter/?" + topRatedLink
+                })
+            })
             .catch(error => console.log(error))
-        setMostViewedProductLink("/filter/?" + mostViewedLink);
+
+        
         setSelectedCategory(category);
 
     }
@@ -84,52 +91,6 @@ export const Nav = () => {
         navigate(link)
         setSelectedTab(null)
     }
-
-    // const [focused, setFocused] = useState(true)
-    // const onFocus = () => setFocused(true)
-    // const onBlur = () => setFocused(false)
-    // const [searchResult, setSearchResult] = useState([]);
-    // useEffect(() => {
-    //     getProducts("sort=rating&orderBy=desc")
-    //         .then((response) => {
-    //             setSearchResult(response.data);
-    //         })
-    //         .catch((error) => {
-    //             console.log(error);
-    //         });
-    // }, [focused]);
-
-
-
-    // console.log(focused);
-
-    // const SearchBar = () => {
-        // return (
-        //     <div className="flex flex-col grow">
-
-        //         <div className="flex">
-        //             <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" onFocus={onFocus} onBlur={onBlur} />
-
-        //             <button class="btn btn-ghost btn-circle btn-sm">
-        //                 <SearchIcon className="w-6 h-6 text-gray-400" />
-        //             </button>
-        //         </div>
-        //         {
-        //             focused ?
-        //                 <div className="relative">
-        //                     <div className="absolute w-full h-64 bg-base-200 inset-y-2 rounded-b-xl shadow-md flex flex-col divide-x-2">
-        //                         {searchResult.map((product, index) => {
-
-        //                         })}
-        //                     </div>
-        //                 </div>
-        //                 : ''
-        //         }
-
-
-        //     </div>
-        // );
-    // }
 
     return (
         <>
@@ -260,31 +221,8 @@ export const Nav = () => {
                                             {selectedCategory.description}
                                         </p>
                                     </div>
-                                    <section className="mb-4">
-                                        <div className="flex justify-between py-3">
-                                            <span className="text-xl font-bold">Latest Products</span>
-                                            <Link to={latestProductLink} className="btn btn-sm btn-ghost rounded-full">More</Link>
-                                        </div>
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 items-stretch">
-                                            {latestProducts.length === 0 ?
-                                                <Loading />
-                                                : latestProducts.slice(0, 5).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} moveForward={link => forwardTo(link)} />)
-                                            }
-                                        </div>
-                                    </section>
-                                    <section className="mb-4">
-                                        <div className="flex justify-between py-3">
-                                            <span className="text-xl font-bold">Most Viewed Products</span>
-                                            <Link to={mostViewedProductLink} className="btn btn-sm btn-ghost rounded-full">More</Link>
-                                        </div>
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5  gap-5 items-stretch">
-                                            {mostViewedProducts.length === 0 ?
-                                                <Loading />
-                                                : mostViewedProducts.slice(0, 5).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} />)
-                                            }
-                                        </div>
-                                    </section>
-
+                                    <NavProductContainer title={"Latest Products"} products={latestProducts.products} link={latestProducts.link} forward={forwardTo} />
+                                    <NavProductContainer title={"Top Rated Products"} products={topRatedProducts.products} link={topRatedProducts.link} forward={forwardTo} />
                                 </div>
                             </div>
                         </div>
