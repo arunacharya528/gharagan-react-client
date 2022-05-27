@@ -10,6 +10,8 @@ import toast from 'react-hot-toast'
 import { success } from "daisyui/src/colors";
 import { postWishList, productExistsInWishList, removeFromWishList } from "../../adapters/wishlist";
 import { EyeIcon, HeartIcon } from "../../icons";
+import { WishListContext } from "../../context/WishListContext";
+import { WishListButton } from "../WishListButton";
 
 export const LongProductThumbnail = (props) => {
 
@@ -25,13 +27,6 @@ export const LongProductThumbnail = (props) => {
 
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
-
-    const [isWishRefreshed, refreshWish] = useState(false)
-    const [wishListResponse, setWishlistResponse] = useState(null);
-
-    const { user } = useContext(UserContext);
-    const { session } = useContext(CartContext);
-
 
     const Preview = ({ id, images, inventories, onChange }) => {
 
@@ -92,7 +87,6 @@ export const LongProductThumbnail = (props) => {
                                         </div>
                                         {selectedInventory.discount ? <div className="badge badge-success badge-outline p-3">{selectedInventory.discount.discount_percent}% OFF</div> : ''}
                                     </div>
-                                    {determineWishListButton()}
                                 </div>
 
                                 : ''
@@ -108,9 +102,12 @@ export const LongProductThumbnail = (props) => {
                     </div>
 
                     <div className="flex flex-col space-y-2">
-                        <button className={"w-full btn btn-sm btn-accent " + (!session ? 'btn-disabled' : '')} onClick={handleCartAddition}>
-                            {session ? "Add to cart" : "Login to add to cart"}
-                        </button>
+                        <div className="flex space-x-2">
+                            <WishListButton productId={props.product.id} />
+                            <button className={"grow btn btn-sm btn-accent " + (!session ? 'btn-disabled' : '')} onClick={handleCartAddition}>
+                                {session ? "Add to cart" : "Login to add to cart"}
+                            </button>
+                        </div>
                         <Link to={"/product/" + id} className="w-full btn btn-sm btn-primary" onClick={e => onChange({ type: 'EXIT' })}>
                             View
                         </Link>
@@ -140,83 +137,15 @@ export const LongProductThumbnail = (props) => {
         openModal();
     }
 
-    //=======================
-    //
-    //  Wishlist
-    //
-    //=======================
-
-    useEffect(() => {
-        if (session) {
-            productExistsInWishList(props.product.id, user.id)
-                .then(response => setWishlistResponse(response))
-                .catch(error => setWishlistResponse(error.response))
-        }
-    }, [session, isWishRefreshed]);
-
-
-    const handleWishListRemoval = () => {
-        removeFromWishList(wishListResponse.data.id)
-            .then(response => {
-                refreshWish(!isWishRefreshed);
-            })
-            .catch(error => console.log(error))
-    }
-
-    const handleWishListAddition = () => {
-        postWishList({ product_id: props.product.id, user_id: user.id })
-            .then(response => refreshWish(!isWishRefreshed))
-            .catch(error => console.log(error))
-    }
-
-    const determineWishListButton = () => {
-
-        return (
-            <>
-                {
-                    user !== null ?
-                        <>
-                            {
-                                wishListResponse !== null && wishListResponse.status === 200 ?
-                                    <div class="tooltip tooltip-top" data-tip="Remove from Wishlist">
-                                        <button class={"btn btn-square btn-primary btn-active  btn-sm"} onClick={handleWishListRemoval}>
-                                            <HeartIcon className="h-4 w-4" />
-                                        </button>
-                                    </div>
-
-                                    :
-                                    <div class="tooltip tooltip-top" data-tip="Add to Wishlist">
-                                        <button class={"btn btn-square btn-ghost btn-active text-white btn-sm"} onClick={handleWishListAddition}>
-                                            <HeartIcon className="h-4 w-4" />
-                                        </button>
-                                    </div>
-
-                            }
-                        </>
-                        :
-                        <div class="tooltip tooltip-top" data-tip="Login to access">
-                            <button class={"btn btn-square btn-ghost btn-disabled text-white btn-sm"}>
-                                <HeartIcon className="h-4 w-4" />
-                            </button>
-                        </div>
-                }
-            </>
-        );
-    }
-
     const [isButtonPanelShown, showButtonPanel] = useState(false);
 
-    // console.log(props.product.ratings_avg_rate);
     return (
 
         <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl w-full" onMouseEnter={e => showButtonPanel(true)} onMouseLeave={e => showButtonPanel(false)}>
             <div className="relative">
                 {
                     images.map((image, index) =>
-                        // <img src={"https://www.zdnet.com/a/img/resize/02787d7bc465479b902d22a59c5ff66a5af2bf31/2021/12/22/34c47f00-33c7-4c4e-9691-cba142be72b9/iphone-13-pro.png?width=1200&fit=bounds&format=pjpg&auto=webp"} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} className="h-48 w-full rounded-t-xl object-cover" />
-
                         <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} className="h-48 w-full rounded-t-xl object-cover" />
-
                     )
                 }
 
@@ -229,7 +158,7 @@ export const LongProductThumbnail = (props) => {
                                     <EyeIcon className="h-5 w-5" />
                                 </button>
                             </div>
-                            {determineWishListButton()}
+                            <WishListButton productId={props.product.id} />
                         </div>
                         : ''
                 }

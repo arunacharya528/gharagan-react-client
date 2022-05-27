@@ -2,19 +2,12 @@ import { useContext, useEffect, useState } from "react";
 import { getUser } from "../adapters/profile";
 import { LongProductThumbnail } from "../components/Product/LongProductThumbnail";
 import { UserContext } from "../context/UserContext";
+import { WishListContext } from "../context/WishListContext";
 
 export const WishList = () => {
 
-    const [wishList, setWishList] = useState([]);
 
-    const { user } = useContext(UserContext)
-    const [isRefreshed, setRefresh] = useState(false)
-
-    useEffect(() => {
-        getUser('', user.id, 'wishlist')
-            .then(response => setWishList(response.data))
-            .catch(error => console.log(error))
-    }, [isRefreshed])
+    const { wishList } = useContext(WishListContext);
 
 
     return (
