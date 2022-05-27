@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import { UserContext } from "../../context/UserContext";
-import { CartIcon, HomeIcon, PersonIcon, SearchIcon } from "../../icons";
+import { CartIcon, HeartIcon, HomeIcon, PersonIcon, SearchIcon } from "../../icons";
 
 export const FooterNav = () => {
 
@@ -12,23 +12,23 @@ export const FooterNav = () => {
     return (
         <ul class="menu menu-horizontal w-full flex lg:hidden justify-around sticky bottom-0 py-3 z-50 bg-base-200">
             <li>
-                <Link to="/" className="flex flex-col">
+                <Link to="/" className="btn btn-ghost">
                     <HomeIcon className="h-7 w-7" />
                 </Link>
             </li>
             <li>
-                <Link to="/filter" className="flex flex-col">
+                <Link to="/filter" className="btn btn-ghost">
                     <SearchIcon className="h-7 w-7" />
                 </Link>
             </li>
             <li>
-                <a className="flex flex-col">
-                    <PersonIcon className="h-7 w-7" />
-                </a>
+                <Link to={"/user/wishlist"} className="btn btn-ghost">
+                    <HeartIcon className="h-7 w-7" />
+                </Link>
             </li>
             {
                 user !== null && session !== null ?
-                    <label for="rightDrawer" to={"/user/cart"} class="btn btn-ghost btn-circle">
+                    <label for="rightDrawer" class="btn btn-ghost">
                         <div class="indicator">
                             <CartIcon className="w-6 h-6" />
                             <span class="badge badge-xs badge-primary indicator-item">
@@ -36,7 +36,11 @@ export const FooterNav = () => {
                             </span>
                         </div>
                     </label>
-                    : ''
+                    : <li>
+                        <Link to={"/user/cart"} className="btn btn-ghost">
+                            <CartIcon className="h-7 w-7" />
+                        </Link>
+                    </li>
             }
         </ul>
     );
