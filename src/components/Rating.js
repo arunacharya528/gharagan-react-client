@@ -87,7 +87,7 @@ export const RateDisplayByNumber = ({ rating }) => {
         } else if (getRoundedStarValue(rating) === 0) {
             selected = false;
         } else {
-            selected = false;   
+            selected = false;
         }
 
 
@@ -137,18 +137,18 @@ export const RateDisplayByArray = ({ ratings }) => {
 
 export const RateInput = ({ handleChange }) => {
 
-    const [rate, setRate] = useState(0);
+    const [rate, setRate] = useState(5);
 
     handleChange(rate);
+
+    const rates = [1, 2, 3, 4, 5];
     return (
-        <div className="h4 d-block">
-            <i class={"fa fa-star" + (rate >= 1 ? '' : '-o')} onClick={e => setRate(1)}></i>
-            <i class={"fa fa-star" + (rate >= 2 ? '' : '-o')} onClick={e => setRate(2)}></i>
-            <i class={"fa fa-star" + (rate >= 3 ? '' : '-o')} onClick={e => setRate(3)}></i>
-            <i class={"fa fa-star" + (rate >= 4 ? '' : '-o')} onClick={e => setRate(4)}></i>
-            <i class={"fa fa-star" + (rate >= 5 ? '' : '-o')} onClick={e => setRate(5)}></i>
-            {' '}
-            ({rate})
-        </div>
+        <form>
+            <div class="rating">
+                {rates.map((item, index) =>
+                    <input type="radio" name="rating" class="mask mask-star-2 bg-orange-400" onChange={e => setRate(item)} checked={rate === item ? true : false} />
+                )}
+            </div>
+        </form>
     );
 }

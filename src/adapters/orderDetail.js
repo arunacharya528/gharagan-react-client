@@ -28,3 +28,18 @@ export const cancelOrder = (bearerToken, orderId) => {
 
     return axios(config)
 }
+
+
+export const hasOrderedProduct = (bearerToken, productId, userId) => {
+
+    let config = {
+        method: 'get',
+        url: `${apiURL}/orderDetail/hasOrdered?product_id=${productId}&user_id=${userId}`,
+        headers: {
+            'Authorization': `Bearer ${bearerToken}`
+        },
+        maxRedirects: 0
+    };
+
+    return axios(config)
+}
