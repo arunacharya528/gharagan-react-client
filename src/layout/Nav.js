@@ -42,7 +42,7 @@ export const Nav = () => {
     const selectedCategoryNumber = parsedData.selectedCategory;
     useEffect(() => {
         if (parsedData.selectedCategory && categories.length !== 0) {
-            categories.map((category) => {
+            categories.data.map((category) => {
                 if (category.id + "" === parsedData.selectedCategory) {
                     setSelectedCategory(category);
                     handleCategorySelection(category);

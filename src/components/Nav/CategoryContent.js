@@ -1,23 +1,29 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { CategoryContext } from "../../context/CategoryContext";
+import { CategoryListSkeletion } from "../Skeleton/CategorySkeleton";
 
-export const CategoryMenu = ({ selectedTab, setSelectedTab, handleCategorySelection }) => {
+export const CategoryMenu = () => {
 
     const { categories } = useContext(CategoryContext)
     const navigate = useNavigate();
 
     return (
         <>
-            {categories.map((category, index) =>
-                <li class={""} onClick={e => {
-                    // setSelectedTab(category.id);
-                    // handleCategorySelection(category)
-                    navigate("?selectedCategory=" + category.id)
-                }} key={index}>
-                    <a className={(selectedTab === category.id ? 'active' : '')}>{category.name}</a>
-                </li>
-            )}
+            {categories.loading ?
+                <CategoryListSkeletion />
+                :
+                categories.data.map((category, index) =>
+                    <li class={""} onClick={e => {
+                        navigate("?selectedCategory=" + category.id)
+                    }} key={index}>
+                        <a>{category.name}</a>
+                    </li>
+                )
+
+            }
+
+
         </>
 
     );
