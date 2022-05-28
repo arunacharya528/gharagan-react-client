@@ -1,12 +1,12 @@
 import { RatingSummary, RateDisplayByNumber } from "../Rating";
+import { ReviewsSkeleton } from "../Skeleton/ProductSkeleton";
 const moment = require('moment');
 
 export const Reviews = ({ product }) => {
     return (
         <>
             {product.loading ?
-                "Loading"
-
+                <ReviewsSkeleton />
                 :
                 <div className="grid lg:grid-cols-5 gap-20">
                     <div className="lg:col-span-2 flex flex-col">
@@ -47,13 +47,7 @@ export const Reviews = ({ product }) => {
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="col d-flex flex-column">
-                                        <div className="d-block">
-
-                                        </div>
-
-                                        <p>{rating.comment}</p>
-                                    </div>
+                                    <p>{rating.comment}</p>
                                 </div>
                             </div>
 

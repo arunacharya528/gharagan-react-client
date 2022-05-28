@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Loading } from "../helpers/Loading";
 import { LongProductThumbnail } from "./Thumbnail/LongProductThumbnail";
-import { ProductSkeleton } from "./Skeleton/ProductSkeleton";
+import { ProductSkeleton, ProductThumbnailSkeleton } from "./Skeleton/ProductSkeleton";
 
 export const ProductContainer = ({ products, title }) => {
 
@@ -18,7 +18,7 @@ export const ProductContainer = ({ products, title }) => {
 
                     {products.loading ?
                         <>{Array(5).fill({}).map((item, index) =>
-                            <ProductSkeleton key={index} />
+                            <ProductThumbnailSkeleton key={index} />
                         )}</>
                         : products.data.slice(0, (page * 10)).map((product, index) => <LongProductThumbnail key={index} product={product} />)
                     }
@@ -42,7 +42,7 @@ export const ProductContainer = ({ products, title }) => {
                 {products.loading ?
                     <>{Array(5).fill({}).map((item, index) =>
                         <div class="carousel-item w-11/12">
-                            <ProductSkeleton key={index} />
+                            <ProductThumbnailSkeleton key={index} />
                         </div>
                     )}</>
                     : products.data.slice(0, (page * 10)).map((product, index) =>

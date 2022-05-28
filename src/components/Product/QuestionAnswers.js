@@ -1,3 +1,4 @@
+import { QASkeleton } from '../Skeleton/ProductSkeleton';
 
 const moment = require('moment');
 export const QAs = ({ product }) => {
@@ -6,7 +7,7 @@ export const QAs = ({ product }) => {
     return (
         <>
             {product.loading ?
-                "Loading"
+                <QASkeleton />
                 :
                 <div className="grid lg:grid-cols-5 gap-10">
                     <div className="lg:col-span-2 flex flex-col space-y-5">

@@ -3,6 +3,7 @@ import ImageGallery from "react-image-gallery";
 import { getDiscountedPrice } from "../../helpers/calculatePrice";
 import { HeartIcon } from "../../icons";
 import { RateDisplayByArray } from "../Rating";
+import { GeneralInfoSkeleton } from "../Skeleton/ProductSkeleton";
 
 export const GeneralInfo = ({ product, setSelectedTab }) => {
 
@@ -18,7 +19,7 @@ export const GeneralInfo = ({ product, setSelectedTab }) => {
         <>
             {
                 product.loading ?
-                    "Loading"
+                    <GeneralInfoSkeleton/>
 
                     :
                     <div className="grid md:grid-cols-2 gap-5">

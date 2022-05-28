@@ -12,6 +12,7 @@ import { Reviews } from "../components/Product/Reviews";
 import { ProductContainer } from "../components/ProductContainer";
 import { ProductImage } from "../components/ProductImage";
 import { RateDisplayByArray, RateDisplayByNumber, RateInput, RatingSummary } from "../components/Rating";
+import { SpecificationSkeleton } from "../components/Skeleton/ProductSkeleton";
 import { Loading } from "../helpers/Loading";
 import { HeartIcon } from "../icons";
 import { AuthRedirect } from "./Authenticate";
@@ -60,7 +61,7 @@ export const Product = () => {
     const Specification = () => {
 
         return (<div>
-            {product.data.description}
+            {product.loading ? <SpecificationSkeleton /> : product.data.description}
         </div>)
     }
 
@@ -94,35 +95,26 @@ export const Product = () => {
 
     return (
         <section class="" >
+            <div class="card  md:container mx-3 md:mx-auto bg-base-200 shadow-md">
+                <div class="card-body px-3 py-5 ">
+                    <ul class="menu bg-base-100 flex flex-row items-stretch justify-between bg-transparent">
+                        {
+                            buttons.map((button, index) =>
+                                <li className={"grow border-b-4 ease-in-out duration-300 " + (selectedTab === button.value ? ' border-primary' : '')} onClick={e => setSelectedTab(button.value)}>
+                                    <a className="block text-center h-full font-semibold">{button.name}</a>
+                                </li>
+                            )
+                        }
+                    </ul>
 
-            {
-                product !== null ?
+                    <div className="p-5">
+                        {getSelectedTab()}
+                    </div>
+                </div>
+            </div>
 
-                    <>
+            <ProductContainer products={relatedProducts} title="Related Products" />
 
-                        <div class="card  md:container mx-3 md:mx-auto bg-base-200 shadow-md">
-                            <div class="card-body px-3 py-5">
-                                <ul class="menu bg-base-100 flex flex-row items-stretch justify-between bg-transparent">
-                                    {
-                                        buttons.map((button, index) =>
-                                            <li className={"grow border-b-4 ease-in-out duration-300 " + (selectedTab === button.value ? ' border-primary' : '')} onClick={e => setSelectedTab(button.value)}>
-                                                <a className="block text-center h-full font-semibold">{button.name}</a>
-                                            </li>
-                                        )
-                                    }
-                                </ul>
-
-                                <div className="p-5">
-                                    {getSelectedTab()}
-                                </div>
-                            </div>
-                        </div>
-
-                        <ProductContainer products={relatedProducts} title="Related Products" />
-
-                    </>
-                    : <Loading />
-            }
         </section >
 
     );
