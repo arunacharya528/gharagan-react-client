@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { getUser } from "../adapters/profile";
-import { LongProductThumbnail } from "../components/Product/LongProductThumbnail";
+import { LongProductThumbnail } from "../components/Thumbnail/LongProductThumbnail";
 import { UserContext } from "../context/UserContext";
 import { WishListContext } from "../context/WishListContext";
 

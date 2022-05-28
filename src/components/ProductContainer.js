@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Loading } from "../helpers/Loading";
-import { LongProductThumbnail } from "./Product/LongProductThumbnail";
+import { LongProductThumbnail } from "./Thumbnail/LongProductThumbnail";
 import { ProductSkeleton } from "./Skeleton/ProductSkeleton";
 
 export const ProductContainer = ({ products, title }) => {

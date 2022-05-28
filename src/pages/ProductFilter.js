@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { FilterBar } from "../components/FilterBar";
-import { LongProductThumbnail } from "../components/Product/LongProductThumbnail";
+import { LongProductThumbnail } from "../components/Thumbnail/LongProductThumbnail";
 import { Loading } from "../helpers/Loading";
 import { FullScreenEnterIcon, FullScreenExitIcon, ListIcon } from "../icons";
 

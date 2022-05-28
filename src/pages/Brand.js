@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getBrand } from "../adapters/brand";
 import { getProducts } from "../adapters/product";
-import { LongProductThumbnail } from "../components/Product/LongProductThumbnail";
+import { LongProductThumbnail } from "../components/Thumbnail/LongProductThumbnail";
 import { Loading } from "../helpers/Loading";
 
 export const Brand = () => {

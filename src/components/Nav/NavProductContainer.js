@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Loading } from "../../helpers/Loading";
-import { ShortProductThumbnail } from "../Product/ShortProductThumbnail";
+import { ShortProductThumbnail } from "../Thumbnail/ShortProductThumbnail";
 
 export const NavProductContainer = ({ title, products, link, forward }) => {
 

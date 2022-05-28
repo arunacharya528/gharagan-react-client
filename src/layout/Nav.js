@@ -6,7 +6,6 @@ import { getProducts } from "../adapters/product";
 import { getShoppingSession } from "../adapters/shoppingSession";
 import { CategoryMenu } from "../components/Nav/CategoryContent";
 import { UserMenu } from "../components/Nav/UserMenu";
-import { ShortProductThumbnail } from "../components/Product/ShortProductThumbnail";
 import { CartContext } from "../context/CartContext";
 import { CategoryContext } from "../context/CategoryContext";
 import { UserContext, UserProvider } from "../context/UserContext";
