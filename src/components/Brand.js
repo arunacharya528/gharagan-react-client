@@ -51,10 +51,12 @@ export const BrandCarousel = () => {
             );
         } else {
             return Array(3).fill({}).map(() =>
-                <div class=" shadow rounded-md p-4 max-w-sm w-full mx-3">
+                <div class=" shadow rounded-lg w-full mx-3">
                     <div class="animate-pulse flex space-x-4">
 
-                        <div className="h-52 w-full p-3 rounded bg-slate-700"></div>
+                        <div className="h-52 w-full p-3 rounded bg-base-200 flex justify-center items-center">
+                            <div className="h-7 w-16 bg-base-300 rounded-lg"></div>
+                        </div>
                     </div>
                 </div>
             )
