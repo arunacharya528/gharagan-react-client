@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { Loading } from "../helpers/Loading";
 import { LongProductThumbnail } from "./Product/LongProductThumbnail";
+import { ProductSkeleton } from "./Skeleton/ProductSkeleton";
 
-export const ProductContainer = ({ product, title }) => {
+export const ProductContainer = ({ products, title }) => {
 
     const [page, setPage] = useState(1);
+
     return (
         <div className="container mx-auto mb-8 p-5">
             <div className="text-center my-3">
@@ -14,15 +16,17 @@ export const ProductContainer = ({ product, title }) => {
             <div className="hidden md:block">
                 <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 justify-center py-2">
 
-                    {product.length === 0 ?
-                        <Loading />
-                        : product.slice(0, (page * 10)).map((product, index) => <LongProductThumbnail key={index} product={product} />)
+                    {products.loading ?
+                        <>{Array(5).fill({}).map((item, index) =>
+                            <ProductSkeleton key={index} />
+                        )}</>
+                        : products.data.slice(0, (page * 10)).map((product, index) => <LongProductThumbnail key={index} product={product} />)
                     }
                 </div>
 
                 <div className="flex justify-center space-x-5 mt-8">
                     {
-                        page < product.length / 8 ?
+                        page < products.data.length / 8 ?
                             <button className="btn btn-accent btn-outline" onClick={() => { setPage(page + 1) }}>View More</button>
                             : ''
                     }
@@ -35,9 +39,14 @@ export const ProductContainer = ({ product, title }) => {
             </div>
 
             <div class="flex md:hidden carousel carousel-center p-4 space-x-4  rounded-box">
-                {product.length === 0 ?
-                    <Loading />
-                    : product.slice(0, (page * 10)).map((product, index) =>
+                {products.loading ?
+                    <>{Array(5).fill({}).map((item, index) =>
+                        <div class="carousel-item w-11/12">
+                            <ProductSkeleton key={index} />
+                        </div>
+                    )}</>
+                    : products.data.slice(0, (page * 10)).map((product, index) =>
+
                         <div class="carousel-item w-11/12">
                             <LongProductThumbnail key={index} product={product} />
                         </div>

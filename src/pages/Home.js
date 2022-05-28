@@ -8,17 +8,17 @@ import { ProductContainer } from "../components/ProductContainer";
 import { Loading } from "../helpers/Loading";
 
 export const Home = () => {
-
-    const [latestProducts, setLatestProducts] = useState([]);
-    const [popularProducts, setPopularProducts] = useState([]);
-    const [controversialProducts, setControversialProducts] = useState([]);
-    const [topRatedProducts, setTopRatedProducts] = useState([]);
+    const initialData = { data: [], loading: true };
+    const [latestProducts, setLatestProducts] = useState(initialData);
+    const [popularProducts, setPopularProducts] = useState(initialData);
+    const [controversialProducts, setControversialProducts] = useState(initialData);
+    const [topRatedProducts, setTopRatedProducts] = useState(initialData);
 
 
     useEffect(() => {
         getProducts("sort=latest&orderBy=desc")
             .then((response) => {
-                setLatestProducts(response.data);
+                setLatestProducts({ loading: false, data: response.data })
             })
             .catch((error) => {
                 console.log(error);
@@ -26,7 +26,7 @@ export const Home = () => {
 
         getProducts("sort=popular&orderBy=desc")
             .then((response) => {
-                setPopularProducts(response.data);
+                setPopularProducts({ loading: false, data: response.data });
             })
             .catch((error) => {
                 console.log(error);
@@ -34,7 +34,7 @@ export const Home = () => {
 
         getProducts("sort=controversial&orderBy=desc")
             .then((response) => {
-                setControversialProducts(response.data);
+                setControversialProducts({ loading: false, data: response.data });
             })
             .catch((error) => {
                 console.log(error);
@@ -42,7 +42,7 @@ export const Home = () => {
 
         getProducts("sort=rating&orderBy=desc")
             .then((response) => {
-                setTopRatedProducts(response.data);
+                setTopRatedProducts({ loading: false, data: response.data });
             })
             .catch((error) => {
                 console.log(error);
@@ -53,10 +53,10 @@ export const Home = () => {
         <>
             <BannerForHomePage />
 
-            <ProductContainer product={latestProducts} title={"Latest Products"} />
-            <ProductContainer product={topRatedProducts} title={"Top Rated Products"} />
-            <ProductContainer product={popularProducts} title={"Popular Products"} />
-            <ProductContainer product={controversialProducts} title={"Controversial Products"} />
+            <ProductContainer products={latestProducts} title={"Latest Products"} />
+            <ProductContainer products={topRatedProducts} title={"Top Rated Products"} />
+             <ProductContainer products={popularProducts} title={"Popular Products"} />
+            <ProductContainer products={controversialProducts} title={"Controversial Products"} />
 
             <BrandCarousel />
         </>
