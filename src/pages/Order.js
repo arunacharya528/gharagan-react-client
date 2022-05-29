@@ -1,59 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Cookies from "universal-cookie";
-import { removeCartItem } from "../adapters/cartItems";
-import { cancelOrder, getOrderDetailByUser } from "../adapters/orderDetail";
-
-import { createOrder, getShoppingSession } from "../adapters/shoppingSession";
 import { Loading } from "../helpers/Loading";
-import { Message } from "../helpers/Message";
 
 import moment from 'moment'
 import { getUser } from "../adapters/profile";
 import { UserContext } from "../context/UserContext";
-import { CloseIcon } from "../icons";
-import { OrderView } from "../components/Order/OrderView";
+import { OrderThumbnailSkeleton } from "../components/Skeleton/OrderSkeleton";
 
 export const Order = () => {
 
-    const cookie = new Cookies();
-    const [orderDetails, setOrderDetails] = useState(undefined);
-    const [total, setTotal] = useState([]);
-    const [message, setMessage] = useState(undefined);
-    const [refresh, setRefresh] = useState(false);
-    // const moment = 
-
     const { user } = useContext(UserContext);
-    const [orders, setOrders] = useState(undefined)
+    const [orders, setOrders] = useState({ data: [], loading: true })
     useEffect(() => {
 
         getUser('', user.id, 'orders')
-            .then(response => setOrders(response.data))
+            .then(response => setOrders({ data: response.data, loading: false }))
             .catch(error => console.log(error))
     }, []);
-
-
-    const getImageURl = (productImage) => {
-        return productImage.file ? process.env.REACT_APP_FILE_PATH + productImage.file.path : productImage.image_url;
-    }
-
-    const getCalculatedPrice = (inventory) => {
-        if (!inventory.discount) {
-            return inventory.price;
-        } else {
-            const discountPercent = inventory.discount.discount_percent
-            const price = inventory.price;
-
-            const discountedPrice = price - (price * 0.01 * discountPercent)
-
-            return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
-        }
-    }
-
-
-    const getTotalPrice = (quantity, inventory) => {
-        return Math.round(((quantity * getCalculatedPrice(inventory)) + Number.EPSILON) * 100) / 100;
-    }
 
     const getSteps = (status) => {
 
@@ -75,62 +38,52 @@ export const Order = () => {
     return (
 
         <>
-            {orders ?
-                orders.map((order, index) =>
-                    <div className="p-2 mb-8">
-                        <div className="flex justify-between">
-                            <div className="flex w-full">
-                                <span className="text-gray-400">Order number</span>
-                                <div className="font-bold ml-1">{order.id}</div>
-                                &bull;
-                                <div className="font-semibold ml-1">{moment(order.created_at).format("MMM D YYYY")}</div>
-                            </div>
+            <div className="flex flex-col space-y-5">
+                {orders.loading ?
+                    Array(3).fill({}).map(() =>
+                        <OrderThumbnailSkeleton />
+                    )
 
-                            <a className="whitespace-nowrap text-primary font-semibold">View invoice</a>
-                        </div>
-                        <div className="divider"></div>
-                        <OrderView order={order} />
-                        <div className="divider" />
-                        <div className="font-semibold">Latest action took place in {moment(order.updated_at).format("MMMM D YYYY")}</div>
-                        {getSteps(order.status)}
-                        <div className="grid md:grid-cols-3 p-5 m-1 rounded-lg bg-slate-400/10">
-                            <div className="flex flex-col">
-                                <span className="font-semibold my-5">Billing/Shipping Address</span>
-                                <div className="text-sm flex flex-col">
-                                    <span>{order.address.address_line1}</span>
-                                    <span>{order.address.address_line2}</span>
-                                    <span>{order.address.city}</span>
-                                    <span>{order.address.telephone}</span>
-                                    <span>{order.address.mobile}</span>
+                    :
+                    orders.data.map((order, index) =>
+                        <div key={index} className="border rounded-md shadow-sm hover:shadow-md ease-in-out duration-300 divide-y">
+                            <div className="flex flex-col md:flex-row items-center py-5 px-7 space-y-5 md:space-y-0">
+
+                                <div className="flex flex-col md:flex-row space-y-5 md:space-x-10 md:space-y-0 font-semibold grow w-full md:w-auto">
+                                    <div className="flex flex-col font-semibold">
+                                        <span>Order Number</span>
+                                        <span className="text-gray-500">{order.id}</span>
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        <span>Date Placed</span>
+                                        <span className="text-gray-500">{moment(order.created_at).format("MMM D, YYYY")}</span>
+                                    </div>
+
+                                    <div className="flex flex-col">
+                                        <span >Total Amount</span>
+                                        <span className="text-gray-500">Rs.{order.total}</span>
+                                    </div>
+                                </div>
+
+
+                                <div className="flex flex-col md:flex-row space-y-5 md:space-x-10 md:space-y-0 w-full md:w-auto">
+                                    <Link to={"/user/orders/" + order.id} className="btn btn-primary btn-outline btn-sm">View Order</Link>
+                                    <button className="btn btn-primary btn-outline btn-sm">View Invoice</button>
                                 </div>
                             </div>
-                            <div className="flex flex-col">
-                                <span className="font-semibold my-5">Payment Information</span>
 
-                            </div>
-
-                            <div className="flex flex-col divide-y-2">
-                                <div className="flex justify-between px-2 py-5">
-                                    <span>Subtotal</span>
-                                    <span className="font-semibold">Rs.1000</span>
-                                </div>
-                                <div className="flex justify-between px-2 py-5">
-                                    <span>Shipping</span>
-                                    <span className="font-semibold">Rs.1000</span>
-                                </div>
-                                <div className="flex justify-between px-2 py-5">
-                                    <span className="font-semibold">Order Total</span>
-                                    <span className="text-accent font-bold">Rs.1000</span>
-                                </div>
-
-
+                            <div className="py-5 px-7">
+                                {getSteps(order.status)}
+                                <div className="font-semibold text-center">Latest action took place in {moment(order.updated_at).format("MMMM D YYYY")}</div>
                             </div>
                         </div>
-                    </div>
-                )
+                    )
 
-                : <Loading />
-            }
+
+                }
+            </div>
+
 
         </>
 

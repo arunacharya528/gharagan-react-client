@@ -31,14 +31,15 @@ import { CategoryProvider } from "./context/CategoryContext";
 import { CategoryMenu } from "./components/Nav/CategoryContent";
 import { UserMenu } from "./components/Nav/UserMenu";
 import { WishListProvider } from "./context/WishListContext";
+import { OrderDetail } from "./pages/OrderDetail";
 function App() {
 
   return (
     <BrowserRouter>
       <UserProvider>
         <CartProvider>
-            <CategoryProvider>
-              <WishListProvider>
+          <CategoryProvider>
+            <WishListProvider>
 
               <ModalProvider>
 
@@ -79,6 +80,8 @@ function App() {
                             <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
                             <Route element={<UserLayout component={<Checkout />} />} path="checkout" exact />
                             <Route element={<UserLayout component={<Order />} />} path="orders" exact />
+                            <Route element={<UserLayout component={<OrderDetail />} />} path="orders/:orderId" exact />
+                            {/* </Route> */}
                             <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
                             <Route element={<UserLayout component={<WishList />} />} path="wishlist" exact />
                           </Route>
@@ -131,8 +134,8 @@ function App() {
                 </div>
               </ModalProvider>
 
-              </WishListProvider>
-            </CategoryProvider>
+            </WishListProvider>
+          </CategoryProvider>
         </CartProvider>
       </UserProvider>
       {/* <Social /> */}

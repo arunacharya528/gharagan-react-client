@@ -6,21 +6,20 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
 
-    const [user, setUser] = useState(null)
+    const userData = {
+        "id": 1,
+        "email": "eoconner@example.net",
+        "first_name": "Lyla",
+        "last_name": "Kassulke",
+        "contact": "737.557.3779",
+        "type": 2,
+        "created_at": "2022-05-04T09:13:12.000000Z",
+        "updated_at": "2022-05-04T09:13:12.000000Z"
+    };
+    const [user, setUser] = useState(userData)
 
     const handleLogin = () => {
-        setUser(
-            {
-                "id": 1,
-                "email": "eoconner@example.net",
-                "first_name": "Lyla",
-                "last_name": "Kassulke",
-                "contact": "737.557.3779",
-                "type": 2,
-                "created_at": "2022-05-04T09:13:12.000000Z",
-                "updated_at": "2022-05-04T09:13:12.000000Z"
-            }
-        )
+        setUser(userData)
     }
 
     const handleLogout = () => {
