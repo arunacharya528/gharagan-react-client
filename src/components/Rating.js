@@ -99,14 +99,9 @@ export const RateDisplayByNumber = ({ rating }) => {
             <span className="">
                 {getRoundedValue(rating)}
             </span>
-            <div class="rating rating-sm rating-half">
-                {
-                    allStars.map((star, index) =>
-                        <input type="radio" class={"bg-orange-400 mask mask-star-2 mask-half-" + star.mask} defaultChecked={star.selected} disabled />
-                    )
-                }
-            </div>
 
+            <div class="stars" style={{ '--rating': getRoundedValue(rating) }} aria-label="Rated 2.3 out of 5">
+            </div>
         </div>
 
     )
