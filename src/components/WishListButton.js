@@ -43,7 +43,7 @@ export const WishListButton = ({ productId, size = "-sm" }) => {
     return (
         <div class="tooltip tooltip-top" data-tip={user !== null ? isActive ? "Remove from wishlist" : "Add to wishlist" : "Login to access"}>
             <button class={`btn btn-square btn-active btn${size} ` + (isActive ? 'btn-primary' : 'btn-ghost') + (user === null ? ' btn-ghost btn-disabled text-white' : '')} onClick={isActive ? handleWishListRemoval : handleWishListAddition}>
-                <HeartIcon className="h-4 w-4" />
+                <HeartIcon className={(size === "-sm" ? 'h-4 w-4' : 'h-5 w-5')} />
             </button>
         </div>
     );
