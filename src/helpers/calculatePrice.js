@@ -17,7 +17,7 @@ export const getDiscountedPrice = (price, discountPercent) => {
  * @returns discounted price of inventory instance
  */
 export const getTotalPrice = (inventory) => {
-    if (!inventory.discount) {
+    if (!inventory.discount || inventory.discount.active === 0) {
         return inventory.price;
     } else {
         const discountPercent = inventory.discount.discount_percent

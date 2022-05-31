@@ -38,12 +38,12 @@ export const OrderDetail = () => {
     const orderTotal = () => {
         if (!order.loading) {
             return getSumFromArray([
-                getSumFromArray([
-                    getSubTotal(order.data.order_items),
-                    (order.data.discount !== null ? -getDiscountedPrice(getSubTotal(order.data.order_items), order.data.discount.discount_percent) : 0)
-                ]),
+                (order.data.discount === null ? getSubTotal(order.data.order_items) : getDiscountedPrice(getSubTotal(order.data.order_items), order.data.discount.discount_percent)),
+
                 order.data.address.delivery.price,
             ])
+
+
         } else {
             return 0;
         }
@@ -55,7 +55,7 @@ export const OrderDetail = () => {
                 <OrderDetailSkeleton />
                 :
                 <div className="p-2 mb-8">
-                    
+
                     <div className="font-bold text-2xl py-2">Order Detail</div>
 
                     <div className="flex justify-between">
@@ -101,12 +101,12 @@ export const OrderDetail = () => {
                                 order.data.discount !== null ?
                                     <div className="flex justify-between px-2 py-5">
                                         <div className="flex flex-row items-center space-x-3">
-                                            <span className="">Discount </span>
+                                            <span className="">Price after discount</span>
                                             <div class="badge badge-primary">{order.data.discount.name + " " + order.data.discount.discount_percent + "%"}</div>
                                         </div>
                                         <span className="font-semibold">{
 
-                                            "-Rs. " + getDiscountedPrice(getSubTotal(order.data.order_items), order.data.discount.discount_percent)
+                                            "Rs. " + getDiscountedPrice(getSubTotal(order.data.order_items), order.data.discount.discount_percent)
 
                                         }</span>
                                     </div>
@@ -120,7 +120,7 @@ export const OrderDetail = () => {
 
 
                             {
-                                orderTotal() !== order.data.total ?
+                                orderTotal() !== parseFloat(order.data.total) ?
                                     <div className="flex justify-between px-2 py-5">
                                         <span className="font-semibold">Calculated Total</span>
                                         <span className="text-error font-bold">{
@@ -141,7 +141,7 @@ export const OrderDetail = () => {
                     </div>
 
                     {
-                        orderTotal() !== order.data.total ?
+                        orderTotal() !== parseFloat(order.data.total) ?
                             <div className="text-center leading-10">
                                 <span className="font-semibold">Calculated total</span> and <span className="font-semibold">Ordered total</span> are not found to be same. This could be because of change in <span className="font-semibold">discounts</span> or <span className="font-semibold">delivery prices</span>.
                                 <br />
