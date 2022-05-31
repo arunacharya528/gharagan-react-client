@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getDiscountByName } from "../adapters/discount";
-import { getUser } from "../adapters/profile";
+import { checkout, getUser } from "../adapters/profile";
 import { AddAddress } from "../components/Addresses/Add";
 import { CartItem } from "../components/Cart/CartItem";
 import { CartContext } from "../context/CartContext";
@@ -18,9 +18,10 @@ export const Checkout = () => {
     //
     //=======================
     const { user } = useContext(UserContext)
-    const { session } = useContext(CartContext)
+    const { session, updateSession } = useContext(CartContext)
     const { setModalData, openModal, closeModal } = useContext(ModalContext);
 
+    const navigate = useNavigate();
 
     //=======================
     //
@@ -92,10 +93,56 @@ export const Checkout = () => {
 
     const handleOrderPlacement = () => {
         if (validate()) {
-            alert("Is ok to go");
+            checkout('', user.id, {
+                address_id: selectedAddress.address,
+                discount_id: discountResponse === null ? null : discountResponse.data.id
+            })
+                .then(response => {
+                    navigate(`/user/orders/${response.data.id}`);
+                    updateSession()
+                })
+                .catch(error => console.log(error))
         }
     }
 
+
+    const getDiscountResponse = () => {
+
+        return (
+            <>
+                {
+                    discountResponse !== null && discountResponse.status === 404
+                        ?
+                        <div class="alert alert-error shadow-lg">
+                            <div>
+                                <span>No discount offering found with given code</span>
+                            </div>
+                        </div>
+                        : ''
+                }
+
+                {
+                    discountResponse !== null && discountResponse.status === 200 && discountResponse.data.active === 0
+                        ?
+                        <div class="alert alert-error shadow-lg">
+                            <div>
+                                <span>The discount code is currently deactivated</span>
+                            </div>
+                        </div>
+                        : ''
+                }
+            </>
+        );
+    }
+
+    const getPriceAfterDiscount = () => {
+        if (discountResponse === null || (discountResponse.status === 200 && discountResponse.data.active === 0)) {
+            return getSubTotal(session.cart_items);
+        }
+        else if (discountResponse !== null && discountResponse.status === 200) {
+            return getDiscountedPrice(getSubTotal(session.cart_items), discountResponse.data.discount_percent);
+        }
+    }
     return (
         <div className="grid lg:grid-cols-2 items-start gap-5 p-2">
             <div className="flex flex-col space-y-5">
@@ -156,16 +203,7 @@ export const Checkout = () => {
                             <input type="text" placeholder="Enter your discount code" class="input w-full input-bordered input-primary" onChange={e => setDiscountCode(e.target.value)} value={discountCode} />
                             <button className="btn btn-primary btn-outine" onClick={handleDiscountCodeApplication}>Apply</button>
                         </div>
-                        {
-                            discountResponse !== null && discountResponse.status === 404
-                                ?
-                                <div class="alert alert-error shadow-lg">
-                                    <div>
-                                        <span>No discount offering found with given code</span>
-                                    </div>
-                                </div>
-                                : ''
-                        }
+                        {getDiscountResponse()}
 
                         <div className="flex justify-between">
                             <span className="font-semibold">Subtotal</span>
@@ -180,12 +218,12 @@ export const Checkout = () => {
                             discountResponse !== null && discountResponse.status === 200 ?
                                 <div className="flex justify-between">
                                     <div className="flex flex-row items-center space-x-3">
-                                        <span className="font-semibold">Discount </span>
+                                        <span className="font-semibold">Price after discount</span>
                                         <div class="badge badge-primary">{discountResponse.data.name + " " + discountResponse.data.discount_percent + "%"}</div>
                                     </div>
                                     <span className="font-bold">{
 
-                                        "-Rs. " + getDiscountedPrice(getSubTotal(session.cart_items), discountResponse.data.discount_percent)
+                                        "Rs. " + getPriceAfterDiscount()
 
                                     }</span>
                                 </div> : ''
@@ -203,9 +241,8 @@ export const Checkout = () => {
                             {
                                 session !== null ?
                                     "Rs. " + getSumFromArray([
-                                        getSubTotal(session.cart_items),
                                         selectedAddress.delivery_price,
-                                        (discountResponse !== null && discountResponse.status === 200 ? -getDiscountedPrice(getSubTotal(session.cart_items), discountResponse.data.discount_percent) : 0)
+                                        getPriceAfterDiscount()
                                     ])
                                     : ''
                             }

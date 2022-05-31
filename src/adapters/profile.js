@@ -62,7 +62,7 @@ export const putAddress = (bearerToken, addressId, addressData) => {
     return axios(config)
 }
 
-export const deleteAddress = (bearerToken, id) => { 
+export const deleteAddress = (bearerToken, id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/userAddress/${id}`,
@@ -74,4 +74,20 @@ export const deleteAddress = (bearerToken, id) => {
     };
 
     return axios(config)
+}
+
+export const checkout = (bearerToken, userId, data) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/user/${userId}/checkout`,
+        headers: {
+            'Authorization': `Bearer ${bearerToken}`,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config);
 }
