@@ -59,13 +59,7 @@ function App() {
                         <Nav />
 
                         {/* <button className="btn btn-primary" onClick={() => toast.success("Yay a toast")}>Make a toast</button> */}
-                        <Toaster
-                          position="top-center"
-                          gutter={8}
-                          toastOptions={{
-                            className: "bg-base-200 text-current shadow-xl border-2 mr-5 z-10"
-                          }}
-                        />
+
                         <Routes>
                           <Route element={<Home />} path="/" index />
                           <Route element={<Product />} path="/product">
@@ -132,6 +126,14 @@ function App() {
                     </ul>
                   </div>
                 </div>
+
+                <Toaster
+                  position="top-center"
+                  gutter={8}
+                  toastOptions={{
+                    className: "bg-base-300 text-current shadow-xl z-10"
+                  }}
+                />
               </ModalProvider>
 
             </WishListProvider>
