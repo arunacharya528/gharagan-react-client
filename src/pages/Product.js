@@ -45,18 +45,6 @@ export const Product = () => {
 
     }, [url[2]]);
 
-    const handleCartAddition = (e) => {
-        e.preventDefault();
-
-        // postToCart(cookie.get('access_token'), {
-        //     quantity: quantity,
-        //     session_id: cookie.get('session_id'),
-        //     product_id: product.id
-        // })
-        //     .then(response => { setRefresh(!refresh) })
-        //     .catch(error => console.log(error))
-    }
-
 
     const Specification = () => {
 

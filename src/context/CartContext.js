@@ -17,9 +17,11 @@ export const CartProvider = ({ children }) => {
             getUser('', user.id, 'session')
                 .then(response => setSession(response.data))
                 .catch(error => console.log(error))
+        } else {
+            setSession(null)
         }
 
-    }, [isRefreshed])
+    }, [isRefreshed, user])
     const updateSession = () => {
         setRefresh(!isRefreshed)
     }

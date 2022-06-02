@@ -19,6 +19,8 @@ import { ReactComponent as ChevronRightIcon } from './chevron-right.svg';
 import { ReactComponent as HomeIcon } from './home.svg';
 import { ReactComponent as SearchIcon } from './search.svg';
 import { ReactComponent as StarIcon } from './star.svg';
+import { ReactComponent as ArrowLeftIcon } from './arrow-left.svg';
+
 
 export {
     BagIcon,
@@ -41,5 +43,6 @@ export {
     EyeIcon,
     HomeIcon,
     SearchIcon,
-    StarIcon
+    StarIcon,
+    ArrowLeftIcon
 }

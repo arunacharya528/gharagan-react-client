@@ -2,7 +2,9 @@ import { putToCart, removeCartItem } from "../../adapters/cartItems";
 import { toast } from 'react-hot-toast'
 import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
-export const CartItem = (props = { item: JSON, className: String}) => {
+import { getSumTotal, getTotalPrice } from "../../helpers/calculatePrice";
+import { Link } from "react-router-dom";
+export const CartItem = (props = { item: JSON, className: String }) => {
 
     const [quantity, setQuantity] = useState(0);
     useEffect(() => {
@@ -10,19 +12,6 @@ export const CartItem = (props = { item: JSON, className: String}) => {
     }, [])
     const getImageURl = (productImage) => {
         return productImage.file ? process.env.REACT_APP_FILE_PATH + productImage.file.path : productImage.image_url;
-    }
-
-    const getTotalPrice = (inventory) => {
-        if (!inventory.discount) {
-            return inventory.price;
-        } else {
-            const discountPercent = inventory.discount.discount_percent
-            const price = inventory.price;
-
-            const discountedPrice = price - (price * 0.01 * discountPercent)
-
-            return Math.round((discountedPrice + Number.EPSILON) * 100) / 100
-        }
     }
 
     const { session, updateSession } = useContext(CartContext)
@@ -39,12 +28,6 @@ export const CartItem = (props = { item: JSON, className: String}) => {
                 error: "Error removing item from cart"
             }
         )
-    }
-
-    const getSumTotal = (price, quantity) => {
-        const total = price * quantity;
-        return Math.round((total + Number.EPSILON) * 100) / 100
-
     }
 
     const handleCartUpdate = () => {
@@ -83,23 +66,24 @@ export const CartItem = (props = { item: JSON, className: String}) => {
 
         );
     }
-
     return (
         <div className="flex flex-row space-x-5 p-3 " {...props}>
             <div className="h-32 w-32 flex justify-center items-center">
-                <img src={getImageURl(props.item.product.images[0])} alt={"Image of " + props.item.product.name} className="rounded-md" />
+                {props.item.product.images.filter((item, index) => index < 1).map((image, index) =>
+                    <img src={getImageURl(image)} alt={"Image of " + props.item.product.name} className="rounded-md" key={index} />
 
+                )}
             </div>
             <div className="flex flex-col w-full">
                 <div className="flex justify-between">
-                    <span>{props.item.product.name}</span>
+                    <Link to={"/product/" + props.item.product.id}>{props.item.product.name}</Link>
                     <span className="font-semibold">Rs. {getSumTotal(getTotalPrice(props.item.inventory), quantity)}</span>
                 </div>
                 <div className="font-light">
                     {props.item.product.category.name}
                 </div>
                 <div className="font-light">
-                    {props.item.inventory.type}
+                    <span>{props.item.inventory.type}</span>
                 </div>
                 <div className="flex justify-between">
                     <QuantityInput />
