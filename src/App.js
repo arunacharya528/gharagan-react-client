@@ -33,6 +33,7 @@ import { UserMenu } from "./components/Nav/UserMenu";
 import { WishListProvider } from "./context/WishListContext";
 import { OrderDetail } from "./pages/OrderDetail";
 import { ContextList } from "./context/ContextList";
+import { Review } from "./pages/Review";
 function App() {
 
   return (
@@ -63,6 +64,7 @@ function App() {
                     <Route element={<UserLayout component={<OrderDetail />} />} path="orders/:orderId" exact />
                     <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
                     <Route element={<UserLayout component={<WishList />} />} path="wishlist" exact />
+                    <Route element={<UserLayout component={<Review />} />} path="reviews" exact />
                   </Route>
                 </Routes>
                 <Footer />

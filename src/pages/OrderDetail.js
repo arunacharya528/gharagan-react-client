@@ -6,6 +6,7 @@ import { deleteRating, postRating } from "../adapters/rating";
 import { OrderView } from "../components/Order/OrderView";
 import { RateAndComment } from "../components/Product/RateAndComment";
 import { RateDisplayByNumber, RateInput } from "../components/Rating";
+import { ReviewDetail } from "../components/ReviewDetail";
 import { OrderDetailSkeleton } from "../components/Skeleton/OrderSkeleton";
 import { UserContext } from "../context/UserContext";
 import { getDiscountedPrice, getSubTotal, getSumFromArray } from "../helpers/calculatePrice";
@@ -151,20 +152,20 @@ export const OrderDetail = () => {
         })
         rateableProducts = Object.values(rateableProducts)
 
-        const handleDeletion = (id) => {
-            toast.promise(
-                deleteRating(id)
-                ,
-                {
-                    loading: "Deleting review",
-                    success: () => {
-                        setRefresh(!isRefreshed)
-                        return "Deleted review"
-                    },
-                    error: "Error deleting review"
-                }
-            )
-        }
+        // const handleDeletion = (id) => {
+        //     toast.promise(
+        //         deleteRating(id)
+        //         ,
+        //         {
+        //             loading: "Deleting review",
+        //             success: () => {
+        //                 setRefresh(!isRefreshed)
+        //                 return "Deleted review"
+        //             },
+        //             error: "Error deleting review"
+        //         }
+        //     )
+        // }
 
         return (
             <div className="flex flex-col divide-y">
@@ -194,19 +195,23 @@ export const OrderDetail = () => {
                                             Visit again after product is delivereed
                                         </div>
                                     :
-
-                                    <div className="flex flex-col space-y-2 grow">
-                                        <div className="flex flex-row space-x-3">
-                                            <RateDisplayByNumber rating={product.ratings[0].rate} />
-                                        </div>
-                                        <div>
-                                            {product.ratings[0].comment}
-                                        </div>
-                                        <div className="grow"></div>
-                                        <div>
-                                            <button className="btn btn-error btn-outline btn-sm" onClick={e => handleDeletion(product.ratings[0].id)}>Delete Review</button>
-                                        </div>
-                                    </div>
+                                    <ReviewDetail rating={{
+                                        comment: product.ratings[0].comment,
+                                        rate: product.ratings[0].rate,
+                                        id: product.ratings[0].id,
+                                    }} onSubmit={() => setRefresh(!isRefreshed)} />
+                                // <div className="flex flex-col space-y-2 grow">
+                                //     <div className="flex flex-row space-x-3">
+                                //         <RateDisplayByNumber rating={product.ratings[0].rate} />
+                                //     </div>
+                                //     <div>
+                                //         {product.ratings[0].comment}
+                                //     </div>
+                                //     <div className="grow"></div>
+                                //     <div>
+                                //         <button className="btn btn-error btn-outline btn-sm" onClick={e => handleDeletion(product.ratings[0].id)}>Delete Review</button>
+                                //     </div>
+                                // </div>
                             }
 
 
