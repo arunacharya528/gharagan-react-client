@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export const OrderView = ({ order }) => {
 
@@ -35,17 +36,19 @@ export const OrderView = ({ order }) => {
                         <img src={getImageURl(item.product.images[0])} alt={"Image of " + item.product.name} className="w-32 rounded-md" />
 
                         <div className="w-full flex flex-col">
-                            <div className="font-semibold">{item.product.name}</div>
+                            <Link to={"/product/" + item.product.id} className="font-semibold">{item.product.name}</Link>
                             <div className="font-light grow">{item.product.summary}</div>
 
+                            <span className="font-light">{item.inventory.type}</span>
                             <div className="flex justify-between ">
+
                                 <span>
                                     Quantity
                                     <span className="font-semibold"> {item.quantity}</span>
                                 </span>
 
                                 <span>
-                                    Price <span className="font-semibold">Rs.{getTotalPrice(item.quantity, item.inventory)}</span>
+                                    <span className="font-semibold">Rs.{getTotalPrice(item.quantity, item.inventory)}</span>
                                 </span>
                             </div>
                         </div>
