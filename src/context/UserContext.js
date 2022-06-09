@@ -14,7 +14,8 @@ export const UserProvider = ({ children }) => {
         "contact": "737.557.3779",
         "type": 2,
         "created_at": "2022-05-04T09:13:12.000000Z",
-        "updated_at": "2022-05-04T09:13:12.000000Z"
+        "updated_at": "2022-05-04T09:13:12.000000Z",
+        "has_newsletter_count": 1
     };
     const [user, setUser] = useState(userData)
 

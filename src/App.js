@@ -34,6 +34,7 @@ import { WishListProvider } from "./context/WishListContext";
 import { OrderDetail } from "./pages/OrderDetail";
 import { ContextList } from "./context/ContextList";
 import { Review } from "./pages/Review";
+import { Newsletter } from "./pages/Newsletter";
 function App() {
 
   return (
@@ -55,6 +56,7 @@ function App() {
                   <Route element={<ProductFilter />} path="/filter" />
                   <Route element={<Brand />} path="/brand/:brandId" />
                   <Route element={<Login />} path="/login" />
+                  <Route element={<Newsletter />} path="/newsletter" />
 
                   <Route path="/user">
                     <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
