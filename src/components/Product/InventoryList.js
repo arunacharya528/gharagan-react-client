@@ -38,7 +38,7 @@ export const InventoryList = ({ product, buttonSize = "-sm" }) => {
 
     return (
         <>
-            <div className="flex flex-col divide-y">
+            <div className="flex flex-col divide-y divide-gray-500">
                 {
                     product.inventories.map((inventory, index) =>
 

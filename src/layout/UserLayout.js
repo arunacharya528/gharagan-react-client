@@ -20,7 +20,7 @@ export const UserLayout = ({ component }) => {
                     <div class={"drawer drawer-mobile " + (isDrawerFit ? "fixed top-0 bg-base-100 z-40" : '')} >
                         <input id="dashboardDrawer" type="checkbox" class="drawer-toggle" />
                         <div class="drawer-content">
-                            <div class="navbar bg-base-200 shadow-lg sticky top-0 z-50">
+                            <div class="navbar bg-base-200 shadow-md sticky top-0 z-50">
                                 <div class="flex-1 flex space-x-3">
                                     <label for="dashboardDrawer" class="btn btn-ghost btn-square drawer-button lg:hidden">
                                         <ListIcon className="w-6 h-6" />
