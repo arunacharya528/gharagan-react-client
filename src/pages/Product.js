@@ -27,6 +27,7 @@ export const Product = () => {
     const [selectedTab, setSelectedTab] = useState(1);
 
     const [relatedProducts, setRelatedProducts] = useState({ data: [], loading: true });
+    const [isRefreshed, setRefresh] = useState(false)
 
 
     useEffect(() => {
@@ -43,7 +44,7 @@ export const Product = () => {
                 console.log(error);
             });
 
-    }, [url[2]]);
+    }, [url[2], isRefreshed]);
 
 
     const Specification = () => {
@@ -58,7 +59,7 @@ export const Product = () => {
             case 1: return <GeneralInfo product={product} setSelectedTab={setSelectedTab} />
             case 2: return <Specification />
             case 3: return <Reviews product={product} />
-            case 4: return <QAs product={product} />
+            case 4: return <QAs product={product} onSubmit={() => setRefresh(!isRefreshed)} />
         }
     }
 
