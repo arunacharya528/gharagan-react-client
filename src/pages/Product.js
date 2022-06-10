@@ -86,7 +86,7 @@ export const Product = () => {
         <section class="" >
             <div class="card  md:container mx-3 md:mx-auto bg-base-200 shadow-md">
                 <div class="card-body px-3 py-5 ">
-                    <ul class="menu bg-base-100 flex flex-row items-stretch justify-between bg-transparent">
+                    {/* <ul class="menu bg-base-100 flex flex-row items-stretch justify-between bg-transparent">
                         {
                             buttons.map((button, index) =>
                                 <li className={"grow border-b-4 ease-in-out duration-300 " + (selectedTab === button.value ? ' border-primary' : '')} onClick={e => setSelectedTab(button.value)}>
@@ -94,7 +94,15 @@ export const Product = () => {
                                 </li>
                             )
                         }
-                    </ul>
+                    </ul> */}
+
+                    <div class="tabs tabs-boxed bg-base-300 w-fit">
+                        {
+                            buttons.map((button, index) =>
+                                <a class={"tab" + (selectedTab === button.value ? ' tab-active' : '')} onClick={e => setSelectedTab(button.value)} key={index} >{button.name}</a>
+                            )
+                        }
+                    </div>
 
                     <div className="p-5">
                         {getSelectedTab()}

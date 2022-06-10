@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useLocation } from "react-router-dom";
-import { getOrderDetail } from "../adapters/orderDetail";
+import { cancelOrder, getOrderDetail } from "../adapters/orderDetail";
 import { deleteRating, postRating } from "../adapters/rating";
+import { OrderSteps } from "../components/Order/OrderSteps";
 import { OrderView } from "../components/Order/OrderView";
 import { RateAndComment } from "../components/Product/RateAndComment";
 import { RateDisplayByNumber, RateInput } from "../components/Rating";
@@ -10,6 +11,7 @@ import { ReviewDetail } from "../components/ReviewDetail";
 import { OrderDetailSkeleton } from "../components/Skeleton/OrderSkeleton";
 import { UserContext } from "../context/UserContext";
 import { getDiscountedPrice, getSubTotal, getSumFromArray } from "../helpers/calculatePrice";
+import { TrashIcon } from "../icons";
 
 const moment = require('moment')
 export const OrderDetail = () => {
@@ -24,24 +26,6 @@ export const OrderDetail = () => {
             .then(response => setOrder({ data: response.data, loading: false }))
             .catch(error => console.log(error))
     }, [isRefreshed])
-
-
-    const getSteps = (status) => {
-
-        const getResponse = (place) => {
-            if (place <= status) {
-                return 'step-primary';
-            }
-        }
-        return (
-            <ul class="steps steps-vertical lg:steps-horizontal lg:w-full my-5">
-                <li class={"step " + getResponse(1)}>Order placed</li>
-                <li class={"step " + getResponse(2)}>Product Collected for delivery</li>
-                <li class={"step " + getResponse(3)}>Product being shipped</li>
-                <li class={"step " + getResponse(4)}>Product received</li>
-            </ul>
-        );
-    }
 
     const orderTotal = () => {
         if (!order.loading) {
@@ -152,21 +136,6 @@ export const OrderDetail = () => {
         })
         rateableProducts = Object.values(rateableProducts)
 
-        // const handleDeletion = (id) => {
-        //     toast.promise(
-        //         deleteRating(id)
-        //         ,
-        //         {
-        //             loading: "Deleting review",
-        //             success: () => {
-        //                 setRefresh(!isRefreshed)
-        //                 return "Deleted review"
-        //             },
-        //             error: "Error deleting review"
-        //         }
-        //     )
-        // }
-
         return (
             <div className="flex flex-col divide-y">
                 {rateableProducts.map((product, index) =>
@@ -200,18 +169,7 @@ export const OrderDetail = () => {
                                         rate: product.ratings[0].rate,
                                         id: product.ratings[0].id,
                                     }} onSubmit={() => setRefresh(!isRefreshed)} />
-                                // <div className="flex flex-col space-y-2 grow">
-                                //     <div className="flex flex-row space-x-3">
-                                //         <RateDisplayByNumber rating={product.ratings[0].rate} />
-                                //     </div>
-                                //     <div>
-                                //         {product.ratings[0].comment}
-                                //     </div>
-                                //     <div className="grow"></div>
-                                //     <div>
-                                //         <button className="btn btn-error btn-outline btn-sm" onClick={e => handleDeletion(product.ratings[0].id)}>Delete Review</button>
-                                //     </div>
-                                // </div>
+
                             }
 
 
@@ -247,6 +205,21 @@ export const OrderDetail = () => {
         }
     }
 
+    const handleCancellation = (id) => {
+        toast.promise(
+            cancelOrder('', id),
+            {
+                loading: "Cancelling order",
+                success: () => {
+                    setRefresh(!isRefreshed)
+                    return "Successfully cancelled order"
+                },
+                error: "Error cancelling order"
+            }
+        )
+    }
+
+
     return (
         <>
             {order.loading ?
@@ -257,17 +230,23 @@ export const OrderDetail = () => {
                     <div className="font-bold text-2xl py-2">Order Detail</div>
 
                     <div className="flex justify-between">
-                        <div className="flex w-full">
+                        <div className="flex grow">
                             <span className="text-gray-400">Order number</span>
                             <div className="font-bold ml-1">{order.data.id}</div>
                             &bull;
                             <div className="font-semibold ml-1">{moment(order.data.created_at).format("MMM D YYYY")}</div>
                         </div>
 
-                        <a className="whitespace-nowrap text-primary font-semibold">View invoice</a>
+                        <div className="flex items-center space-x-3">
+                            <a href={process.env.REACT_APP_WEB_URL + "/view/invoice/" + order.data.id} target="_blank" className="whitespace-nowrap text-primary font-semibold">View Invoice</a>
+
+                            <button className="btn btn-outline btn-error gap-2" disabled={order.data.status === 1 ? false : true} onClick={e => handleCancellation(order.id)}> <TrashIcon /> Cancel order</button>
+                        </div>
+
+
                     </div>
                     <div className="divider"></div>
-                    {getSteps(order.data.status)}
+                    <OrderSteps status={order.data.status} />
                     <div className="font-semibold text-center">Latest action took place in {moment(order.data.updated_at).format("MMMM D YYYY")}</div>
                     <div className="divider"></div>
 

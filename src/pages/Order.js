@@ -10,44 +10,28 @@ import { OrderThumbnailSkeleton } from "../components/Skeleton/OrderSkeleton";
 import { TrashIcon } from "../icons"
 import toast from "react-hot-toast";
 import { cancelOrder } from "../adapters/orderDetail";
+import { OrderSteps } from "../components/Order/OrderSteps";
 
 export const Order = () => {
 
     const { user } = useContext(UserContext);
     const [orders, setOrders] = useState({ data: [], loading: true })
-    const [isRereshed, setRefresh] = useState(false);
+    const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
 
         getUser('', user.id, 'orders')
             .then(response => setOrders({ data: response.data, loading: false }))
             .catch(error => console.log(error))
-    }, [isRereshed]);
-
-    const getSteps = (status) => {
-
-        const getResponse = (place) => {
-            if (place <= status) {
-                return 'step-primary';
-            }
-        }
-        return (
-            <ul class="steps steps-vertical lg:steps-horizontal lg:w-full my-5">
-                <li class={"step " + getResponse(1)}>Order placed<br />(Available for cancellation)</li>
-                <li class={"step " + getResponse(2)}>Product Collected for delivery</li>
-                <li class={"step " + getResponse(3)}>Product being shipped</li>
-                <li class={"step " + getResponse(4)}>Product received</li>
-            </ul>
-        );
-    }
+    }, [isRefreshed]);
 
     const handleCancellation = (id) => {
         toast.promise(
-            cancelOrder('',id),
+            cancelOrder('', id),
             {
                 loading: "Cancelling order",
                 success: () => {
-                    setRefresh(!isRereshed)
+                    setRefresh(!isRefreshed)
                     return "Successfully cancelled order"
                 },
                 error: "Error cancelling order"
@@ -91,7 +75,7 @@ export const Order = () => {
                                     <Link to={"/user/orders/" + order.id} className="btn btn-ghost btn-outline">View Order</Link>
 
 
-                                    <button className="btn btn-ghost btn-outline">View Invoice</button>
+                                    <a href={process.env.REACT_APP_WEB_URL + "/view/invoice/" + order.id} target="_blank" className="btn btn-ghost btn-outline">View Invoice</a>
 
                                     <button className="btn btn-outline btn-error gap-2" disabled={order.status === 1 ? false : true} onClick={e => handleCancellation(order.id)}> <TrashIcon /> Cancel order</button>
 
@@ -99,7 +83,7 @@ export const Order = () => {
                             </div>
 
                             <div className="py-5 px-7">
-                                {getSteps(order.status)}
+                                <OrderSteps status={order.status} />
                                 <div className="font-semibold text-center">Latest action took place in {moment(order.updated_at).format("MMMM D YYYY")}</div>
                             </div>
                             {order.status === 1 ? '' :
