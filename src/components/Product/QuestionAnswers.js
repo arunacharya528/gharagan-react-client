@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { postQA } from '../../adapters/qa';
 import { UserContext } from '../../context/UserContext';
+import { QADetail } from '../QADetail';
 import { QASkeleton } from '../Skeleton/ProductSkeleton';
 
 const moment = require('moment');
@@ -38,7 +39,7 @@ export const QAs = ({ product, onSubmit }) => {
                         user !== null ?
                             <div className="lg:col-span-2 flex flex-col space-y-5">
                                 <div className="font-bold text-2xl px-2">Questions and Answers</div>
-                                <textarea class="textarea textarea-primary" rows={10} placeholder="Write your question. Admin would answer shortly." value={question} onChange={e=>setQuestion(e.target.value)}></textarea>
+                                <textarea class="textarea textarea-primary" rows={10} placeholder="Write your question. Admin would answer shortly." value={question} onChange={e => setQuestion(e.target.value)}></textarea>
                                 <button className="btn btn-block btn-primary" onClick={handleSubmission}>Post question</button>
                             </div>
                             :
@@ -57,7 +58,9 @@ export const QAs = ({ product, onSubmit }) => {
                                     <span className="font-semibold">{item.user.first_name + " " + item.user.last_name}</span>
                                     <div className="">{moment(item.created_at).fromNow()}</div>
                                 </div>
-                                <div className="">{item.question}</div>
+                                <QADetail item={item} />
+
+                                {/* <div className="">{item.question}</div>
 
                                 {
                                     item.answer !== null ?
@@ -71,7 +74,7 @@ export const QAs = ({ product, onSubmit }) => {
                                             </div>
                                         </div>
                                         : ''
-                                }
+                                } */}
 
                             </div>
 

@@ -35,6 +35,7 @@ import { OrderDetail } from "./pages/OrderDetail";
 import { ContextList } from "./context/ContextList";
 import { Review } from "./pages/Review";
 import { Newsletter } from "./pages/Newsletter";
+import { QuestionAnswers } from "./pages/QAs";
 function App() {
 
   return (
@@ -58,6 +59,7 @@ function App() {
                   <Route element={<Login />} path="/login" />
                   <Route element={<Newsletter />} path="/newsletter" />
 
+
                   <Route path="/user">
                     <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
                     <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
@@ -67,6 +69,7 @@ function App() {
                     <Route element={<UserLayout component={<Addresses />} />} path="addresses" exact />
                     <Route element={<UserLayout component={<WishList />} />} path="wishlist" exact />
                     <Route element={<UserLayout component={<Review />} />} path="reviews" exact />
+                    <Route element={<UserLayout component={<QuestionAnswers />} />} path="qas" exact />
                   </Route>
                 </Routes>
                 <Footer />
