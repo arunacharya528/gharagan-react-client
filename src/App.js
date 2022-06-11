@@ -36,6 +36,7 @@ import { ContextList } from "./context/ContextList";
 import { Review } from "./pages/Review";
 import { Newsletter } from "./pages/Newsletter";
 import { QuestionAnswers } from "./pages/QAs";
+import { Page } from "./pages/Page";
 function App() {
 
   return (
@@ -58,8 +59,8 @@ function App() {
                   <Route element={<Brand />} path="/brand/:brandId" />
                   <Route element={<Login />} path="/login" />
                   <Route element={<Newsletter />} path="/newsletter" />
-
-
+                  <Route element={<Page />} path="/page/:slug" />
+                  
                   <Route path="/user">
                     <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
                     <Route element={<UserLayout component={<Cart />} />} path="cart" exact />

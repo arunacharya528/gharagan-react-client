@@ -27,5 +27,5 @@ export const PageLinkProvider = ({ children }) => {
             return [];
         }
     }
-    return <PageLinkContext.Provider value={{ getLinks }}>{children}</PageLinkContext.Provider>
+    return <PageLinkContext.Provider value={{ pageLinks: pageLinks.data, getLinks }}>{children}</PageLinkContext.Provider>
 }
