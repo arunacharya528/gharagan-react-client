@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { getDiscountByName } from "../adapters/discount";
 import { checkout, getUser } from "../adapters/profile";
@@ -93,15 +94,21 @@ export const Checkout = () => {
 
     const handleOrderPlacement = () => {
         if (validate()) {
-            checkout('', user.id, {
-                address_id: selectedAddress.address,
-                discount_id: discountResponse === null ? null : discountResponse.data.id
-            })
-                .then(response => {
-                    navigate(`/user/orders/${response.data.id}`);
-                    updateSession()
+            toast.promise(
+                checkout('', user.id, {
+                    address_id: selectedAddress.address,
+                    discount_id: discountResponse === null ? null : discountResponse.data.id
                 })
-                .catch(error => console.log(error))
+                , {
+                    loading: "Placing your order",
+                    success: (response) => {
+                        navigate(`/user/orders/${response.data.id}`);
+                        updateSession()
+                        return "Order successfully placed"
+                    },
+                    error: "Error placing your order"
+                }
+            )
         }
     }
 
