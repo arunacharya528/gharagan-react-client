@@ -67,7 +67,7 @@ export const RateProgressBar = ({ star, percent }) => {
  * @param {Int} param0 rateing number. can be double
  * @returns a five stars denoting rating
  */
-export const RateDisplayByNumber = ({ rating }) => {
+export const RateDisplayByNumber = ({ rating, displayNumber = true }) => {
 
     const getRoundedValue = (rating) => {
         return Math.round((rating + Number.EPSILON) * 10) / 10;
@@ -96,9 +96,14 @@ export const RateDisplayByNumber = ({ rating }) => {
     })
     return (
         <div className="flex flex-row items-center space-x-3">
-            <span className="">
-                {getRoundedValue(rating)}
-            </span>
+            {
+                displayNumber ?
+                    <span className="">
+                        {getRoundedValue(rating)}
+                    </span>
+                    : ''
+            }
+
 
             <div class="stars" style={{ '--rating': getRoundedValue(rating) }} aria-label="Rated 2.3 out of 5">
             </div>

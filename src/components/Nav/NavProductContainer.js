@@ -4,7 +4,7 @@ import { ShortProductThumbnail } from "../Thumbnail/ShortProductThumbnail";
 
 export const NavProductContainer = ({ title, products, link, forward }) => {
 
-    console.log(products);
+    
     return (
         <section className="mb-4">
             <div className="flex justify-between py-3">
