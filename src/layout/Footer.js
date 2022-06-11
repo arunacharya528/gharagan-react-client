@@ -1,51 +1,47 @@
+import { useContext } from "react";
+import { Link } from "react-router-dom";
 import { FooterNav } from "../components/Footer/FooterNav";
+import { PageLinkContext } from "../context/PageLinkContext";
+import logo from "../assets/image/logo.png"
 import { CartIcon, HomeIcon, PersonIcon, SearchIcon } from "../icons";
 
 export const Footer = () => {
-    return (
 
+    const { getLinks } = useContext(PageLinkContext);
+
+    return (
         <>
-            <footer class="footer p-10 bg-base-200 text-base-content">
-                <div>
-                    <span class="footer-title">Services</span>
-                    <a class="link link-hover">Branding</a>
-                    <a class="link link-hover">Design</a>
-                    <a class="link link-hover">Marketing</a>
-                    <a class="link link-hover">Advertisement</a>
-                </div>
-                <div>
-                    <span class="footer-title">Company</span>
-                    <a class="link link-hover">About us</a>
-                    <a class="link link-hover">Contact</a>
-                    <a class="link link-hover">Jobs</a>
-                    <a class="link link-hover">Press kit</a>
-                </div>
-                <div>
-                    <span class="footer-title">Legal</span>
-                    <a class="link link-hover">Terms of use</a>
-                    <a class="link link-hover">Privacy policy</a>
-                    <a class="link link-hover">Cookie policy</a>
-                </div>
-                <div>
-                    <span class="footer-title">Newsletter</span>
-                    <div class="form-control w-80">
-                        <label class="label">
-                            <span class="label-text">Enter your email address</span>
-                        </label>
-                        <div class="relative">
-                            <input type="text" placeholder="username@site.com" class="input input-bordered w-full pr-16" />
-                            <button class="btn btn-primary absolute top-0 right-0 rounded-l-none">Subscribe</button>
-                        </div>
+            <footer class="footer p-10 flex flex-col md:flex-row bg-secondary/50 mt-20">
+                <div className="w-full md:w-1/5 flex flex-col items-center justify-center">
+                    <img src={logo} className="w-32" />
+                    <div className="w-full text-left">
+                        Gharagan description
                     </div>
                 </div>
-            </footer>
-
-            <div class="footer p-10 bg-neutral text-neutral-content">
-                <div>
-                    <svg width="50" height="50" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" class="fill-current"><path d="M22.672 15.226l-2.432.811.841 2.515c.33 1.019-.209 2.127-1.23 2.456-1.15.325-2.148-.321-2.463-1.226l-.84-2.518-5.013 1.677.84 2.517c.391 1.203-.434 2.542-1.831 2.542-.88 0-1.601-.564-1.86-1.314l-.842-2.516-2.431.809c-1.135.328-2.145-.317-2.463-1.229-.329-1.018.211-2.127 1.231-2.456l2.432-.809-1.621-4.823-2.432.808c-1.355.384-2.558-.59-2.558-1.839 0-.817.509-1.582 1.327-1.846l2.433-.809-.842-2.515c-.33-1.02.211-2.129 1.232-2.458 1.02-.329 2.13.209 2.461 1.229l.842 2.515 5.011-1.677-.839-2.517c-.403-1.238.484-2.553 1.843-2.553.819 0 1.585.509 1.85 1.326l.841 2.517 2.431-.81c1.02-.33 2.131.211 2.461 1.229.332 1.018-.21 2.126-1.23 2.456l-2.433.809 1.622 4.823 2.433-.809c1.242-.401 2.557.484 2.557 1.838 0 .819-.51 1.583-1.328 1.847m-8.992-6.428l-5.01 1.675 1.619 4.828 5.011-1.674-1.62-4.829z"></path></svg>
-                    <p>Gharagan<br /></p>
+                <div className="text-base-content w-full md:grow flex flex-row justify-between px-20">
+                    <div className="flex flex-col space-y-2">
+                        {
+                            getLinks('left-foot').map((link, index) =>
+                                <Link to={"/page/" + link['url-slug']} key={index} className="hover:text-accent">{link.name}</Link>
+                            )
+                        }
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                        {
+                            getLinks('middle-foot').map((link, index) =>
+                                <Link to={"/page/" + link['url-slug']} key={index} className="hover:text-accent">{link.name}</Link>
+                            )
+                        }
+                    </div>
+                    <div className="flex flex-col space-y-2">
+                        {
+                            getLinks('right-foot').map((link, index) =>
+                                <Link to={"/page/" + link['url-slug']} key={index} className="hover:text-accent">{link.name}</Link>
+                            )
+                        }
+                    </div>
                 </div>
-                <div>
+                <div className="w-full md:w-1/5">
                     <span class="footer-title">Social</span>
                     <div class="grid grid-flow-col gap-4">
                         <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path></svg></a>
@@ -53,115 +49,9 @@ export const Footer = () => {
                         <a><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="fill-current"><path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"></path></svg></a>
                     </div>
                 </div>
-            </div>
+            </footer>
 
             <FooterNav />
-            {/* <div className="sticky bottom-0"> */}
-
-            {/* </div> */}
         </>
-
-        // <footer>
-        //     <div class="container">
-        //         <div id="services" class="row">
-        //             <div class="col-sm-3 d-flex service">
-        //                 <i class="fa fa-truck" aria-hidden="true"></i>
-        //                 <div>
-        //                     <div class="title">Fast and free delivery</div>
-        //                     <div class="summary">Free delivery inside ktm</div>
-        //                 </div>
-        //             </div>
-        //             <div class="col-sm-3 d-flex service">
-        //                 <i class="fa fa-money" aria-hidden="true"></i>
-        //                 <div>
-        //                     <div class="title">Money back guarentee</div>
-        //                     <div class="summary">Moneyback guarentee within 7 days</div>
-        //                 </div>
-        //             </div>
-        //             <div class="col-sm-3 d-flex service">
-        //                 <i class="fa fa-shield" aria-hidden="true"></i>
-        //                 <div>
-        //                     <div class="title">Secure online payment</div>
-        //                     <div class="summary">We posess secure payment certification</div>
-        //                 </div>
-        //             </div>
-        //             <div class="col-sm-3 d-flex service">
-        //                 <i class="fa fa-paperclip" aria-hidden="true"></i>
-        //                 <div>
-        //                     <div class="title">24/7 customer support</div>
-        //                     <div class="summary">Customer support on your inconveniences</div>
-        //                 </div>
-        //             </div>
-        //         </div>
-        //         <hr class="my-5" />
-
-        //         <div class="row">
-        //             <div class="col-sm-3" id="about">
-        //                 <div class="image-container">
-        //                     <img src="http://via.placeholder.com/200x200" />
-        //                 </div>
-        //                 <span>This is some info about e-commerce site</span>
-        //             </div>
-        //             <div class="col-sm-6 row" id="nav">
-        //                 <div class="col-sm-4 d-flex flex-column">
-        //                     <h6>Title</h6>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                 </div>
-        //                 <div class="col-sm-4 d-flex flex-column">
-        //                     <h6>Title</h6>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                 </div>
-        //                 <div class="col-sm-4 d-flex flex-column">
-        //                     <h6>Title</h6>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                     <a href="#">Link</a>
-        //                 </div>
-        //             </div>
-
-        //             <div class="col-sm-3" id="more">
-
-        //                 <h6>Subscribe to our newsletter</h6>
-        //                 <div class="newsletter">
-        //                     <input type="text" placeholder="Your email" />
-        //                     <button type="submit">Subscribe</button>
-        //                 </div>
-
-        //                 <div class="social-links">
-        //                     <a href=""><i class="fa fa-facebook" aria-hidden="true"></i></a>
-        //                     <a href=""><i class="fa fa-instagram" aria-hidden="true"></i></a>
-        //                     <a href=""> <i class="fa fa-at" aria-hidden="true"></i></a>
-        //                     <a href=""><i class="fa fa-whatsapp" aria-hidden="true"></i></a>
-        //                 </div>
-
-        //                 <h6>Payment Partners</h6>
-        //                 <div class="payments">
-        //                     <a href="">
-        //                         <img src="https://www.nepalitimes.com/wp-content/uploads/2021/07/Esewa-Remittance-Payment.png" />
-        //                     </a>
-        //                     <a href="">
-        //                         <img src="https://upload.wikimedia.org/wikipedia/en/f/fd/Khalti_Digital_Wallet_Logo.png?20191113065617" />
-        //                     </a>
-        //                     <a href="">
-        //                         <img src="https://www.imepay.com.np/wp-content/uploads/2020/10/IME-Pay-Icon.png" />
-        //                     </a>
-        //                 </div>
-
-        //             </div>
-
-        //         </div>
-        //     </div>
-
-        // </footer >
     );
 }

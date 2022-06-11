@@ -17,7 +17,7 @@ import logo from "../assets/image/logo.png";
 import lgLogo from "../assets/image/lg-logo.png";
 import { SearchBar } from "../components/Search";
 import { NavProductContainer } from "../components/Nav/NavProductContainer";
-
+import { PageLinkContext } from "../context/PageLinkContext"
 const queryString = require('query-string')
 
 
@@ -79,10 +79,12 @@ export const Nav = () => {
             })
             .catch(error => console.log(error))
 
-        
+
         setSelectedCategory(category);
 
     }
+
+    const { getLinks } = useContext(PageLinkContext);
 
 
     const forwardTo = (link) => {
@@ -93,6 +95,13 @@ export const Nav = () => {
 
     return (
         <>
+            <div className="container mx-auto flex justify-center flex-wrap space-x-5 py-3">
+                {
+                    getLinks('head').map((link, index) =>
+                        <Link to={"/page/" + link['url-slug']} key={index} className="hover:text-primary">{link.name}</Link>
+                    )
+                }
+            </div>
             <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
                 <div className="lg:container mx-auto flex justify-between items-center space-x-10 p-2 flex-nowrap w-full">
 
@@ -104,7 +113,6 @@ export const Nav = () => {
                         </div>
 
                         <Link to="/" className="hidden lg:block">
-                            {/* <img src={logo} className="w-10" /> */}
                             <img src={lgLogo} className="w-32" />
                         </Link>
 
@@ -113,17 +121,11 @@ export const Nav = () => {
                     <div className="md:grow flex justify-center">
 
                         <Link to="/" className="block lg:hidden">
-                            {/* <img src={logo} className="w-10" /> */}
                             <img src={lgLogo} className="w-32" />
                         </Link>
 
                         <div className="bg-base-200 hidden lg:flex space-x-2 items-center rounded-lg p-2 w-full">
                             <SearchBar />
-                            {/* <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
-
-                            <button class="btn btn-ghost btn-circle btn-sm">
-                                <SearchIcon className="w-6 h-6 text-gray-400" />
-                            </button> */}
                         </div>
 
                     </div>
@@ -160,11 +162,6 @@ export const Nav = () => {
                 </div>
                 <div className="block lg:hidden  lg:container mx-auto w-full py-2 px-5">
                     <div className="bg-base-200 flex space-x-2 items-center rounded-lg p-2  w-full">
-                        {/* <input className="rounded-full bg-transparent outline-none px-2 w-full" placeholder="Search at Gharagan" />
-
-                        <button class="btn btn-ghost btn-circle btn-sm">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-                        </button> */}
                         <SearchBar />
                     </div>
                 </div>
@@ -185,6 +182,8 @@ export const Nav = () => {
 
                 <div className="navbar-end"></div>
             </div>
+
+           
 
 
             <div className="relative">
