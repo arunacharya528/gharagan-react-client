@@ -10,7 +10,7 @@ import { CartContext } from "../context/CartContext";
 import { CategoryContext } from "../context/CategoryContext";
 import { UserContext, UserProvider } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
-import { CartIcon, MoonIcon, PersonIcon, SunIcon, ListIcon, SearchIcon } from "../icons";
+import { CartIcon, MoonIcon, PersonIcon, SunIcon, ListIcon, SearchIcon, CloseIcon } from "../icons";
 import { AuthLink, AuthUser } from "../pages/Authenticate";
 
 import logo from "../assets/image/logo.png";
@@ -18,6 +18,7 @@ import lgLogo from "../assets/image/lg-logo.png";
 import { SearchBar } from "../components/Search";
 import { NavProductContainer } from "../components/Nav/NavProductContainer";
 import { PageLinkContext } from "../context/PageLinkContext"
+import { SiteDetailContext } from "../context/SiteDetailContext";
 const queryString = require('query-string')
 
 
@@ -85,13 +86,15 @@ export const Nav = () => {
     }
 
     const { getLinks } = useContext(PageLinkContext);
-
+    const { getSiteData } = useContext(SiteDetailContext);
 
     const forwardTo = (link) => {
         setSelectedCategory([])
         navigate(link)
         setSelectedTab(null)
     }
+
+    const [notificationShown, setNotificationDisplay] = useState(true);
 
     return (
         <>
@@ -103,6 +106,19 @@ export const Nav = () => {
                 }
             </div>
             <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
+                {
+                    notificationShown && getSiteData('notification') !== "" ?
+                        <div className="container mx-auto m-2 p-1 bg-red-400/10 border border-red-500 rounded-full  flex items-center">
+                            <div className="grow text-center">
+                                {getSiteData('notification')}
+                            </div>
+                            <button className="btn btn-ghost btn-circle btn-xs" onClick={e => setNotificationDisplay(false)}>
+                                <CloseIcon className="" />
+                            </button>
+                        </div>
+                        : ''
+                }
+
                 <div className="lg:container mx-auto flex justify-between items-center space-x-10 p-2 flex-nowrap w-full">
 
                     <div className="flex flex-row space-x-2 items-stretch flex-grow-0 flex-nowrap">
@@ -113,7 +129,7 @@ export const Nav = () => {
                         </div>
 
                         <Link to="/" className="hidden lg:block">
-                            <img src={lgLogo} className="w-32" />
+                            <img src={getSiteData('lg_logo_url')} className="w-32" />
                         </Link>
 
                     </div>
@@ -121,7 +137,7 @@ export const Nav = () => {
                     <div className="md:grow flex justify-center">
 
                         <Link to="/" className="block lg:hidden">
-                            <img src={lgLogo} className="w-32" />
+                            <img src={getSiteData('logo_url')} alt="Gharagan logo" className="w-10" />
                         </Link>
 
                         <div className="bg-base-200 hidden lg:flex space-x-2 items-center rounded-lg p-2 w-full">
@@ -183,7 +199,7 @@ export const Nav = () => {
                 <div className="navbar-end"></div>
             </div>
 
-           
+
 
 
             <div className="relative">
