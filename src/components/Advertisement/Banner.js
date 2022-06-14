@@ -1,43 +1,46 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import Slider from "react-slick";
 import { getActiveAdvertisements } from "../../adapters/advertisement";
+import { AdvertisementContext } from "../../context/AdvertisementContext";
+import { defaultSliderSetting } from "../../helpers/defaultSliderSetting";
 import { Loading } from "../../helpers/Loading";
 import { CarouselView } from "../Carousel";
 
-export const Banner = () => {
-
-    const [banners, setBanners] = useState([]);
-    useEffect(() => {
-        getActiveAdvertisements()
-            .then((response) => {
-                setBanners(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    }, []);
+export const Banner = ({ page }) => {
+    const { getAdvertisement } = useContext(AdvertisementContext);
 
     return (
-        <>
-            {banners.length !== 0 ?
-                <CarouselView items={banners.map((banner, index) => {
-                    return (
-                        <React.Fragment key={index}>
-                            <div className="detail">
-                                <div className="heading">{banner.name}</div>
-                                <p>
-                                    {banner.summary}
-                                </p>
-                                <div className="link-container">
-                                    <a href={banner.url_slug} target="_blank">Click to Visit</a>
-                                </div>
-                            </div>
-                            <img src={process.env.REACT_APP_FILE_PATH + banner.file.path} />
-                        </React.Fragment>
-                    );
-                })} displayItems={1}></CarouselView>
-                : <Loading />
-            }
-        </>
+        <div>
+            <Slider {...defaultSliderSetting({})}>
+                {getAdvertisement(page, 'banner').map((ad, index) =>
+                    <div
+                        class=" duration-700 ease-in-out max-auto h-auto !grid grid-rows-2 md:grid-cols-2  md:grid-rows-none gap-x-20  items-center justify-between md:space-x-10  "
+                        data-carousel-item
+                        key={index}>
+                        <img
+                            class="block mx-auto order-2 mt-2 object-contain bannerImage h-96"
+                            src={process.env.REACT_APP_FILE_PATH + ad.file.path}
+                            alt="VR Collection"
+                        />
+                        <div className="order-last md:order-first md:mr-10 md:text-left  text-center m-0">
+                            <h1 className="text-5xl md:text-6xl font-bold py-2 transition delay-150 duration-400 ease-in-out">
+                                {ad.name}
+                            </h1>
+                            <h5 className="text-xl transition delay-150 duration-500 ease-in-out">
+                                {ad.summary}
+                            </h5>
+
+                            <a href={ad.url_slug} target="_blank" className="btn btn-primary p-3 mt-4 ">
+                                View More
+                            </a>
+                        </div>
+                    </div>
+                )}
+
+            </Slider>
+
+        </div>
+
 
     );
 

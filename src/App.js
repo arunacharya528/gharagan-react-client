@@ -37,6 +37,9 @@ import { Review } from "./pages/Review";
 import { Newsletter } from "./pages/Newsletter";
 import { QuestionAnswers } from "./pages/QAs";
 import { Page } from "./pages/Page";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 function App() {
 
   return (

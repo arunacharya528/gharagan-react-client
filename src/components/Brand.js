@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getBrands } from "../adapters/brand";
-import { Banner } from "./Advertisement/Banner";
-import { CarouselView } from "./Carousel";
+import Slider from "react-slick";
+import { defaultSliderSetting } from "../helpers/defaultSliderSetting";
 
 export const BrandCarousel = () => {
 
@@ -30,7 +30,7 @@ export const BrandCarousel = () => {
 
         }
         return (
-            <div onMouseEnter={e => showDetail(true)} onMouseLeave={e => showDetail(false)} className="relative">
+            <div onMouseEnter={e => showDetail(true)} onMouseLeave={e => showDetail(false)} className="relative mx-3">
                 <img src={getImageLink()} className="rounded-xl h-32 w-auto" />
                 {
                     isDetailShown ?
@@ -46,28 +46,34 @@ export const BrandCarousel = () => {
 
     const loadingData = () => {
         if (brands.length !== 0) {
-            return brands.map((brand, index) =>
-                <ImageContainer key={index} brand={brand} />
-            );
-        } else {
-            return Array(3).fill({}).map(() =>
-                <div class=" shadow rounded-lg w-full mx-3">
-                    <div class="animate-pulse flex space-x-4">
 
-                        <div className="h-52 w-full p-3 rounded bg-base-200 flex justify-center items-center">
+            return <Slider {...defaultSliderSetting({ slidesToShow: 5, variableWidth: true })}>
+                {
+                    brands.map((brand, index) =>
+                        <ImageContainer key={index} brand={brand} />
+                    )
+                }
+            </Slider>
+
+        } else {
+            return <div class="shadow rounded-lg mx-3">
+                <div className="animate-pulse flex flex-row space-x-5">
+                    {Array(5).fill({}).map(() =>
+                        <div className="h-52 w-1/5 p-3 rounded bg-base-200 flex justify-center items-center">
                             <div className="h-7 w-16 bg-base-300 rounded-lg"></div>
                         </div>
-                    </div>
+                    )}
                 </div>
-            )
+            </div>
+
         }
 
     }
-
-
+    
     return (
-        <CarouselView items={loadingData()} displayItems={5}></CarouselView>
-
+        <div className="container mx-auto">
+            {loadingData()}
+        </div>
     );
 
 }

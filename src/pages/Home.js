@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Advertisement/Banner";
 import { BannerForHomePage } from "../components/Advertisement/BannerForHomePage";
+import { VerticalList } from "../components/Advertisement/VerticalList";
 import { BrandCarousel } from "../components/Brand";
 import { ProductContainer } from "../components/ProductContainer";
 import { Loading } from "../helpers/Loading";
@@ -51,11 +52,19 @@ export const Home = () => {
 
     return (
         <>
-            <BannerForHomePage />
+
+            <div className="container mx-auto p-5 grid grid-cols-6 gap-10 items-center">
+                <div className="col-span-6 md:col-span-2 order-last md:order-1">
+                    <VerticalList />
+                </div>
+                <div className="col-span-6 md:col-span-4 md:order-2">
+                    <Banner page={"home"} />
+                </div>
+            </div>
 
             <ProductContainer products={latestProducts} title={"Latest Products"} />
             <ProductContainer products={topRatedProducts} title={"Top Rated Products"} />
-             <ProductContainer products={popularProducts} title={"Popular Products"} />
+            <ProductContainer products={popularProducts} title={"Popular Products"} />
             <ProductContainer products={controversialProducts} title={"Controversial Products"} />
 
             <BrandCarousel />
