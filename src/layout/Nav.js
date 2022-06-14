@@ -52,6 +52,17 @@ export const Nav = () => {
         }
     }, [selectedCategoryNumber])
 
+    // useEffect(() => {
+    //     if (parsedData.selectedCategory && categories.length !== 0) {
+    //         categories.data.map((category) => {
+    //             if (category.id + "" === parsedData.selectedCategory) {
+    //                 setSelectedCategory(category);
+    //                 handleCategorySelection(category);
+    //             }
+    //         })
+    //     }
+
+    // }, [parsedData])
 
     const handleCategorySelection = (category) => {
         // extract ids of child categories in an array
@@ -92,19 +103,24 @@ export const Nav = () => {
         setSelectedCategory([])
         navigate(link)
         setSelectedTab(null)
+        showDetailBar(false)
     }
 
     const [notificationShown, setNotificationDisplay] = useState(true);
 
+    const [isDetailBarShown, showDetailBar] = useState(false);
+    // const { categories } = useContext(CategoryContext)
+
+
     return (
         <>
-            <div className="container mx-auto flex justify-center flex-wrap space-x-5 py-3">
+            {/* <div className="container mx-auto flex justify-center flex-wrap space-x-5 py-3">
                 {
                     getLinks('head').map((link, index) =>
                         <Link to={"/page/" + link['url-slug']} key={index} className="hover:text-primary">{link.name}</Link>
                     )
                 }
-            </div>
+            </div> */}
             <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
                 {
                     notificationShown && getSiteData('notification') !== "" ?
@@ -183,66 +199,71 @@ export const Nav = () => {
                 </div>
             </div>
 
-
-            <div class="container mx-auto navbar bg-base-100 hidden lg:flex">
-
-
-                <div class="navbar-start">
-
-                </div>
-                <div class="navbar-center hidden lg:flex">
-                    <ul class="menu menu-horizontal p-0">
-                        <CategoryMenu setSelectedTab={setSelectedTab} handleCategorySelection={handleCategorySelection} selectedTab={selectedTab} />
-                    </ul>
-                </div>
-
-                <div className="navbar-end"></div>
+            <div className="container mx-auto py-2 flex flex-row overflow-x-auto items-center space-x-5">
+                <div className="btn btn-ghost" onClick={e => showDetailBar(!isDetailBarShown)}>Categories</div>
+                {
+                    getLinks('head').map((link, index) =>
+                        <Link to={"/page/" + link['url-slug']} key={index} className="capitalize hover:text-primary">{link.name}</Link>
+                    )
+                }
             </div>
+            {isDetailBarShown ?
 
+                <div className="fixed top-0 z-50 bg-base-100 flex justify-center items-center h-screen w-screen" onClick={e => showDetailBar(false)}>
+                    <div className="absolute top-5 w-full text-center">Click outside container to close</div>
 
+                    <div className="bg-base-200 w-full h-4/5 overflow-x-auto relative border border-gray-700">
+                        <div className="flex flex-col md:flex-row container mx-auto py-6 items-stretch">
+                            <ul class="menu menu-vertical p-0">
+                                {
+                                    categories.data.map((category, index) =>
+                                        <li onClick={e => { e.stopPropagation(); handleCategorySelection(category); }} key={index} className={"capitalize "}>
+                                            <a className={(selectedCategory.id === category.id ? 'active' : '')}>{category.name}</a>
+                                        </li>
+                                    )
+                                }
+                            </ul>
 
+                            <div>
+                                {
+                                    selectedCategory.length !== 0 ?
+                                        <div className="grid md:grid-cols-4 gap-5 px-3 h-full">
+                                            <div className="">
+                                                <div className="grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                                                    {
+                                                        selectedCategory.child_categories.map((category, index) =>
+                                                            <button key={index} className="btn btn-ghost capitalize" onClick={e => { e.stopPropagation(); forwardTo(`/filter/?categories=${category.id}`) }} >{category.name}</button>
+                                                        )
+                                                    }
 
-            <div className="relative">
-                <div className="absolute bg-base-200 w-full z-20 shadow-md">
-                    {selectedCategory.length !== 0 ?
-                        <div className="container mx-auto relative">
-                            <div className="grid md:grid-cols-4">
+                                                </div>
+                                            </div>
 
-                                <div className="md:col-span-4 text-right sticky z-10 top-0">
-                                    <button class="btn btn-sm btn-ghost rounded-full gap-2 bg-base-200 mt-1" onClick={e => { setSelectedCategory([]); setSelectedTab(null); }}>
-                                        Close Nav
-                                        ✕
-                                    </button>
-                                </div>
+                                            <div className="d-flex justify-content-between align-items-start">
+                                                <p>
+                                                    {selectedCategory.description}
+                                                </p>
+                                            </div>
 
-
-                                <div className="p-2">
-                                    <div className="py-3 grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
-                                        {
-                                            selectedCategory.child_categories.map((category, index) =>
-                                                <span key={index} className="font-semibold cursor-pointer" onClick={e => forwardTo(`/filter/?categories=${category.id}`)} >{category.name}</span>
-                                            )
-                                        }
-
-                                    </div>
-                                </div>
-
-
-                                <div className="md:col-span-3 p-3">
-
-                                    <div className="d-flex justify-content-between align-items-start mb-5">
-                                        <p>
-                                            {selectedCategory.description}
-                                        </p>
-                                    </div>
-                                    <NavProductContainer title={"Latest Products"} products={latestProducts.products} link={latestProducts.link} forward={forwardTo} />
-                                    <NavProductContainer title={"Top Rated Products"} products={topRatedProducts.products} link={topRatedProducts.link} forward={forwardTo} />
-                                </div>
+                                            <div className="md:col-span-2">
+                                                <NavProductContainer title={"Latest Products"} products={latestProducts.products} link={latestProducts.link} forward={forwardTo} />
+                                                <NavProductContainer title={"Top Rated Products"} products={topRatedProducts.products} link={topRatedProducts.link} forward={forwardTo} />
+                                            </div>
+                                        </div>
+                                        :
+                                        ''
+                                }
                             </div>
+
+
+
                         </div>
-                        : ''}
+
+                    </div>
                 </div>
-            </div>
+                : ''
+            }
+
 
 
 

@@ -1,9 +1,13 @@
 import { useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { CategoryContext } from "../../context/CategoryContext";
 import { CategoryListSkeletion } from "../Skeleton/CategorySkeleton";
+const queryString = require('query-string')
 
 export const CategoryMenu = () => {
+
+    const location = useLocation();
+    const parsedData = queryString.parse(location.search);
 
     const { categories } = useContext(CategoryContext)
     const navigate = useNavigate();
@@ -14,10 +18,10 @@ export const CategoryMenu = () => {
                 <CategoryListSkeletion />
                 :
                 categories.data.map((category, index) =>
-                    <li class={""} onClick={e => {
+                    <li class={""} onMouseEnter={e => {
                         navigate("?selectedCategory=" + category.id)
-                    }} key={index}>
-                        <a>{category.name}</a>
+                    }} key={index} className={"capitalize "}>
+                        <a className={(parsedData.selectedCategory === '' + category.id ? 'active' : '')}>{category.name}</a>
                     </li>
                 )
 

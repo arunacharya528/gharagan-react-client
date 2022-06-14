@@ -11,10 +11,10 @@ export const NavProductContainer = ({ title, products, link, forward }) => {
                 <span className="text-xl font-bold">{title}</span>
                 <span onClick={e => forward(link)} className="btn btn-sm btn-ghost rounded-full">More</span>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5 items-stretch">
+            <div className="grid grid-cols-3 items-stretch gap-5">
                 {products.length === 0 ?
                     <Loading />
-                    : products.slice(0, 5).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} moveForward={link => forward(link)} />)
+                    : products.slice(0, 3).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} moveForward={link => forward(link)} />)
                 }
             </div>
         </section>
