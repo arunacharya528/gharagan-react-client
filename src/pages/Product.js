@@ -2,8 +2,6 @@ import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import ImageGallery from "react-image-gallery";
 import { Link, useLocation } from "react-router-dom";
-import Cookies from "universal-cookie";
-import { getByProductAndSession, postToCart } from "../adapters/cartItems";
 import { getproduct, getProducts } from "../adapters/product";
 import { GeneralInfo } from "../components/Product/GeneralInfo";
 import { QAs } from "../components/Product/QuestionAnswers";

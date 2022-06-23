@@ -3,12 +3,6 @@ import { Link } from "react-router-dom";
 import { ModalContext } from "../../context/ModalContext";
 import { RateDisplay, RateDisplayByArray, RateDisplayByNumber } from "../Rating";
 import ImageGallery from 'react-image-gallery';
-import { UserContext } from "../../context/UserContext";
-import { CartContext } from "../../context/CartContext";
-import { postToCart } from "../../adapters/cartItems";
-import toast from 'react-hot-toast'
-import { success } from "daisyui/src/colors";
-import { postWishList, productExistsInWishList, removeFromWishList } from "../../adapters/wishlist";
 import { EyeIcon, HeartIcon } from "../../icons";
 import { WishListContext } from "../../context/WishListContext";
 import { WishListButton } from "../WishListButton";

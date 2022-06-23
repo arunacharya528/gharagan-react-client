@@ -13,17 +13,3 @@ export const getShoppingSession = (bearerToken, sessionId) => {
 
     return axios(config)
 }
-
-
-export const createOrder = (bearerToken, sessionId) => {
-    let config = {
-        method: 'post',
-        url: `${apiURL}/shoppingSession/${sessionId}/createOrder`,
-        headers: {
-            'Authorization': `Bearer ${bearerToken}`
-        },
-        maxRedirects: 0
-    };
-
-    return axios(config)
-}

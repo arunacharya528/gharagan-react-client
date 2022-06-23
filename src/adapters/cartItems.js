@@ -39,19 +39,6 @@ export const putToCart = (bearerToken, data, id) => {
     return axios(config)
 }
 
-export const getByProductAndSession = (bearerToken, product_id, session_id) => {
-    let config = {
-        method: 'get',
-        url: `${apiURL}/cartItem/session/${session_id}/product/${product_id}`,
-        headers: {
-            'Authorization': `Bearer ${bearerToken}`
-        },
-        maxRedirects: 0
-    };
-
-    return axios(config)
-}
-
 export const removeCartItem = (bearerToken, itemId) => {
     let config = {
         method: 'delete',

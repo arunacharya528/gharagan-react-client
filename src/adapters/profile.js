@@ -2,10 +2,10 @@ const axios = require('axios');
 const apiURL = process.env.REACT_APP_API_URL;
 const qs = require('qs');
 
-export const getUser = (bearerToken, userId, type = '') => {
+export const getUser = (bearerToken, type = '') => {
     let config = {
         method: 'get',
-        url: `${apiURL}/user/${userId}/${type}`,
+        url: `${apiURL}/user/${type}`,
         headers: {
             'Authorization': `Bearer ${bearerToken}`
         },

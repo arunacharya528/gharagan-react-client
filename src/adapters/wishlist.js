@@ -28,14 +28,3 @@ export const removeFromWishList = (id) => {
 
     return axios(config)
 }
-
-export const productExistsInWishList = (productId, userId) => {
-    let config = {
-        method: 'get',
-        url: `${apiURL}/wishlist/exists?product_id=${productId}&user_id=${userId}`,
-        headers: {},
-        maxRedirects: 0
-    };
-
-    return axios(config)
-}

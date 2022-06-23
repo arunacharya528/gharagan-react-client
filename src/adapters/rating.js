@@ -4,16 +4,6 @@ const axios = require('axios');
 const qs = require('qs');
 
 
-export const hasRated = (userId, productId) => {
-    let config = {
-        method: 'get',
-        url: `${apiURL}/productRating/hasRated?user_id=${userId}&product_id=${productId}`,
-        headers: {},
-        maxRedirects: 0
-    };
-    return axios(config)
-}
-
 export const postRating = (data) => { 
     data = qs.stringify(data);
     let config = {
