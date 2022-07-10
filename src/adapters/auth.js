@@ -7,7 +7,7 @@ export const login = (credentials) => {
     let data = qs.stringify(credentials);
     let config = {
         method: 'post',
-        url: `${apiURL}/auth/login`,
+        url: `${apiURL}/login`,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
@@ -19,12 +19,28 @@ export const login = (credentials) => {
 
 }
 
-export const logout = (bearerToken) => {
+export const getIfLoggedIn = (data) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/get-if-logged-in`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+
+}
+
+export const logout = (token) => {
     let config = {
         method: 'get',
-        url: `${apiURL}/auth/logout`,
+        url: `${apiURL}/logout`,
         headers: {
-            'Authorization': `Bearer ${bearerToken}`
+            'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0
     };

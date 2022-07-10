@@ -16,7 +16,7 @@ export const UserLayout = ({ component }) => {
     return (
         <>
             {
-                user !== null ?
+                !user.loading ?
                     <div class={"drawer drawer-mobile " + (isDrawerFit ? "fixed top-0 bg-base-100 z-40" : '')} >
                         <input id="dashboardDrawer" type="checkbox" class="drawer-toggle" />
                         <div class="drawer-content">
@@ -38,7 +38,7 @@ export const UserLayout = ({ component }) => {
 
                                     <div className="tooltip tooltip-left" data-tip={isDrawerFit ? "Exit Fullscreen" : "Fullscreen"}>
                                         <button className="btn btn-ghost btn-circle" onClick={e => fitDrawer(!isDrawerFit)}>
-                                            {isDrawerFit ? <FullScreenExitIcon /> : <FullScreenEnterIcon/>}
+                                            {isDrawerFit ? <FullScreenExitIcon /> : <FullScreenEnterIcon />}
                                         </button>
                                     </div>
 

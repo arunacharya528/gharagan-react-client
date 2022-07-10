@@ -1,34 +1,55 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { BagIcon, CartIcon, CreditCardIcon, MapPinIcon, PersonIcon } from "../icons";
+import Cookies from 'universal-cookie';
+import { getIfLoggedIn, logout } from "../adapters/auth";
 
-export const UserContext = createContext();
+export const UserContext = createContext(
+    {
+        user: {
+            loading: Boolean,
+            data: {
+                token: String
+            }
+        },
+        setUserData: Function,
+        handleLogout: Function
+    }
+);
 
 export const UserProvider = ({ children }) => {
 
-    const userData = {
-        "id": 1,
-        "email": "eoconner@example.net",
-        "first_name": "Lyla",
-        "last_name": "Kassulke",
-        "contact": "737.557.3779",
-        "type": 2,
-        "created_at": "2022-05-04T09:13:12.000000Z",
-        "updated_at": "2022-05-04T09:13:12.000000Z",
-        "has_newsletter_count": 1
-    };
-    const [user, setUser] = useState(userData)
+    const cookies = new Cookies();
+    const initialState = { loading: true, data: {} };
+    const [user, setUser] = useState(initialState)
 
-    const handleLogin = () => {
-        setUser(userData)
+    const handleLogout = (token) => {
+        logout(token ? token : user.data.token)
+            .then(response => {
+                setUser(initialState);
+                cookies.remove('token')
+            })
+            .catch(error => console.log(error))
+
     }
 
-    const handleLogout = () => {
-        setUser(null)
+    useEffect(() => {
+        const token = cookies.get('token');
+        if (token !== '') {
+            getIfLoggedIn({ token: token })
+                .then(response => setUser({ loading: false, data: { token: token, role: response.data.role } }))
+                .catch(response => setUser(initialState))
+        }
+    }, [])
+
+    const setUserData = (data = { token: String }) => {
+        setUser({
+            loading: false,
+            data: data
+        })
+        cookies.set('token', data.token)
     }
-
-
-    return <UserContext.Provider value={{ user, handleLogin, handleLogout }}>
+    return <UserContext.Provider value={{ user, setUserData, handleLogout }}>
         {children}
     </UserContext.Provider>
 }

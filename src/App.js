@@ -65,6 +65,7 @@ function App() {
                   <Route element={<Page />} path="/page/:slug" />
                   
                   <Route path="/user">
+                    <Route element={<UserLayout component={<Login />} />} path="login" exact />
                     <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
                     <Route element={<UserLayout component={<Cart />} />} path="cart" exact />
                     <Route element={<UserLayout component={<Checkout />} />} path="checkout" exact />

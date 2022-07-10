@@ -6,7 +6,7 @@ import { MoonIcon, SunIcon } from "../../icons";
 
 export const UserMenu = () => {
 
-    const { user, handleLogin, handleLogout } = useContext(UserContext)
+    const { user, handleLogout } = useContext(UserContext)
     const { session, updateSession } = useContext(CartContext)
 
     const [themeIcon, setThemeIcon] = useState(<MoonIcon className="w-5 h-5" />);
@@ -48,10 +48,11 @@ export const UserMenu = () => {
             }
 
             {
-                user !== null && session !== null ?
+                !user.loading ?
                     <li className=""><a onClick={e => { handleLogout(); updateSession() }}>Logout</a></li>
                     :
-                    <li><a onClick={e => { handleLogin(); updateSession() }}>Login</a></li>
+                    <li><Link to={"/user/profile"}>Login</Link></li>
+
 
             }
 
