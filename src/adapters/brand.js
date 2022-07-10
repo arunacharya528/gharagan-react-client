@@ -7,7 +7,7 @@ const axios = require('axios');
 export const getBrands = () => {
     let config = {
         method: 'get',
-        url: `${apiURL}/brand`,
+        url: `${apiURL}/allBrand`,
         headers: {},
         maxRedirects: 0
     };
@@ -18,7 +18,7 @@ export const getBrands = () => {
 export const getBrand = (id) => { 
     let config = {
         method: 'get',
-        url: `${apiURL}/brand/${id}`,
+        url: `${apiURL}/oneBrand/${id}`,
         headers: {},
         maxRedirects: 0
     };

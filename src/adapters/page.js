@@ -6,7 +6,7 @@ const axios = require('axios');
 export const getPageLinks = () => {
     let config = {
         method: 'get',
-        url: `${apiURL}/pageLink`,
+        url: `${apiURL}/allPageLinks`,
         headers: {},
         maxRedirects: 0
     };
@@ -18,7 +18,7 @@ export const getPageLinks = () => {
 export const getPage = (slug) => {
     let config = {
         method: 'get',
-        url: `${apiURL}/page/${slug}`,
+        url: `${apiURL}/page/bySlug/${slug}`,
         headers: {},
         maxRedirects: 0
     };

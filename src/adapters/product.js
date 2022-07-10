@@ -5,7 +5,7 @@ const axios = require('axios');
 export const getProducts = (urlQuery = '', item = "item=8") => {
     let config = {
         method: 'get',
-        url: `${apiURL}/product/all?${urlQuery}&${item}`,
+        url: `${apiURL}/allProduct?${urlQuery}&${item}`,
         headers: {},
         maxRedirects: 0
     };
@@ -16,7 +16,7 @@ export const getProducts = (urlQuery = '', item = "item=8") => {
 export const getproduct = (id) => {
     let config = {
         method: 'get',
-        url: `${apiURL}/product/${id}`,
+        url: `${apiURL}/oneProduct/${id}`,
         headers: {},
         maxRedirects: 0
     };

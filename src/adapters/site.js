@@ -4,7 +4,7 @@ const axios = require('axios')
 export const getSiteDetails = () => {
     let config = {
         method: 'get',
-        url: `${apiURL}/siteDetail`,
+        url: `${apiURL}/allSiteDetail`,
         headers: {},
         maxRedirects: 0
     };

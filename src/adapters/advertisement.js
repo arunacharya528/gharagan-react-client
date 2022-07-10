@@ -5,7 +5,7 @@ const axios = require('axios');
 export const getActiveAdvertisements = () => {
     let config = {
         method: 'get',
-        url: `${apiURL}/advertisement/active`,
+        url: `${apiURL}/activeAds`,
         headers: {},
         maxRedirects: 0
     };
