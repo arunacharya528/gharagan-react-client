@@ -11,6 +11,7 @@ import { TrashIcon } from "../icons"
 import toast from "react-hot-toast";
 import { cancelOrder } from "../adapters/orderDetail";
 import { OrderSteps } from "../components/Order/OrderSteps";
+import { InvoiceLink } from "../components/Order/InvoiceLink";
 
 export const Order = () => {
 
@@ -19,8 +20,7 @@ export const Order = () => {
     const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
-
-        getUser('', user.id, 'orders')
+        getUser(user.data.token, 'orders')
             .then(response => setOrders({ data: response.data, loading: false }))
             .catch(error => console.log(error))
     }, [isRefreshed]);
@@ -73,12 +73,8 @@ export const Order = () => {
 
                                 <div className="flex flex-col md:flex-row space-y-5 md:space-x-6 md:space-y-0 w-full md:w-auto">
                                     <Link to={"/user/orders/" + order.id} className="btn btn-ghost btn-outline">View Order</Link>
-
-
-                                    <a href={process.env.REACT_APP_WEB_URL + "/view/invoice/" + order.id} target="_blank" className="btn btn-ghost btn-outline">View Invoice</a>
-
+                                    <InvoiceLink id={order.id} />
                                     <button className="btn btn-outline btn-error gap-2" disabled={order.status === 1 ? false : true} onClick={e => handleCancellation(order.id)}> <TrashIcon /> Cancel order</button>
-
                                 </div>
                             </div>
 

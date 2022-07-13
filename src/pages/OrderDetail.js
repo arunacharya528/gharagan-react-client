@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { Link, useLocation } from "react-router-dom";
-import { cancelOrder, getOrderDetail } from "../adapters/orderDetail";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { cancelOrder, getInvoice, getOrderDetail } from "../adapters/orderDetail";
 import { deleteRating, postRating } from "../adapters/rating";
+import { InvoiceLink } from "../components/Order/InvoiceLink";
 import { OrderSteps } from "../components/Order/OrderSteps";
 import { OrderView } from "../components/Order/OrderView";
 import { RateAndComment } from "../components/Product/RateAndComment";
@@ -20,9 +21,12 @@ export const OrderDetail = () => {
     const [order, setOrder] = useState({ data: null, loading: true });
 
     const [isRefreshed, setRefresh] = useState(false);
+    const { user } = useContext(UserContext);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
-        getOrderDetail('', location.pathname.split("/")[3])
+        getOrderDetail(user.data.token, location.pathname.split("/")[3])
             .then(response => setOrder({ data: response.data, loading: false }))
             .catch(error => console.log(error))
     }, [isRefreshed])
@@ -31,11 +35,8 @@ export const OrderDetail = () => {
         if (!order.loading) {
             return getSumFromArray([
                 (order.data.discount === null ? getSubTotal(order.data.order_items) : getDiscountedPrice(getSubTotal(order.data.order_items), order.data.discount.discount_percent)),
-
                 order.data.address.delivery.price,
             ])
-
-
         } else {
             return 0;
         }
@@ -207,11 +208,12 @@ export const OrderDetail = () => {
 
     const handleCancellation = (id) => {
         toast.promise(
-            cancelOrder('', id),
+            cancelOrder(user.data.token, id),
             {
                 loading: "Cancelling order",
                 success: () => {
                     setRefresh(!isRefreshed)
+                    navigate(-1);
                     return "Successfully cancelled order"
                 },
                 error: "Error cancelling order"
@@ -238,9 +240,8 @@ export const OrderDetail = () => {
                         </div>
 
                         <div className="flex items-center space-x-3">
-                            <a href={process.env.REACT_APP_WEB_URL + "/view/invoice/" + order.data.id} target="_blank" className="whitespace-nowrap text-primary font-semibold">View Invoice</a>
-
-                            <button className="btn btn-outline btn-error gap-2" disabled={order.data.status === 1 ? false : true} onClick={e => handleCancellation(order.id)}> <TrashIcon /> Cancel order</button>
+                            <InvoiceLink id={order.data.id} />
+                            <button className="btn btn-outline btn-error gap-2" disabled={order.data.status === 1 ? false : true} onClick={e => handleCancellation(order.data.id)}> <TrashIcon /> Cancel order</button>
                         </div>
 
 
