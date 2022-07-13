@@ -6,18 +6,12 @@ import { ModalContext } from "../context/ModalContext";
 import { UserContext } from "../context/UserContext";
 import { EditIcon, PlusIcon, TrashIcon } from "../icons";
 import toast from 'react-hot-toast';
+import { AddressContext } from "../context/AddressContext";
 
 export const Addresses = () => {
 
     const { user } = useContext(UserContext)
-    const [addresses, setAddresses] = useState([]);
-    const [isRefreshed, setRefresh] = useState(false)
-
-    useEffect(() => {
-        getUser(user.data.token, 'addresses')
-            .then(response => setAddresses(response.data))
-            .catch(error => console.log(error))
-    }, [isRefreshed])
+    const { addresses, updateAddress } = useContext(AddressContext);
 
     const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
@@ -25,7 +19,7 @@ export const Addresses = () => {
         setModalData(
             {
                 title: "Add new address",
-                body: <AddAddress refresh={() => { setRefresh(!isRefreshed); closeModal(); }} userId={user.id} />
+                body: <AddAddress refresh={() => { updateAddress(); closeModal(); }} userId={user.id} />
             });
         openModal();
     }
@@ -33,7 +27,7 @@ export const Addresses = () => {
         setModalData(
             {
                 title: "Edit address",
-                body: <EditAddress refresh={() => { setRefresh(!isRefreshed); closeModal(); }} address={address} />
+                body: <EditAddress refresh={() => { updateAddress(); closeModal(); }} address={address} />
             });
         openModal();
     }
@@ -46,7 +40,7 @@ export const Addresses = () => {
                     loading: "Deleting address",
                     success: () => {
                         closeModal();
-                        setRefresh(!isRefreshed)
+                        updateAddress()
                         return "Address deleted"
                     },
                     error: "Error deleting address"

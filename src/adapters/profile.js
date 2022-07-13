@@ -76,11 +76,11 @@ export const deleteAddress = (token, id) => {
     return axios(config)
 }
 
-export const checkout = (token, userId, data) => {
+export const checkout = (token, data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
-        url: `${apiURL}/user/${userId}/checkout`,
+        url: `${apiURL}/user/checkout`,
         headers: {
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/x-www-form-urlencoded'

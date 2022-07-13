@@ -1,3 +1,4 @@
+import { AddressProvider } from "./AddressContext";
 import { AdvertisementProvider } from "./AdvertisementContext";
 import { CartProvider } from "./CartContext";
 import { CategoryProvider } from "./CategoryContext";
@@ -17,15 +18,17 @@ export const ContextList = ({ children }) => {
                     <AdvertisementProvider>
                         <PageLinkProvider>
                             <UserProvider>
-                                <CartProvider>
-                                    <CategoryProvider>
-                                        <WishListProvider>
-                                            <ModalProvider>
-                                                {children}
-                                            </ModalProvider>
-                                        </WishListProvider>
-                                    </CategoryProvider>
-                                </CartProvider>
+                                <AddressProvider>
+                                    <CartProvider>
+                                        <CategoryProvider>
+                                            <WishListProvider>
+                                                <ModalProvider>
+                                                    {children}
+                                                </ModalProvider>
+                                            </WishListProvider>
+                                        </CategoryProvider>
+                                    </CartProvider>
+                                </AddressProvider>
                             </UserProvider>
                         </PageLinkProvider>
                     </AdvertisementProvider>

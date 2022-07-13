@@ -5,6 +5,7 @@ import { getDiscountByName } from "../adapters/discount";
 import { checkout, getUser } from "../adapters/profile";
 import { AddAddress } from "../components/Addresses/Add";
 import { CartItem } from "../components/Cart/CartItem";
+import { AddressContext } from "../context/AddressContext";
 import { CartContext } from "../context/CartContext";
 import { ModalContext } from "../context/ModalContext";
 import { UserContext } from "../context/UserContext";
@@ -31,7 +32,8 @@ export const Checkout = () => {
     //=======================
 
     // for address
-    const [addresses, setAddresses] = useState([]);
+    // const [addresses, setAddresses] = useState([]);
+    const { addresses, updateAddress } = useContext(AddressContext);
     const [selectedAddress, setSelectedAddress] = useState({ address: null, delivery_price: 0 });
     const [isAddressRefreshed, refreshAddress] = useState(false);
     const [addressValidation, setAddressValidation] = useState({ isValid: true, message: '' })
@@ -39,6 +41,8 @@ export const Checkout = () => {
     // for discount
     const [discountCode, setDiscountCode] = useState('')
     const [discountResponse, setDiscountResponse] = useState(null);
+
+    const [disableForm, setDisableForm] = useState(false);
 
 
 
@@ -49,11 +53,11 @@ export const Checkout = () => {
     //=======================
 
     // to retrieve all available address 
-    useEffect(() => {
-        getUser('', user.id, 'addresses')
-            .then(response => setAddresses(response.data))
-            .catch(error => console.log(error))
-    }, [isAddressRefreshed])
+    // useEffect(() => {
+    //     getUser('', user.id, 'addresses')
+    //         .then(response => setAddresses(response.data))
+    //         .catch(error => console.log(error))
+    // }, [isAddressRefreshed])
 
     //=======================
     //
@@ -95,18 +99,24 @@ export const Checkout = () => {
     const handleOrderPlacement = () => {
         if (validate()) {
             toast.promise(
-                checkout('', user.id, {
+                checkout(user.data.token, {
                     address_id: selectedAddress.address,
                     discount_id: discountResponse === null ? null : discountResponse.data.id
                 })
                 , {
-                    loading: "Placing your order",
+                    loading: () => {
+                        setDisableForm(true);
+                        return "Placing your order";
+                    },
                     success: (response) => {
                         navigate(`/user/orders/${response.data.id}`);
                         updateSession()
                         return "Order successfully placed"
                     },
-                    error: "Error placing your order"
+                    error: () => {
+                        setDisableForm(false);
+                        return "Error placing your order"
+                    }
                 }
             )
         }
@@ -151,119 +161,122 @@ export const Checkout = () => {
         }
     }
     return (
-        <div className="grid lg:grid-cols-2 items-start gap-5 p-2">
-            <div className="flex flex-col space-y-5">
+        <div className="relative">
+            {disableForm ? <div className="bg-black/30 absolute top-0 left-0 w-full h-full" /> : ''}
+            <div className="grid lg:grid-cols-2 items-start gap-5 p-2">
+                <div className="flex flex-col space-y-5">
 
-                <div className="px-5">
-                    <span className="font-semibold">Email: </span>
-                    {user.email}
-                </div>
+                    <div className="px-5">
+                        <span className="font-semibold">Email: </span>
+                        {user.email}
+                    </div>
 
-                <div className="grid grid-cols-2 gap-5">
-                    {addresses.map((address, index) =>
+                    <div className="grid grid-cols-2 gap-5">
+                        {addresses.map((address, index) =>
 
-                        <div className={"flex flex-col grow rounded-xl p-3 cursor-pointer bg-base-200 " + (selectedAddress !== null && selectedAddress.address === address.id ? "outline outline-primary" : '')} onClick={e => setSelectedAddress({ address: address.id, delivery_price: address.delivery.price })} key={index}>
-                            <span>{address.address_line1}</span>
-                            <span>{address.address_line2}</span>
-                            <span>{address.telephone}</span>
-                            <span>{address.mobile}</span>
+                            <div className={"flex flex-col grow rounded-xl p-3 cursor-pointer bg-base-200 " + (selectedAddress !== null && selectedAddress.address === address.id ? "outline outline-primary" : '')} onClick={e => setSelectedAddress({ address: address.id, delivery_price: address.delivery.price })} key={index}>
+                                <span>{address.address_line1}</span>
+                                <span>{address.address_line2}</span>
+                                <span>{address.telephone}</span>
+                                <span>{address.mobile}</span>
 
-                            <span className="text-right font-semibold">Delivery area: {address.delivery.region}</span>
-                            <span className="text-right font-semibold">Delivery charge: Rs.{address.delivery.price}</span>
-                        </div>
-
-                    )}
-
-                </div>
-
-                <button className="btn btn-primary" onClick={handleNewAddressAddition}>Add new address</button>
-                <div className="font-light">Visit address page <Link to={"/user/addresses"} className="text-primary underline underline-offset-2">here</Link> to <span className="font-normal">update/delete</span> address </div>
-
-                {
-                    addressValidation.isValid === false ?
-                        <div class="alert alert-error shadow-lg">
-                            <div>
-                                {addressValidation.message}
+                                <span className="text-right font-semibold">Delivery area: {address.delivery.region}</span>
+                                <span className="text-right font-semibold">Delivery charge: Rs.{address.delivery.price}</span>
                             </div>
-                        </div> : ''
-                }
 
-            </div>
-            <div className="flex flex-col">
+                        )}
 
-                <div className="flex flex-col divide-y-2 bg-base-200 shadow-md rounded-xl">
+                    </div>
+
+                    <button className="btn btn-primary" onClick={handleNewAddressAddition}>Add new address</button>
+                    <div className="font-light">Visit address page <Link to={"/user/addresses"} className="text-primary underline underline-offset-2">here</Link> to <span className="font-normal">update/delete</span> address </div>
+
                     {
-                        session !== null ?
-
-                            <div className="w-full flex flex-col divide-y-2">
-                                {
-                                    session.cart_items.map((item, index) =>
-                                        <CartItem item={item} key={index} />
-                                    )
-                                }
-                            </div>
-                            : ''
+                        addressValidation.isValid === false ?
+                            <div class="alert alert-error shadow-lg">
+                                <div>
+                                    {addressValidation.message}
+                                </div>
+                            </div> : ''
                     }
 
-                    <div className="flex flex-col space-y-8 p-5">
-                        <div className="flex flex-row space-x-5">
-                            <input type="text" placeholder="Enter your discount code" class="input w-full input-bordered input-primary" onChange={e => setDiscountCode(e.target.value)} value={discountCode} />
-                            <button className="btn btn-primary btn-outine" onClick={handleDiscountCodeApplication}>Apply</button>
-                        </div>
-                        {getDiscountResponse()}
+                </div>
+                <div className="flex flex-col">
 
-                        <div className="flex justify-between">
-                            <span className="font-semibold">Subtotal</span>
-                            <span className="font-bold">{
-                                session !== null ?
-                                    "Rs. " + getSubTotal(session.cart_items)
-                                    : ''
-                            }</span>
-                        </div>
-
+                    <div className="flex flex-col divide-y-2 bg-base-200 shadow-md rounded-xl">
                         {
-                            discountResponse !== null && discountResponse.status === 200 ?
-                                <div className="flex justify-between">
-                                    <div className="flex flex-row items-center space-x-3">
-                                        <span className="font-semibold">Price after discount</span>
-                                        <div class="badge badge-primary">{discountResponse.data.name + " " + discountResponse.data.discount_percent + "%"}</div>
-                                    </div>
-                                    <span className="font-bold">{
+                            session !== null ?
 
-                                        "Rs. " + getPriceAfterDiscount()
-
-                                    }</span>
-                                </div> : ''
+                                <div className="w-full flex flex-col divide-y-2">
+                                    {
+                                        session.cart_items.map((item, index) =>
+                                            <CartItem item={item} key={index} />
+                                        )
+                                    }
+                                </div>
+                                : ''
                         }
-                        <div className="flex justify-between">
-                            <span className="font-semibold">Delivery price</span>
-                            <span className="font-bold">Rs. {selectedAddress.delivery_price}</span>
+
+                        <div className="flex flex-col space-y-8 p-5">
+                            <div className="flex flex-row space-x-5">
+                                <input type="text" placeholder="Enter your discount code" class="input w-full input-bordered input-primary" onChange={e => setDiscountCode(e.target.value)} value={discountCode} />
+                                <button className="btn btn-primary btn-outine" onClick={handleDiscountCodeApplication}>Apply</button>
+                            </div>
+                            {getDiscountResponse()}
+
+                            <div className="flex justify-between">
+                                <span className="font-semibold">Subtotal</span>
+                                <span className="font-bold">{
+                                    session !== null ?
+                                        "Rs. " + getSubTotal(session.cart_items)
+                                        : ''
+                                }</span>
+                            </div>
+
+                            {
+                                discountResponse !== null && discountResponse.status === 200 ?
+                                    <div className="flex justify-between">
+                                        <div className="flex flex-row items-center space-x-3">
+                                            <span className="font-semibold">Price after discount</span>
+                                            <div class="badge badge-primary">{discountResponse.data.name + " " + discountResponse.data.discount_percent + "%"}</div>
+                                        </div>
+                                        <span className="font-bold">{
+
+                                            "Rs. " + getPriceAfterDiscount()
+
+                                        }</span>
+                                    </div> : ''
+                            }
+                            <div className="flex justify-between">
+                                <span className="font-semibold">Delivery price</span>
+                                <span className="font-bold">Rs. {selectedAddress.delivery_price}</span>
+                            </div>
+
+                        </div>
+
+                        <div className="flex justify-between p-5">
+                            <span className="font-semibold">Grand Total</span>
+                            <span className="font-bold">
+                                {
+                                    session !== null ?
+                                        "Rs. " + getSumFromArray([
+                                            selectedAddress.delivery_price,
+                                            getPriceAfterDiscount()
+                                        ])
+                                        : ''
+                                }
+                            </span>
                         </div>
 
                     </div>
+                    <div className="btn btn-primary mt-4" onClick={handleOrderPlacement}>Place Order</div>
 
-                    <div className="flex justify-between p-5">
-                        <span className="font-semibold">Grand Total</span>
-                        <span className="font-bold">
-                            {
-                                session !== null ?
-                                    "Rs. " + getSumFromArray([
-                                        selectedAddress.delivery_price,
-                                        getPriceAfterDiscount()
-                                    ])
-                                    : ''
-                            }
-                        </span>
-                    </div>
+
+
 
                 </div>
-                <div className="btn btn-primary mt-4" onClick={handleOrderPlacement}>Place Order</div>
-
-
-
 
             </div>
-
         </div>
     );
 }
