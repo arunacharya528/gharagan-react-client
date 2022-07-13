@@ -5,6 +5,7 @@ import { EditAddress } from "../components/Addresses/Edit";
 import { ModalContext } from "../context/ModalContext";
 import { UserContext } from "../context/UserContext";
 import { EditIcon, PlusIcon, TrashIcon } from "../icons";
+import toast from 'react-hot-toast';
 
 export const Addresses = () => {
 
@@ -13,7 +14,7 @@ export const Addresses = () => {
     const [isRefreshed, setRefresh] = useState(false)
 
     useEffect(() => {
-        getUser('', user.id, 'addresses')
+        getUser(user.data.token, 'addresses')
             .then(response => setAddresses(response.data))
             .catch(error => console.log(error))
     }, [isRefreshed])
@@ -39,9 +40,18 @@ export const Addresses = () => {
 
     const handleDeleteButtonClick = (address) => {
         const confirmDeletion = () => {
-            deleteAddress('', address.id)
-                .then(response => { closeModal(); setRefresh(!isRefreshed) })
-                .catch(error => console.log(error));
+            toast.promise(
+                deleteAddress(user.data.token, address.id),
+                {
+                    loading: "Deleting address",
+                    success: () => {
+                        closeModal();
+                        setRefresh(!isRefreshed)
+                        return "Address deleted"
+                    },
+                    error: "Error deleting address"
+                }
+            )
         }
         setModalData(
             {
@@ -77,12 +87,12 @@ export const Addresses = () => {
                             <div class="card-actions justify-end">
                                 <div className="flex flex-row">
                                     <div className="tooltip" data-tip="Edit">
-                                        <button className="btn btn-sm mx-1 btn-secondary btn-square" onClick={e => handleEditButtonClick(address)}>
+                                        <button className="btn btn-sm mx-1 btn-ghost btn-outline btn-square" onClick={e => handleEditButtonClick(address)}>
                                             <EditIcon />
                                         </button>
                                     </div>
                                     <div className="tooltip" data-tip="Delete">
-                                        <button className="btn btn-sm mx-1 btn-error btn-square" onClick={e => handleDeleteButtonClick(address)}>
+                                        <button className="btn btn-sm mx-1 btn-ghost btn-outline btn-error btn-square" onClick={e => handleDeleteButtonClick(address)}>
                                             <TrashIcon />
                                         </button>
                                     </div>
@@ -94,10 +104,10 @@ export const Addresses = () => {
                 )}
             </div>
 
-                <button className="btn gap-2 btn-primary mt-4" onClick={handleAddButtonClick}>
-                    <PlusIcon className="w-6 h-6" />
-                    Add new Address
-                </button>
+            <button className="btn gap-2 btn-primary mt-4" onClick={handleAddButtonClick}>
+                <PlusIcon className="w-6 h-6" />
+                Add new Address
+            </button>
         </>
     );
 }

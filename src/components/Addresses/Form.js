@@ -1,5 +1,7 @@
+import { useContext } from "react";
 import { useEffect, useState } from "react";
 import { getDeliveries } from "../../adapters/delivery";
+import { UserContext } from "../../context/UserContext";
 
 export const AddressForm = (props = {
     address_line1: { value: String, setValue: Function },
@@ -11,8 +13,9 @@ export const AddressForm = (props = {
 }) => {
 
     const [deliveries, setDeliveries] = useState([]);
+    const { user } = useContext(UserContext);
     useEffect(() => {
-        getDeliveries()
+        getDeliveries(user.data.token)
             .then(response => setDeliveries(response.data))
             .catch(error => console.log(error))
     }, [])

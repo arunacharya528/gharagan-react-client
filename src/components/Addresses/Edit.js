@@ -1,5 +1,8 @@
+import { useContext } from "react";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { putAddress } from "../../adapters/profile";
+import { UserContext } from "../../context/UserContext";
 import { AddressForm } from "./Form";
 
 export const EditAddress = ({ address, refresh }) => {
@@ -9,7 +12,7 @@ export const EditAddress = ({ address, refresh }) => {
     const [deliveryId, setDeliveryId] = useState('');
     const [telephone, setTelephone] = useState('');
     const [mobile, setMobile] = useState('');
-
+    const { user } = useContext(UserContext);
     useEffect(() => {
         setAddressLine1(address.address_line1);
         setAddressLine2(address.address_line2);
@@ -20,15 +23,23 @@ export const EditAddress = ({ address, refresh }) => {
 
 
     const handleSubmission = () => {
-        putAddress('', address.id, {
-            address_line1: addressLine1,
-            address_line2: addressLine2,
-            delivery_id: deliveryId,
-            telephone: telephone,
-            mobile: mobile
-        })
-            .then(response => refresh())
-            .catch(error => console.log(error))
+        toast.promise(
+            putAddress(user.data.token, address.id, {
+                address_line1: addressLine1,
+                address_line2: addressLine2,
+                delivery_id: deliveryId,
+                telephone: telephone,
+                mobile: mobile
+            }),
+            {
+                loading: "Updating address",
+                success: () => {
+                    refresh();
+                    return "Address updated"
+                },
+                error: "Error updating address"
+            }
+        )
     }
 
     return (<AddressForm

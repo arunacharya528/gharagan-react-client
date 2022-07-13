@@ -8,7 +8,7 @@ export const getDeliveries = (bearerToken) => {
         method: 'get',
         url: `${apiURL}/delivery`,
         headers: {
-            'bearerToken': `Bearer ${bearerToken}`
+            'Authorization': `Bearer ${bearerToken}`
         },
         maxRedirects: 0
     };

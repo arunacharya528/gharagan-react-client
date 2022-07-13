@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { getDeliveries } from "../../adapters/delivery";
 import { postAddress } from "../../adapters/profile";
+import { UserContext } from "../../context/UserContext";
 import { AddressForm } from "./Form";
 
 export const AddAddress = ({ refresh, userId }) => {
@@ -10,18 +12,27 @@ export const AddAddress = ({ refresh, userId }) => {
     const [telephone, setTelephone] = useState('');
     const [mobile, setMobile] = useState('');
 
+    const { user } = useContext(UserContext);
     const handleSubmission = (e) => {
         e.preventDefault();
-        postAddress('', {
-            user_id: userId,
-            address_line1: addressLine1,
-            address_line2: addressLine2,
-            delivery_id: deliveryId,
-            telephone: telephone,
-            mobile: mobile
-        })
-            .then(response => refresh({ response: response.data }))
-            .catch(error => console.log(error))
+        toast.promise(
+            postAddress(user.data.token, {
+                user_id: userId,
+                address_line1: addressLine1,
+                address_line2: addressLine2,
+                delivery_id: deliveryId,
+                telephone: telephone,
+                mobile: mobile
+            }),
+            {
+                loading: "Adding new address",
+                success: (response) => {
+                    refresh({ response: response.data })
+                    return "New address added"
+                },
+                error: "Error adding address"
+            }
+        )
     }
 
     return (<AddressForm

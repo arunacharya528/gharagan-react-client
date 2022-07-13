@@ -45,12 +45,8 @@ export const UserDashboard = () => {
                 {
                     icon: <MapPinIcon />,
                     name: "Addresses",
+                 
                     path: "addresses"
-                },
-                {
-                    icon: <CreditCardIcon />,
-                    name: "Payment Methods",
-                    path: "payments"
                 }
 
             ]
