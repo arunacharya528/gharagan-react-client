@@ -13,7 +13,7 @@ export const QAs = ({ product, onSubmit }) => {
 
     const handleSubmission = () => {
         toast.promise(
-            postQA({
+            postQA(user.data.token, {
                 user_id: user.id,
                 product_id: product.data.id,
                 question: question

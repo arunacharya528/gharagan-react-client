@@ -15,14 +15,14 @@ export const QuestionAnswers = () => {
     const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
-        getUser('', user.id, "questionAnswers")
+        getUser(user.data.token, "questionAnswers")
             .then(reponse => setQAS(reponse.data))
             .catch(error => console.log(error))
     }, [isRefreshed])
 
     const handleDeletion = (id) => {
         toast.promise(
-            deleteQA(id)
+            deleteQA(user.data.token, id)
             ,
             {
                 loading: "Deleting QA instance",
