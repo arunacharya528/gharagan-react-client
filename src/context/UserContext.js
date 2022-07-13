@@ -37,7 +37,7 @@ export const UserProvider = ({ children }) => {
         const token = cookies.get('token');
         if (token !== '') {
             getIfLoggedIn({ token: token })
-                .then(response => setUser({ loading: false, data: { token: token, role: response.data.role } }))
+                .then(response => setUser({ loading: false, data: { token: token, name: response.data.name } }))
                 .catch(response => setUser(initialState))
         }
     }, [])
