@@ -4,12 +4,13 @@ const axios = require('axios');
 const qs = require('qs');
 
 
-export const postRating = (data) => { 
+export const postRating = (token, data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
         url: `${apiURL}/productRating/`,
         headers: {
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/x-www-form-urlencoded'
         },
         maxRedirects: 0,
@@ -19,11 +20,13 @@ export const postRating = (data) => {
     return axios(config)
 }
 
-export const deleteRating = (id) => { 
+export const deleteRating = (token,id) => {
     let config = {
         method: 'delete',
         url: `${apiURL}/productRating/${id}`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
         maxRedirects: 0
     };
 

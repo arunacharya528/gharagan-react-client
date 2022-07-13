@@ -1,13 +1,16 @@
+import { useContext } from "react";
 import toast from "react-hot-toast";
 import { deleteRating } from "../adapters/rating";
+import { UserContext } from "../context/UserContext";
 import { RateDisplayByNumber } from "./Rating";
 const moment = require('moment')
 
 export const ReviewDetail = ({ rating = { id: Number, rate: Number, comment: String }, onSubmit }) => {
 
+    const { user } = useContext(UserContext);
     const handleDeletion = (id) => {
         toast.promise(
-            deleteRating(id)
+            deleteRating(user.data.token, id)
             ,
             {
                 loading: "Deleting review",

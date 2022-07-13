@@ -12,7 +12,7 @@ export const Review = () => {
     const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
-        getUser('', user.id, 'ratings')
+        getUser(user.data.token, 'ratings')
             .then(reponse => setReviews(reponse.data))
             .catch(error => console.log(error))
     }, [isRefreshed])

@@ -16,7 +16,7 @@ export const RateAndComment = ({ product, orderId, onSubmit }) => {
 
     const handleSubmission = () => {
         toast.promise(
-            postRating({
+            postRating(user.data.token, {
                 rate: rate,
                 comment: comment,
                 user_id: user.id,
