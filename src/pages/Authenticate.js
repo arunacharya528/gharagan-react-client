@@ -16,7 +16,7 @@ export const Login = () => {
             .then((response) => {
                 setUserData({
                     token: response.data.token,
-                    role: response.data.role
+                    name: response.data.name
                 })
 
                 if (response.data.role !== 3) {

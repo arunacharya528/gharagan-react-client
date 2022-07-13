@@ -19,6 +19,7 @@ import { SearchBar } from "../components/Search";
 import { NavProductContainer } from "../components/Nav/NavProductContainer";
 import { PageLinkContext } from "../context/PageLinkContext"
 import { SiteDetailContext } from "../context/SiteDetailContext";
+import { ProfileImage } from "../components/Avatar";
 const queryString = require('query-string')
 
 
@@ -181,7 +182,16 @@ export const Nav = () => {
 
                             <div class="dropdown dropdown-end">
                                 <label tabindex="0" class="btn btn-ghost btn-circle">
-                                    <PersonIcon className="h-6 w-6" />
+                                    {
+                                        user.loading ?
+                                            <PersonIcon className="h-6 w-6" />
+                                            :
+                                            <div class="avatar">
+                                                <div class="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                                                    <ProfileImage name={user.data.name} />
+                                                </div>
+                                            </div>
+                                    }
                                 </label>
                                 <div className="dropdown-content w-52 py-2 rounded-xl shadow-md">
                                     <UserMenu />
