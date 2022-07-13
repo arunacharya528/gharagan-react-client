@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../context/CartContext";
 import { getSumTotal, getTotalPrice } from "../../helpers/calculatePrice";
 import { Link } from "react-router-dom";
+import { UserContext } from "../../context/UserContext";
 export const CartItem = (props = { item: JSON, className: String }) => {
 
     const [quantity, setQuantity] = useState(0);
@@ -15,10 +16,10 @@ export const CartItem = (props = { item: JSON, className: String }) => {
     }
 
     const { session, updateSession } = useContext(CartContext)
+    const { user } = useContext(UserContext);
     const handleCartItemRemoval = () => {
-
         toast.promise(
-            removeCartItem('', props.item.id)
+            removeCartItem(user.data.token, props.item.id)
             , {
                 loading: "Removing item from cart",
                 success: () => {
@@ -31,7 +32,7 @@ export const CartItem = (props = { item: JSON, className: String }) => {
     }
 
     const handleCartUpdate = () => {
-        putToCart('', {
+        putToCart(user.data.token, {
             'session_id': session.id,
             'product_id': props.item.product.id,
             'quantity': quantity

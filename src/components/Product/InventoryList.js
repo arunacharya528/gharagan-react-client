@@ -3,6 +3,7 @@ import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import { postToCart } from "../../adapters/cartItems";
 import { CartContext } from "../../context/CartContext";
+import { UserContext } from "../../context/UserContext";
 import { getDiscountedPrice } from "../../helpers/calculatePrice";
 import { HeartIcon } from "../../icons";
 import { WishListButton } from "../WishListButton";
@@ -18,13 +19,15 @@ export const InventoryList = ({ product, buttonSize = "-sm" }) => {
         }
     }, [product])
 
+    const { user } = useContext(UserContext);
     const handleCartAddition = () => {
-
-
-
-        const data = ({ session_id: session.id, product_id: product.id, quantity: 1, inventory_id: selectedInventory.id })
+        const data = ({
+            product_id: product.id,
+            quantity: 1,
+            inventory_id: selectedInventory.id
+        })
         toast.promise(
-            postToCart('', data),
+            postToCart(user.data.token, data),
             {
                 loading: `Adding ${product.name} (${selectedInventory.type}) to cart`,
                 success: () => {
