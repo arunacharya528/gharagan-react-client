@@ -3,6 +3,7 @@ import { postWishList, removeFromWishList } from "../adapters/wishlist";
 import { UserContext } from "../context/UserContext";
 import { WishListContext } from "../context/WishListContext";
 import { HeartIcon } from "../icons";
+import toast from 'react-hot-toast';
 
 export const WishListButton = ({ productId, size = "-sm" }) => {
 
@@ -20,23 +21,33 @@ export const WishListButton = ({ productId, size = "-sm" }) => {
     }, [user])
 
     const handleWishListRemoval = () => {
-        removeFromWishList(getFromWishList(productId).id)
-            .then(response => {
-                updateWishList()
-                setActive(false)
-            })
-            .catch(error => console.log(error))
-
-
+        toast.promise(
+            removeFromWishList(user.data.token, getFromWishList(productId).id),
+            {
+                loading: "Removing from wish list",
+                success: () => {
+                    updateWishList()
+                    setActive(false)
+                    return "Product removed from wishlist"
+                },
+                error: "Error removing product from wishlist"
+            }
+        )
     }
 
     const handleWishListAddition = () => {
-        postWishList({ product_id: productId, user_id: user.id })
-            .then(response => {
-                updateWishList()
-                setActive(true)
-            })
-            .catch(error => console.log(error))
+        toast.promise(
+            postWishList(user.data.token, { product_id: productId, user_id: user.id }),
+            {
+                loading: "Adding product to wishlist",
+                success: () => {
+                    updateWishList()
+                    setActive(true)
+                    return "Product added to wishlist"
+                },
+                error: "Error adding product to wishlist"
+            }
+        )
     }
 
 
