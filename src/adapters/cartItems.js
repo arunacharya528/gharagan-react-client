@@ -17,8 +17,6 @@ export const postToCart = (bearerToken, item) => {
         data: data
     };
 
-
-    // console.log(item)
     return axios(config);
 };
 

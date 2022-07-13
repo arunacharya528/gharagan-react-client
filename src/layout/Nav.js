@@ -165,7 +165,7 @@ export const Nav = () => {
                     <div className="flex flex-row items-center space-x-2">
 
                         {
-                            user !== null && session !== null ?
+                            !user.loading && session !== null ?
                                 <label for="rightDrawer" to={"/user/cart"} class="hidden lg:flex btn btn-ghost btn-circle">
                                     <div class="indicator">
                                         <CartIcon className="w-6 h-6" />

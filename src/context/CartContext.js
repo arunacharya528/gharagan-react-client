@@ -9,12 +9,12 @@ export const CartProvider = ({ children }) => {
 
     const [session, setSession] = useState(null);
 
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const [isRefreshed, setRefresh] = useState(false);
 
     useEffect(() => {
-        if (user !== null) {
-            getUser('', user.id, 'session')
+        if (!user.loading) {
+            getUser(user.data.token, 'session')
                 .then(response => setSession(response.data))
                 .catch(error => console.log(error))
         } else {
@@ -22,6 +22,7 @@ export const CartProvider = ({ children }) => {
         }
 
     }, [isRefreshed, user])
+
     const updateSession = () => {
         setRefresh(!isRefreshed)
     }
