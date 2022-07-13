@@ -13,8 +13,8 @@ export const WishListProvider = ({ children }) => {
     const [isRefreshed, setRefresh] = useState(false)
 
     useEffect(() => {
-        if (user !== null) {
-            getUser('', user.id, 'wishlist')
+        if (!user.loading) {
+            getUser(user.data.token, 'wishlist')
                 .then(response => setWishList(response.data))
                 .catch(error => console.log(error))
         }
