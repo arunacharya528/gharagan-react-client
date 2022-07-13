@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import toast from 'react-hot-toast';
 import { postQA } from '../../adapters/qa';
 import { UserContext } from '../../context/UserContext';
+import { ProfileImage } from '../Avatar';
 import { QADetail } from '../QADetail';
 import { QASkeleton } from '../Skeleton/ProductSkeleton';
 
@@ -54,27 +55,11 @@ export const QAs = ({ product, onSubmit }) => {
 
                             <div className="flex flex-col pt-5 space-y-5">
                                 <div className="flex flex-row space-x-3 items-center">
-                                    <img src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${item.user.first_name}%20${item.user.last_name}&size=200`} className="rounded-full w-10 h-10" />
-                                    <span className="font-semibold">{item.user.first_name + " " + item.user.last_name}</span>
+                                    <ProfileImage name={item.user.name} />
+                                    <span className="font-semibold">{item.user.name}</span>
                                     <div className="">{moment(item.created_at).fromNow()}</div>
                                 </div>
                                 <QADetail item={item} />
-
-                                {/* <div className="">{item.question}</div>
-
-                                {
-                                    item.answer !== null ?
-                                        <div className="py-3 pl-3 border-l-4 border-secondary" key={index}>
-                                            <div className="flex flex-col">
-                                                <div className="flex flex-row space-x-2">
-                                                    <div className="font-semibold">Replied</div>&emsp;
-                                                    <div className="">{moment(item.updated_at).fromNow()}</div>
-                                                </div>
-                                                <div className="">{item.answer}</div>
-                                            </div>
-                                        </div>
-                                        : ''
-                                } */}
 
                             </div>
 

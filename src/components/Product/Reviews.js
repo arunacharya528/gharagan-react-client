@@ -1,3 +1,4 @@
+import { ProfileImage } from "../Avatar";
 import { RatingSummary, RateDisplayByNumber } from "../Rating";
 import { ReviewsSkeleton } from "../Skeleton/ProductSkeleton";
 const moment = require('moment');
@@ -35,8 +36,7 @@ export const Reviews = ({ product }) => {
                             <div className="flex flex-col pt-10 space-y-5">
 
                                 <div class="flex flex-row items-center space-x-2" key={index}>
-                                    <img src={`https://ui-avatars.com/api/?background=0D8ABC&color=fff&name=${rating.user.first_name}%20${rating.user.last_name}&size=200`} className="rounded-full w-10 h-10" />
-
+                                    <ProfileImage name={rating.user.first_name} />
                                     <div className="flex flex-col">
                                         <div className="flex flex-row space-x-3">
                                             <span className="font-semibold">{rating.user.first_name} {rating.user.last_name}</span>
