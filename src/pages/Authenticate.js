@@ -17,10 +17,7 @@ export const Login = () => {
             {
                 loading: "Logging in",
                 success: (response) => {
-                    setUserData({
-                        token: response.data.token,
-                        name: response.data.name
-                    })
+                    setUserData(response.data)
 
                     if (response.data.role !== 3) {
                         toast(
@@ -40,25 +37,6 @@ export const Login = () => {
                 }
             }
         )
-        // login({ email: email, password: password })
-        //     .then((response) => {
-        //         setUserData({
-        //             token: response.data.token,
-        //             name: response.data.name
-        //         })
-
-        //         if (response.data.role !== 3) {
-        //             toast(
-        //                 "Login into admin dashboard to access admin dashboard",
-        //                 {
-        //                     duration: 6000,
-        //                 }
-        //             );
-        //             handleLogout(response.data.token);
-        //         }
-
-        //     })
-        //     .catch((error) => setErrorMessage(error.response.data.message))
     }
 
     return (

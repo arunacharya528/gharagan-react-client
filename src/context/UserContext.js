@@ -37,21 +37,17 @@ export const UserProvider = ({ children }) => {
                 error: "Error occured while logging out"
             }
         )
-
-        // logout(token ? token : user.data.token)
-        //     .then(response => {
-        //         setUser(initialState);
-        //         cookies.remove('token')
-        //     })
-        //     .catch(error => console.log(error))
-
     }
 
     useEffect(() => {
         const token = cookies.get('token');
         if (token !== '') {
             getIfLoggedIn({ token: token })
-                .then(response => setUser({ loading: false, data: { token: token, name: response.data.name } }))
+                .then(response => {
+                    var data = response.data;
+                    data['token'] = token;
+                    setUser({ loading: false, data: data })
+                })
                 .catch(response => setUser(initialState))
         }
     }, [])

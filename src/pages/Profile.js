@@ -1,32 +1,30 @@
 import { useContext, useEffect, useState } from "react";
+import { UpdateInfo } from "../components/Profile/UpdateInfo";
+import { ModalContext } from "../context/ModalContext";
 import { UserContext } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
 
 export const Profile = () => {
 
-    const [email, setEmail] = useState(undefined);
-    const [firstName, setFirstName] = useState(undefined);
-    const [lastName, setLastName] = useState(undefined);
-    const [contact, setContact] = useState(undefined);
-
-
     const { user } = useContext(UserContext)
-    useEffect(() => {
-        setEmail(user.email);
-        setFirstName(user.first_name)
-        setLastName(user.last_name)
-        setContact(user.contact)
-    }, []);
 
+    const { setModalData, openModal, closeModal } = useContext(ModalContext)
 
+    const handleInfoUpdate = () => {
 
-
+        setModalData({
+            title: "Update your info",
+            body: <UpdateInfo/>
+            // body:<div>Hello</div>
+        })
+        openModal();
+    }
     return (
         <div className="p-2">
             {
                 user ?
                     <>
-                        <div className="grid md:grid-cols-2 gap-5">
+                        {/* <div className="grid md:grid-cols-2 gap-5">
                             <div class="form-control w-full">
                                 <label class="label">
                                     <span class="label-text font-bold">First Name</span>
@@ -71,7 +69,25 @@ export const Profile = () => {
 
 
                         </div>
-                        <button className="btn btn-primary mt-4">Save</button>
+                        <button className="btn btn-primary mt-4">Save</button> */}
+
+                        <div className="flex flex-col space-y-5">
+                            <div className="grid grid-cols-2 w-1/3">
+                                <span className="font-semibold">Name</span>
+                                <span>{user.data.name}</span>
+
+                                <span className="font-semibold">Contact no</span>
+                                <span>{user.data.contact}</span>
+
+                                <span className="font-semibold">Email</span>
+                                <span>{user.data.email}</span>
+                            </div>
+                            <div className="space-x-5">
+                                <button className="btn btn-outline" onClick={handleInfoUpdate}>Update Info</button>
+                                <button className="btn btn-outline">Update Email</button>
+                                <button className="btn btn-outline">Update Password</button>
+                            </div>
+                        </div>
                     </>
                     : <Loading />
             }
