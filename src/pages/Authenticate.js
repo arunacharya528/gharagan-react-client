@@ -12,25 +12,53 @@ export const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
 
     const handleLogin = () => {
-        login({ email: email, password: password })
-            .then((response) => {
-                setUserData({
-                    token: response.data.token,
-                    name: response.data.name
-                })
+        toast.promise(
+            login({ email: email, password: password }),
+            {
+                loading: "Logging in",
+                success: (response) => {
+                    setUserData({
+                        token: response.data.token,
+                        name: response.data.name
+                    })
 
-                if (response.data.role !== 3) {
-                    toast(
-                        "Login into admin dashboard to access admin dashboard",
-                        {
-                            duration: 6000,
-                        }
-                    );
-                    handleLogout(response.data.token);
+                    if (response.data.role !== 3) {
+                        toast(
+                            "Login into admin dashboard to access admin dashboard",
+                            {
+                                duration: 6000,
+                            }
+                        );
+                        handleLogout(response.data.token);
+                    }
+
+                    return "Successfully logged-in to your account"
+                },
+                error: (error) => {
+                    setErrorMessage(error.response.data.message)
+                    return "An error occured"
                 }
+            }
+        )
+        // login({ email: email, password: password })
+        //     .then((response) => {
+        //         setUserData({
+        //             token: response.data.token,
+        //             name: response.data.name
+        //         })
 
-            })
-            .catch((error) => setErrorMessage(error.response.data.message))
+        //         if (response.data.role !== 3) {
+        //             toast(
+        //                 "Login into admin dashboard to access admin dashboard",
+        //                 {
+        //                     duration: 6000,
+        //                 }
+        //             );
+        //             handleLogout(response.data.token);
+        //         }
+
+        //     })
+        //     .catch((error) => setErrorMessage(error.response.data.message))
     }
 
     return (
@@ -72,7 +100,7 @@ export const Login = () => {
                                 <label class="label">
                                     <span class="label-text">Password</span>
                                 </label>
-                                <input type="text" placeholder="password" class="input input-bordered" onChange={e => setPassowrd(e.target.value)} />
+                                <input type="password" placeholder="password" class="input input-bordered" onChange={e => setPassowrd(e.target.value)} />
                                 {/* <label class="label">
                                 <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
                             </label> */}

@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { BagIcon, CartIcon, CreditCardIcon, MapPinIcon, PersonIcon } from "../icons";
 import Cookies from 'universal-cookie';
 import { getIfLoggedIn, logout } from "../adapters/auth";
+import toast from "react-hot-toast";
 
 export const UserContext = createContext(
     {
@@ -24,12 +25,25 @@ export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(initialState)
 
     const handleLogout = (token) => {
-        logout(token ? token : user.data.token)
-            .then(response => {
-                setUser(initialState);
-                cookies.remove('token')
-            })
-            .catch(error => console.log(error))
+        toast.promise(
+            logout(token ? token : user.data.token),
+            {
+                loading: "Logging out",
+                success: () => {
+                    setUser(initialState);
+                    cookies.remove('token')
+                    return "Successfully logged out"
+                },
+                error: "Error occured while logging out"
+            }
+        )
+
+        // logout(token ? token : user.data.token)
+        //     .then(response => {
+        //         setUser(initialState);
+        //         cookies.remove('token')
+        //     })
+        //     .catch(error => console.log(error))
 
     }
 
@@ -47,7 +61,7 @@ export const UserProvider = ({ children }) => {
             loading: false,
             data: data
         })
-        cookies.set('token', data.token)
+        cookies.set('token', data.token, { path: "/" })
     }
     return <UserContext.Provider value={{ user, setUserData, handleLogout }}>
         {children}
