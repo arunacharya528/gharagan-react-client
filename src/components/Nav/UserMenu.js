@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
@@ -7,35 +8,55 @@ import { MoonIcon, SunIcon } from "../../icons";
 export const UserMenu = () => {
 
     const { user, handleLogout } = useContext(UserContext)
-    const { session, updateSession } = useContext(CartContext)
+    const { updateSession } = useContext(CartContext)
 
-    const [themeIcon, setThemeIcon] = useState(<MoonIcon className="w-5 h-5" />);
+    const icons = {
+        light: <MoonIcon className="w-5 h-5" />,
+        dark: <SunIcon className="w-5 h-5" />
+    };
+    const [themeIcon, setThemeIcon] = useState(null);
+
+    const setTheme = (mode) => {
+        const htmlElement = document.documentElement;
+        htmlElement.setAttribute('data-theme', mode)
+        setThemeIcon(icons[mode])
+    }
+
+    useEffect(() => {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            setTheme('dark');
+        } else {
+            setTheme('light');
+        }
+
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+            event.matches ? setTheme('dark') : setTheme('light');
+        });
+    }, [])
+
 
     const handleThemeChange = (e) => {
 
         const htmlElement = document.documentElement;
         const currentTheme = htmlElement.getAttribute('data-theme')
+
         switch (currentTheme) {
             case 'light':
-                htmlElement.setAttribute('data-theme', 'dark')
-                setThemeIcon(<SunIcon className="w-5 h-5" />)
+                setTheme('dark')
                 break;
             case 'dark':
-                htmlElement.setAttribute('data-theme', 'light')
-                setThemeIcon(<MoonIcon className="w-5 h-5" />)
-                break;
-            default:
-                htmlElement.setAttribute('data-theme', 'dark')
-                setThemeIcon(<SunIcon className="w-5 h-5" />)
+                setTheme('light')
                 break;
         }
     }
+
+
 
     return (
         <ul tabindex="0" class="menu bg-base-200 w-full">
 
             {
-                user !== null && session !== null ?
+                !user.loading ?
                     <>
                         <li>
                             <Link to={"/user/cart"}>Cart</Link>
