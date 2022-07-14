@@ -14,20 +14,11 @@ export const Reviews = ({ product }) => {
                         <div className="font-bold text-2xl px-2">Customer Reviews</div>
                         <RatingSummary ratings={product.data.ratings} />
 
-                        <div class="collapse">
-                            <input type="checkbox" />
-                            <div class="collapse-title p-4">
-                                <button className="btn btn-ghost btn-outline btn-block">
-                                    Write a review
-
-                                </button>
-                            </div>
-                            <div class="collapse-content flex flex-col space-y-4">
-                                <textarea class="textarea textarea-primary mt-1" rows={10} placeholder="Enter your review comment"></textarea>
-                                <button className="btn btn-block btn-primary">Post Review</button>
-                            </div>
-                        </div>
-
+                        <p>
+                            You can rate and comment after you receive your order.
+                            <br/>
+                            Click on <b>top-right avatar</b> &#x3e; order &#x3e; any of your order &#x3e;<b>Your reviews</b>
+                        </p>
                     </div>
 
 

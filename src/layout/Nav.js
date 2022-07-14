@@ -110,25 +110,14 @@ export const Nav = () => {
     const [notificationShown, setNotificationDisplay] = useState(true);
 
     const [isDetailBarShown, showDetailBar] = useState(false);
-    // const { categories } = useContext(CategoryContext)
-
 
     return (
         <>
-            {/* <div className="container mx-auto flex justify-center flex-wrap space-x-5 py-3">
-                {
-                    getLinks('head').map((link, index) =>
-                        <Link to={"/page/" + link['url-slug']} key={index} className="hover:text-primary">{link.name}</Link>
-                    )
-                }
-            </div> */}
             <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
                 {
                     notificationShown && getSiteData('notification') !== "" ?
                         <div className="container mx-auto m-2 p-1 bg-red-400/10 border border-red-500 rounded-full  flex items-center">
-                            <div className="grow text-center">
-                                {getSiteData('notification')}
-                            </div>
+                            <div className="grow text-center" dangerouslySetInnerHTML={{ __html: getSiteData('notification') }} />
                             <button className="btn btn-ghost btn-circle btn-xs" onClick={e => setNotificationDisplay(false)}>
                                 <CloseIcon className="" />
                             </button>

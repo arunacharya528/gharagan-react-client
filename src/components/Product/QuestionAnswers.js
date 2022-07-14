@@ -37,7 +37,7 @@ export const QAs = ({ product, onSubmit }) => {
                 :
                 <div className="grid lg:grid-cols-5 gap-10">
                     {
-                        user !== null ?
+                        !user.loading ?
                             <div className="lg:col-span-2 flex flex-col space-y-5">
                                 <div className="font-bold text-2xl px-2">Questions and Answers</div>
                                 <textarea class="textarea textarea-primary" rows={10} placeholder="Write your question. Admin would answer shortly." value={question} onChange={e => setQuestion(e.target.value)}></textarea>
