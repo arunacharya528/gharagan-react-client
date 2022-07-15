@@ -1,44 +1,53 @@
-import { useState } from "react";
-import Cookies from "universal-cookie";
-import { updateUser } from "../../adapters/profile";
-import { Message, parseErrorMessage } from "../../helpers/Message";
+import { useContext, useState } from "react";
+import { postUser } from "../../adapters/profile";
+import { UserContext } from "../../context/UserContext";
+import toast from "react-hot-toast";
 
-export const UpdatePassword = () => {
-
-    const [password, setPassword] = useState(undefined);
-    const [password_confirmation, setPassword_confirmation] = useState(undefined);
-
-    const cookie = new Cookies();
-    const [response, setResponse] = useState(undefined);
-
-    const handleSubmission = (e) => {
+export const UpdatePassword = ({ onSuccess }) => {
+    const { user, updateUser } = useContext(UserContext);
+    const [password, setPassword] = useState('');
+    const [errorList, setErrorList] = useState([]);
+    const onSubmit = (e) => {
         e.preventDefault();
-        updateUser(cookie.get('access_token'), cookie.get('userData').id, { password, password_confirmation })
-            .then((response) => {
-                setResponse({ message: { success: ['Successfully updated your Password'] }, type: 'success' })
-
-            })
-            .catch((error) => {
-                setResponse({ message: error.response.data, type: 'danger' })
-            });
+        toast.promise(
+            postUser(user.data.token, 'updatePassword', { password }),
+            {
+                loading: "Updating password",
+                success: (response) => {
+                    updateUser();
+                    onSuccess();
+                    return "Updated user info"
+                },
+                error: (error) => {
+                    setErrorList(error.response.data);
+                    return "Error occured updating password"
+                }
+            }
+        )
     }
+
     return (
-        <div class="card mb-4">
-            <div class="card-header">
-                Update Password
+        <form onSubmit={onSubmit} className="flex flex-col space-y-3">
+            <div class="form-control w-full">
+                <label class="label">
+                    <span class="label-text font-bold">New password</span>
+                </label>
+                <input type="text" className={"input input-bordered input-secondary w-full " + (errorList.length !== 0 ? 'input-error' : '')} placeholder="Enter your password" onChange={e=>setPassword(e.target.value)} value={password}/>
+                <div className="flex flex-col px-3 space-y-2">
+                    {
+                        errorList.map((error, index) =>
+                            <label className="text-error" key={index}>{error}</label>
+                        )
+                    }
+                </div>
+
             </div>
-            <div class="card-body d-flex flex-column">
-                {response ? <Message message={parseErrorMessage(response.message).map((item, index) => <div key={index}>{item}</div>)} type={response.type} className="" /> : ''}
-                <form>
-                    <input type="password"
-                        class="form-control mb-1" placeholder="Enter password" autoComplete="" onChange={e => setPassword(e.target.value)} />
-                    <input type="password"
-                        class="form-control mb-1" placeholder="Re-enter password" autoComplete="" onChange={e => setPassword_confirmation(e.target.value)} />
-                    <div>
-                        <button className="btn btn-primary" onClick={handleSubmission} disabled={!(password && password_confirmation) ? true : false}>Update</button>
-                    </div>
-                </form>
+
+            <div className="space-x-5">
+                <button type="submit" className="btn btn-primary">
+                    Update
+                </button>
             </div>
-        </div>
+        </form >
     );
 }
