@@ -14,8 +14,7 @@ export const Profile = () => {
 
         setModalData({
             title: "Update your info",
-            body: <UpdateInfo/>
-            // body:<div>Hello</div>
+            body: <UpdateInfo onSuccess={() => { closeModal() }} />
         })
         openModal();
     }

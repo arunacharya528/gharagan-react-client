@@ -1,51 +1,56 @@
-import { useContext } from "react";
-import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
-import { updateUser } from "../../adapters/profile";
+import { useContext, useMemo } from "react";
+import { postUser } from "../../adapters/profile";
 import { UserContext } from "../../context/UserContext";
-import { Message, parseErrorMessage } from "../../helpers/Message";
-import { timer } from "../../helpers/timer";
+import { useForm } from 'react-hook-form';
+import toast from "react-hot-toast";
 
-export const UpdateInfo = () => {
-    const { user } = useContext(UserContext);
-
-    const [name, setName] = useState('');
-    const [contact, setContact] = useState('');
-
-    const initialTimeout = { show: false, timer: 0 };
-    const [timOut, setTimeOut] = useState(initialTimeout)
-
-    const handleUpdate = () => {
-        //     // console.log('handle update')
-        //     timer(5,
-        //         () => { alert('updated info') },
-        //         () => { setTimeOut({ initialTimeout }) },
-        //         (seconds) => { setTimeOut({ showTrue }) }
-        //     )
+export const UpdateInfo = ({ onSuccess }) => {
+    const { user, updateUser } = useContext(UserContext);
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        defaultValues: useMemo(() => {
+            return {
+                name: user.data.name,
+                contact: user.data.contact
+            }
+        }, [user])
+    });
+    const onSubmit = data => {
+        toast.promise(
+            postUser(user.data.token, 'updateInfo', data),
+            {
+                loading: "Updating user info",
+                success: () => {
+                    updateUser();
+                    onSuccess();
+                    return "Updated user info"
+                },
+                error: "Error updating user info"
+            }
+        )
     }
-
-    // console.log(name, contact);
+    
     return (
-        <div className="flex flex-col space-y-3">
+        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-3">
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text font-bold">Name</span>
                 </label>
-                <input type="text" placeholder="Enter your name" class="input input-bordered input-secondary w-full" defaultValue={user.data.name} onChange={e => setName(e.target.value)} />
+                <input type="text" className={"input input-bordered input-secondary w-full " + (errors.name ? 'input-error' : '')} placeholder="Enter your name" {...register("name", { required: "Name is required" })} />
+                {errors.name ? <label className="text-error px-3 py-1">{errors.name.message}</label> : ''}
             </div>
             <div class="form-control w-full">
                 <label class="label">
                     <span class="label-text font-bold">Contact</span>
                 </label>
-                <input type="text" placeholder="Enter your contact" class="input input-bordered input-secondary w-full" defaultValue={user.data.contact} onChange={e => setContact(e.target.value)} />
+                <input type="text" className={"input input-bordered input-secondary w-full " + (errors.contact ? 'input-error' : '')} placeholder="Enter your contact" {...register("contact", { required: "Contact is required" })} />
+                {errors.contact ? <label className="text-error px-3 py-1">{errors.contact.message}</label> : ''}
             </div>
 
             <div className="space-x-5">
-                <button className="btn btn-primary" onClick={e => handleUpdate()}>
+                <button type="submit" className="btn btn-primary">
                     Update
                 </button>
-                <div class="radial-progress w-10 h-10" style={{ "--value": 100, "--thickness": "2px" }}></div>
             </div>
-        </div >
+        </form >
     );
 }

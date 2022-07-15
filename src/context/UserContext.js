@@ -14,7 +14,8 @@ export const UserContext = createContext(
             }
         },
         setUserData: Function,
-        handleLogout: Function
+        handleLogout: Function,
+        updateUser: Function
     }
 );
 
@@ -23,6 +24,7 @@ export const UserProvider = ({ children }) => {
     const cookies = new Cookies();
     const initialState = { loading: true, data: {} };
     const [user, setUser] = useState(initialState)
+    const [isRefreshed, setRefresh] = useState(false);
 
     const handleLogout = (token) => {
         toast.promise(
@@ -50,7 +52,7 @@ export const UserProvider = ({ children }) => {
                 })
                 .catch(response => setUser(initialState))
         }
-    }, [])
+    }, [isRefreshed])
 
     const setUserData = (data = { token: String }) => {
         setUser({
@@ -59,7 +61,9 @@ export const UserProvider = ({ children }) => {
         })
         cookies.set('token', data.token, { path: "/" })
     }
-    return <UserContext.Provider value={{ user, setUserData, handleLogout }}>
+
+    const updateUser = () => setRefresh(!isRefreshed)
+    return <UserContext.Provider value={{ user, setUserData, handleLogout, updateUser }}>
         {children}
     </UserContext.Provider>
 }

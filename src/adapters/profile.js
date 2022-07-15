@@ -14,6 +14,21 @@ export const getUser = (token, type = '') => {
     return axios(config);
 }
 
+
+export const postUser = (token, type = '', data) => {
+    data = qs.stringify(data);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/user/${type}`,
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        maxRedirects: 0,
+        data: data
+    };
+    return axios(config);
+}
+
 export const updateUser = (token, userId, userData) => {
     let data = qs.stringify(userData);
     let config = {
