@@ -19,7 +19,7 @@ export const login = (credentials) => {
 
 }
 
-export const registerClient = (data) => { 
+export const registerClient = (data) => {
     data = qs.stringify(data);
     let config = {
         method: 'post',
@@ -72,6 +72,22 @@ export const sendVerificationNotification = (token) => {
             'Authorization': `Bearer ${token}`
         },
         maxRedirects: 0,
+    };
+
+    return axios(config)
+}
+
+export const updateEmail = (token, data) => {
+    data = qs.stringify(data)
+    let config = {
+        method: 'post',
+        url: `${apiURL}/user/updateEmail`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': `Bearer ${token}`
+        },
+        maxRedirects: 0,
+        data: data
     };
 
     return axios(config)

@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { UpdateEmail } from "../components/Profile/UpdateEmail";
 import { UpdateInfo } from "../components/Profile/UpdateInfo";
 import { UpdatePassword } from "../components/Profile/UpdatePassword";
 import { ModalContext } from "../context/ModalContext";
@@ -15,6 +16,14 @@ export const Profile = () => {
         setModalData({
             title: "Update your info",
             body: <UpdateInfo onSuccess={() => { closeModal() }} />
+        })
+        openModal();
+    }
+
+    const handleEmailUpdate = () => {
+        setModalData({
+            title: "Update your email",
+            body: <UpdateEmail onSuccess={() => { closeModal() }} />
         })
         openModal();
     }
@@ -93,7 +102,7 @@ export const Profile = () => {
                             </div>
                             <div className="space-x-5">
                                 <button className="btn btn-outline" onClick={handleInfoUpdate}>Update Info</button>
-                                <button className="btn btn-outline">Update Email</button>
+                                <button className="btn btn-outline" onClick={handleEmailUpdate}>Update Email</button>
                                 <button className="btn btn-outline" onClick={handlePasswordUpdate}>Update Password</button>
                             </div>
                         </div>
