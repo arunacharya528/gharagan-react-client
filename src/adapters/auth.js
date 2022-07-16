@@ -19,6 +19,21 @@ export const login = (credentials) => {
 
 }
 
+export const registerClient = (data) => { 
+    data = qs.stringify(data);
+    let config = {
+        method: 'post',
+        url: `${apiURL}/register`,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        maxRedirects: 0,
+        data: data
+    };
+
+    return axios(config)
+}
+
 export const getIfLoggedIn = (data) => {
     data = qs.stringify(data);
     let config = {
