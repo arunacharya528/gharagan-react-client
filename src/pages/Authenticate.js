@@ -1,11 +1,11 @@
 import { useRef, useState } from "react";
-import { login, logout, registerClient } from "../adapters/auth";
+import { forgotPassword, login, logout, registerClient } from "../adapters/auth";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 export const Login = () => {
-    const [selectedTab, setSelectedTab] = useState(2);
+    const [selectedTab, setSelectedTab] = useState(1);
     const tabs = [
         {
             name: "Login",
@@ -185,12 +185,66 @@ export const Login = () => {
             </form >
         );
     }
+
+    const PasswordForgot = () => {
+        const { register, handleSubmit, formState: { errors }, watch } = useForm();
+        const [errorMessage, setErrorMessage] = useState('')
+        const onSubmit = data => {
+            toast.promise(
+                forgotPassword(data),
+                {
+                    loading: "Analyzing",
+                    success: (response) => {
+                        setErrorMessage('')
+                        return `A password resetting notification was sent to ${data.email}`
+                    },
+                    error: (error) => {
+                        setErrorMessage(error.response.data.message)
+                        return "An error occured"
+                    }
+                }
+            )
+        }
+        return (
+            <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-3">
+
+                {
+                    errorMessage !== '' ?
+                        <div className=" flex justify-center">
+                            <div class="alert alert-error">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                    <span>{errorMessage}</span>
+                                </div>
+                            </div>
+                        </div>
+                        : ''
+                }
+
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text font-bold">Email</span>
+                    </label>
+                    <input type="text" className={"input input-bordered input-secondary w-full " + (errors.email ? 'input-error' : '')} placeholder="Enter your email" {...register("email", { required: "email is required" })} />
+                    {errors.email ? <label className="text-error px-3 py-1">{errors.email.message}</label> : ''}
+                </div>
+                <div className="space-x-5">
+                    <button type="submit" className="btn btn-primary">
+                        Forgot
+                    </button>
+                </div>
+            </form>
+        );
+    }
     const getSelectedTab = () => {
         switch (selectedTab) {
             case 1: return <LoginForm />
             case 2: return <RegisteringForm />
+            case 3: return <PasswordForgot />
         }
     }
+
+
     return (
 
         <>
@@ -206,7 +260,7 @@ export const Login = () => {
                     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                         <div class="card-body">
 
-                            <div class="tabs w-full">
+                            <div class="tabs w-full mb-4">
                                 {tabs.map((tab, index) =>
                                     <a class={"tab tab-bordered " + (tab.value === selectedTab ? 'tab-active' : '')} onClick={e => setSelectedTab(tab.value)}>{tab.name}</a>
                                 )}

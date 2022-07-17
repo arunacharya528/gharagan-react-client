@@ -40,6 +40,7 @@ import { Page } from "./pages/Page";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { PasswordReset } from "./pages/PasswordReset";
 function App() {
 
   return (
@@ -63,7 +64,7 @@ function App() {
                   <Route element={<Login />} path="/login" />
                   <Route element={<Newsletter />} path="/newsletter" />
                   <Route element={<Page />} path="/page/:slug" />
-                  
+                  <Route element={<PasswordReset />} path="/password-reset" />
                   <Route path="/user">
                     <Route element={<UserLayout component={<Login />} />} path="login" exact />
                     <Route element={<UserLayout component={<Profile />} />} path="profile" exact />
