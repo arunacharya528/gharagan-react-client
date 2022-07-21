@@ -153,7 +153,7 @@ export const Checkout = () => {
             return getDiscountedPrice(getSubTotal(session.cart_items), discountResponse.data.discount_percent);
         }
     }
-    
+
     return (
         <div className="relative">
             {disableForm ? <div className="bg-black/30 absolute top-0 left-0 w-full h-full" /> : ''}
@@ -262,6 +262,8 @@ export const Checkout = () => {
                                 }
                             </span>
                         </div>
+
+                        <span className="text-sm pt-4">There are no payment options currently available. Only <b>cash on delivery</b> is supported</span>
 
                     </div>
                     <div className="btn btn-primary mt-4" onClick={handleOrderPlacement}>Place Order</div>

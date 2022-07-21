@@ -63,7 +63,7 @@ export const OrderDetail = () => {
                     </div>
                     <div className="flex flex-col">
                         <span className="font-semibold my-5">Payment Information</span>
-
+                        <span className="text-sm">There are no payment options currently available. Only <b>cash on delivery</b> is supported</span>
                     </div>
 
                     <div className="flex flex-col divide-y-2">
@@ -202,11 +202,13 @@ export const OrderDetail = () => {
         switch (selectedTab) {
             case 1:
                 return <Overview />
+            case 2:
+                return <span className="text-sm">There are no payment options currently available. Only <b>cash on delivery</b> is supported</span>
             case 3:
                 return <Reviews />
         }
     }
-    
+
     return (
         <>
             {order.loading ?
