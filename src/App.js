@@ -1,40 +1,26 @@
-import { useContext, useEffect, useState } from "react";
-import { Banner } from "./components/Advertisement/Banner";
-
 import { Footer } from "./layout/Footer";
 import { Nav } from "./layout/Nav";
-import { Social } from "./layout/Social";
-import { getProducts } from "./adapters/product";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Home } from "./pages/Home";
 import { Product } from "./pages/Product";
 import { ProductFilter } from "./pages/ProductFilter";
-import ScrollToTop from "./helpers/ScrollToTop";
 import { Login } from "./pages/Authenticate";
-import { login } from "./adapters/auth";
 import { Cart } from "./pages/Cart";
 import { UserLayout } from "./layout/UserLayout";
 import { Order } from "./pages/Order";
 import { Profile } from "./pages/Profile";
 import { Brand } from "./pages/Brand";
-import { UserProvider } from "./context/UserContext";
-import { CartProvider } from "./context/CartContext";
 import { Addresses } from "./pages/Addresses";
-import { ModalProvider } from "./context/ModalContext";
-import { UserDashboard } from "./layout/UserDashboard";
 
 import { CloseIcon } from "./icons"
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 import { Checkout } from "./pages/Checkout";
 import { WishList } from "./pages/WishList";
-import { CategoryProvider } from "./context/CategoryContext";
 import { CategoryMenu } from "./components/Nav/CategoryContent";
 import { UserMenu } from "./components/Nav/UserMenu";
-import { WishListProvider } from "./context/WishListContext";
 import { OrderDetail } from "./pages/OrderDetail";
 import { ContextList } from "./context/ContextList";
 import { Review } from "./pages/Review";
-import { Newsletter } from "./pages/Newsletter";
 import { QuestionAnswers } from "./pages/QAs";
 import { Page } from "./pages/Page";
 
@@ -62,7 +48,6 @@ function App() {
                   <Route element={<ProductFilter />} path="/filter" />
                   <Route element={<Brand />} path="/brand/:brandId" />
                   <Route element={<Login />} path="/login" />
-                  <Route element={<Newsletter />} path="/newsletter" />
                   <Route element={<Page />} path="/page/:slug" />
                   <Route element={<PasswordReset />} path="/password-reset" />
                   <Route path="/user">
