@@ -3,12 +3,14 @@ const apiURL = process.env.REACT_APP_API_URL;
 const axios = require('axios');
 
 
-export const getDiscountByName = (name) => {
+export const getDiscountByName = (token, name) => {
 
     let config = {
         method: 'get',
         url: `${apiURL}/discount/${name}/find`,
-        headers: {},
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
         maxRedirects: 0
     };
 

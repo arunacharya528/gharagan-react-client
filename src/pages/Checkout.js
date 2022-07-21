@@ -64,23 +64,24 @@ export const Checkout = () => {
     // methods for form control
     //
     //=======================
-    const handleNewAddressAddition = () => {
-        const handleRefresh = (data) => {
-            refreshAddress(!isAddressRefreshed);
-            setSelectedAddress(data.response.id);
-            closeModal();
-        }
-        setModalData(
-            {
-                title: "Add new address",
-                body: <AddAddress refresh={handleRefresh} userId={user.id} />
-            });
-        openModal();
+    // const handleNewAddressAddition = () => {
+    //     const handleRefresh = (data) => {
+    //         refreshAddress(!isAddressRefreshed);
+    //         setSelectedAddress(data.response.id);
+    //         closeModal();
+    //     }
+    //     setModalData(
+    //         {
+    //             title: "Add new address",
+    //             body: <AddAddress refresh={handleRefresh} userId={user.id} />
+    //         });
+    //     openModal();
 
-    }
+    // }
 
     const handleDiscountCodeApplication = () => {
-        getDiscountByName(discountCode)
+        setDiscountResponse(null)
+        getDiscountByName(user.data.token, discountCode)
             .then(response => setDiscountResponse(response))
             .catch(error => setDiscountResponse(error.response))
     }
@@ -130,22 +131,14 @@ export const Checkout = () => {
                 {
                     discountResponse !== null && discountResponse.status === 404
                         ?
-                        <div class="alert alert-error shadow-lg">
-                            <div>
-                                <span>No discount offering found with given code</span>
-                            </div>
-                        </div>
+                        'No discount offering found with given code'
                         : ''
                 }
 
                 {
                     discountResponse !== null && discountResponse.status === 200 && discountResponse.data.active === 0
                         ?
-                        <div class="alert alert-error shadow-lg">
-                            <div>
-                                <span>The discount code is currently deactivated</span>
-                            </div>
-                        </div>
+                        'The discount code is currently deactivated'
                         : ''
                 }
             </>
@@ -153,13 +146,14 @@ export const Checkout = () => {
     }
 
     const getPriceAfterDiscount = () => {
-        if (discountResponse === null || (discountResponse.status === 200 && discountResponse.data.active === 0)) {
+        if (discountResponse === null || (discountResponse.status === 200 && discountResponse.data.active === 0) || discountResponse.status === 404) {
             return getSubTotal(session.cart_items);
         }
         else if (discountResponse !== null && discountResponse.status === 200) {
             return getDiscountedPrice(getSubTotal(session.cart_items), discountResponse.data.discount_percent);
         }
     }
+    
     return (
         <div className="relative">
             {disableForm ? <div className="bg-black/30 absolute top-0 left-0 w-full h-full" /> : ''}
@@ -171,34 +165,26 @@ export const Checkout = () => {
                         {user.email}
                     </div>
 
-                    <div className="grid grid-cols-2 gap-5">
-                        {addresses.map((address, index) =>
+                    <div>
+                        <div className={"grid grid-cols-2 gap-5 p-3 rounded-md " + (!addressValidation.isValid ? 'border border-error' : '')}>
+                            {addresses.map((address, index) =>
 
-                            <div className={"flex flex-col grow rounded-xl p-3 cursor-pointer bg-base-200 " + (selectedAddress !== null && selectedAddress.address === address.id ? "outline outline-primary" : '')} onClick={e => setSelectedAddress({ address: address.id, delivery_price: address.delivery.price })} key={index}>
-                                <span>{address.address_line1}</span>
-                                <span>{address.address_line2}</span>
-                                <span>{address.telephone}</span>
-                                <span>{address.mobile}</span>
+                                <div className={"flex flex-col grow rounded-xl p-3 cursor-pointer bg-base-200 " + (selectedAddress !== null && selectedAddress.address === address.id ? "outline outline-primary" : '')} onClick={e => setSelectedAddress({ address: address.id, delivery_price: address.delivery.price })} key={index}>
+                                    <span>{address.address_line1}</span>
+                                    <span>{address.address_line2}</span>
+                                    <span>{address.telephone}</span>
+                                    <span>{address.mobile}</span>
 
-                                <span className="text-right font-semibold">Delivery area: {address.delivery.region}</span>
-                                <span className="text-right font-semibold">Delivery charge: Rs.{address.delivery.price}</span>
-                            </div>
+                                    <span className="text-right font-semibold">Delivery area: {address.delivery.region}</span>
+                                    <span className="text-right font-semibold">Delivery charge: Rs.{address.delivery.price}</span>
+                                </div>
 
-                        )}
-
+                            )}
+                        </div>
+                        <span className="text-error">{!addressValidation.isValid ? addressValidation.message : ''}</span>
                     </div>
 
-                    <button className="btn btn-primary" onClick={handleNewAddressAddition}>Add new address</button>
-                    <div className="font-light">Visit address page <Link to={"/user/addresses"} className="text-primary underline underline-offset-2">here</Link> to <span className="font-normal">update/delete</span> address </div>
-
-                    {
-                        addressValidation.isValid === false ?
-                            <div class="alert alert-error shadow-lg">
-                                <div>
-                                    {addressValidation.message}
-                                </div>
-                            </div> : ''
-                    }
+                    <div className="font-light">Visit address page <Link to={"/user/addresses"} className="text-primary underline underline-offset-2">here</Link> to <span className="font-normal">add/update/delete</span> address </div>
 
                 </div>
                 <div className="flex flex-col">
@@ -218,11 +204,20 @@ export const Checkout = () => {
                         }
 
                         <div className="flex flex-col space-y-8 p-5">
-                            <div className="flex flex-row space-x-5">
-                                <input type="text" placeholder="Enter your discount code" class="input w-full input-bordered input-primary" onChange={e => setDiscountCode(e.target.value)} value={discountCode} />
-                                <button className="btn btn-primary btn-outine" onClick={handleDiscountCodeApplication}>Apply</button>
+
+
+                            <div className="flex flex-col">
+                                <div className="flex flex-row space-x-5">
+                                    <input type="text" placeholder="Enter your discount code" class={"input w-full input-bordered " + (discountResponse === null ? 'input-accent' : 'input-error')} onChange={e => setDiscountCode(e.target.value)} value={discountCode} />
+                                    <button className="btn btn-accent btn-outine" onClick={handleDiscountCodeApplication} disabled={discountCode === '' ? true : false}>Apply</button>
+                                </div>
+
+                                <div className="text-error">
+                                    {getDiscountResponse()}
+                                </div>
                             </div>
-                            {getDiscountResponse()}
+
+
 
                             <div className="flex justify-between">
                                 <span className="font-semibold">Subtotal</span>
@@ -270,10 +265,6 @@ export const Checkout = () => {
 
                     </div>
                     <div className="btn btn-primary mt-4" onClick={handleOrderPlacement}>Place Order</div>
-
-
-
-
                 </div>
 
             </div>
