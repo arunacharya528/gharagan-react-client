@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { cancelOrder } from "../adapters/orderDetail";
 import { OrderSteps } from "../components/Order/OrderSteps";
 import { InvoiceLink } from "../components/Order/InvoiceLink";
+import { OrderCancelBtn } from "../components/Order/OrderCancelBtn";
 
 export const Order = () => {
 
@@ -74,7 +75,7 @@ export const Order = () => {
                                 <div className="flex flex-col md:flex-row space-y-5 md:space-x-6 md:space-y-0 w-full md:w-auto">
                                     <Link to={"/user/orders/" + order.id} className="btn btn-ghost btn-outline">View Order</Link>
                                     <InvoiceLink id={order.id} />
-                                    <button className="btn btn-outline btn-error gap-2" disabled={order.status === 1 ? false : true} onClick={e => handleCancellation(order.id)}> <TrashIcon /> Cancel order</button>
+                                    <OrderCancelBtn order={order} onSubmit={() => { setRefresh(!isRefreshed) }} />
                                 </div>
                             </div>
 

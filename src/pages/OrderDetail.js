@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { cancelOrder, getInvoice, getOrderDetail } from "../adapters/orderDetail";
 import { deleteRating, postRating } from "../adapters/rating";
 import { InvoiceLink } from "../components/Order/InvoiceLink";
+import { OrderCancelBtn } from "../components/Order/OrderCancelBtn";
 import { OrderSteps } from "../components/Order/OrderSteps";
 import { OrderView } from "../components/Order/OrderView";
 import { RateAndComment } from "../components/Product/RateAndComment";
@@ -205,23 +206,7 @@ export const OrderDetail = () => {
                 return <Reviews />
         }
     }
-
-    const handleCancellation = (id) => {
-        toast.promise(
-            cancelOrder(user.data.token, id),
-            {
-                loading: "Cancelling order",
-                success: () => {
-                    setRefresh(!isRefreshed)
-                    navigate(-1);
-                    return "Successfully cancelled order"
-                },
-                error: "Error cancelling order"
-            }
-        )
-    }
-
-
+    
     return (
         <>
             {order.loading ?
@@ -241,7 +226,10 @@ export const OrderDetail = () => {
 
                         <div className="flex items-center space-x-3">
                             <InvoiceLink id={order.data.id} />
-                            <button className="btn btn-outline btn-error gap-2" disabled={order.data.status === 1 ? false : true} onClick={e => handleCancellation(order.data.id)}> <TrashIcon /> Cancel order</button>
+                            <OrderCancelBtn onSubmit={() => {
+                                setRefresh(!isRefreshed)
+                                navigate(-1);
+                            }} order={order.data} />
                         </div>
 
 
