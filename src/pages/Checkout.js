@@ -162,7 +162,7 @@ export const Checkout = () => {
 
                     <div className="px-5">
                         <span className="font-semibold">Email: </span>
-                        {user.email}
+                        {user.data.email}
                     </div>
 
                     <div>

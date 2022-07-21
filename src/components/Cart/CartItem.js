@@ -47,11 +47,11 @@ export const CartItem = (props = { item: JSON, className: String }) => {
         return (
             <div className="flex flex-col space-y-2">
                 <div class="btn-group ">
-                    <button class="btn btn-sm btn-primary" onClick={e => {
+                    <button class="btn btn-sm btn-secondary" onClick={e => {
                         if (quantity > 1) setQuantity(quantity - 1)
                     }}>-</button>
                     <span className="px-3 leading-loose">{quantity}</span>
-                    <button class="btn btn-sm btn-primary" onClick={e => {
+                    <button class="btn btn-sm btn-secondary" onClick={e => {
                         setQuantity(quantity + 1)
                     }}>+</button>
                 </div>
@@ -59,7 +59,7 @@ export const CartItem = (props = { item: JSON, className: String }) => {
                     props.item.quantity !== quantity ?
                         <>
                             <div className="btn btn-primary btn-outline btn-sm" onClick={handleCartUpdate}>Save</div>
-                            <div className="btn btn-secondary btn-outline btn-sm" onClick={e => setQuantity(props.item.quantity)}>Cancel</div>
+                            <div className="btn btn-error btn-outline btn-sm" onClick={e => setQuantity(props.item.quantity)}>Cancel</div>
                         </>
                         : ''
                 }
@@ -88,7 +88,7 @@ export const CartItem = (props = { item: JSON, className: String }) => {
                 </div>
                 <div className="flex justify-between">
                     <QuantityInput />
-                    <span className="text-primary font-semibold cursor-pointer self-end" onClick={handleCartItemRemoval}>Remove</span>
+                    <span className="text-error font-semibold cursor-pointer self-end" onClick={handleCartItemRemoval}>Remove</span>
                 </div>
             </div>
 
