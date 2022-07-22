@@ -14,6 +14,7 @@ import { SpecificationSkeleton } from "../components/Skeleton/ProductSkeleton";
 import { Loading } from "../helpers/Loading";
 import { HeartIcon } from "../icons";
 import { AuthRedirect } from "./Authenticate";
+import "../assets/default.scss"
 
 export const Product = () => {
 
@@ -48,7 +49,9 @@ export const Product = () => {
     const Specification = () => {
 
         return (<div>
-            {product.loading ? <SpecificationSkeleton /> : product.data.description}
+            {product.loading ? <SpecificationSkeleton /> :
+                <div className="unreset" dangerouslySetInnerHTML={{ __html: product.data.description }} />
+            }
         </div>)
     }
 
