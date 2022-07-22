@@ -20,7 +20,7 @@ import { ReactComponent as HomeIcon } from './home.svg';
 import { ReactComponent as SearchIcon } from './search.svg';
 import { ReactComponent as StarIcon } from './star.svg';
 import { ReactComponent as ArrowLeftIcon } from './arrow-left.svg';
-
+import { ReactComponent as ClipboardIcon } from './clipboard.svg';
 
 export {
     BagIcon,
@@ -44,5 +44,6 @@ export {
     HomeIcon,
     SearchIcon,
     StarIcon,
-    ArrowLeftIcon
+    ArrowLeftIcon,
+    ClipboardIcon
 }
