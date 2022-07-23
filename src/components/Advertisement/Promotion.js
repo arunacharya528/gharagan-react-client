@@ -1,18 +1,18 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import Slider from "react-slick";
-import { getActiveAdvertisements } from "../../adapters/advertisement";
 import { AdvertisementContext } from "../../context/AdvertisementContext";
+import { calculateDate } from "../../helpers/calculateDate";
 import { defaultSliderSetting } from "../../helpers/defaultSliderSetting";
-import { Loading } from "../../helpers/Loading";
-import { CarouselView } from "../Carousel";
 
-export const Banner = () => {
+const moment = require('moment')
+export const Promotion = () => {
+
     const { getAdvertisement } = useContext(AdvertisementContext);
 
     return (
-        <div>
-            <Slider {...defaultSliderSetting({})}>
-                {getAdvertisement('banner').map((ad, index) =>
+        <div className="container mx-auto">
+            <Slider {...defaultSliderSetting({ autoplaySpeed: 5000 })}>
+                {getAdvertisement('promotion').map((ad, index) =>
                     <div
                         class=" duration-700 ease-in-out max-auto h-auto !grid grid-rows-2 md:grid-cols-2  md:grid-rows-none gap-x-20  items-center justify-between md:space-x-10  "
                         data-carousel-item
@@ -30,6 +30,10 @@ export const Banner = () => {
                                 {ad.summary}
                             </h5>
 
+                            <div className="text-2xl py-3">
+                                Offer ends in {calculateDate(new Date(ad.active_to), new Date())}
+                            </div>
+
                             <a href={ad.url_slug} target="_blank" className="btn btn-primary p-3 mt-4 ">
                                 View More
                             </a>
@@ -43,5 +47,4 @@ export const Banner = () => {
 
 
     );
-
 }

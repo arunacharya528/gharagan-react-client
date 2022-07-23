@@ -27,7 +27,7 @@ export const VerticalList = () => {
         <>
             <div className="hidden md:block">
                 <Slider {...defaultSliderSetting({ arrows: false, slidesToShow: 3, vertical: true, verticalSwiping: true })}>
-                    {getAdvertisement('home', 'banner').map((ad, index) =>
+                    {getAdvertisement('sidebar').map((ad, index) =>
                         <Content ad={ad} key={index} />
 
                     )}
@@ -35,7 +35,7 @@ export const VerticalList = () => {
             </div>
             <div className="block md:hidden">
                 <Slider {...defaultSliderSetting({ arrows: false, slidesToShow: 1 })}>
-                    {getAdvertisement('home', 'banner').map((ad, index) =>
+                    {getAdvertisement('sidebar').map((ad, index) =>
                         <Content ad={ad} key={index} />
                     )}
                 </Slider>

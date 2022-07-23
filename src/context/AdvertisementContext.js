@@ -19,10 +19,10 @@ export const AdvertisementProvider = ({ children }) => {
      * @param {String} type Type of advertisement
      * @returns Array
      */
-    const getAdvertisement = (page, type) => {
+    const getAdvertisement = (type) => {
         if (!advertisements.loading) {
-            return advertisements.data.filter((ad, index) => {
-                return ad.type === type && ad.page === page;
+            return advertisements.data.filter((ad) => {
+                return ad.type === type
             })
         } else {
             return [];

@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Advertisement/Banner";
 import { BannerForHomePage } from "../components/Advertisement/BannerForHomePage";
+import { CategoryAd } from "../components/Advertisement/Category";
+import { Promotion } from "../components/Advertisement/Promotion";
 import { VerticalList } from "../components/Advertisement/VerticalList";
 import { BrandCarousel } from "../components/Brand";
 import { ProductContainer } from "../components/ProductContainer";
@@ -58,15 +60,20 @@ export const Home = () => {
                     <VerticalList />
                 </div>
                 <div className="col-span-6 md:col-span-4 md:order-2">
-                    <Banner page={"home"} />
+                    <Banner />
                 </div>
             </div>
 
             <ProductContainer products={latestProducts} title={"Latest Products"} />
             <ProductContainer products={topRatedProducts} title={"Top Rated Products"} />
+
+            <Promotion />
+
             <ProductContainer products={popularProducts} title={"Popular Products"} />
             <ProductContainer products={controversialProducts} title={"Controversial Products"} />
-
+            
+            <CategoryAd />
+            
             <BrandCarousel />
         </>
     );
