@@ -49,7 +49,7 @@ export const CategoryAd = () => {
     }
     return (
         <>
-            <div className="block md:hidden container mx-auto my-32">
+            <div className="block md:hidden container mx-auto my-32 px-10">
                 <Slider {...defaultSliderSetting({ autoplaySpeed: 10000, rows: 1, slidesToShow: 1, centerMode: true })}>
                     {getAdvertisement('category').map((ad, index) =>
                         <View ad={ad} key={index} />

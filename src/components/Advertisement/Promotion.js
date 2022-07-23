@@ -10,7 +10,7 @@ export const Promotion = () => {
     const { getAdvertisement } = useContext(AdvertisementContext);
 
     return (
-        <div className="container mx-auto">
+        <div className="container mx-auto px-10">
             <Slider {...defaultSliderSetting({ autoplaySpeed: 5000 })}>
                 {getAdvertisement('promotion').map((ad, index) =>
                     <div

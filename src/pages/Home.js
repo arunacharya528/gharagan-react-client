@@ -1,14 +1,11 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { Banner } from "../components/Advertisement/Banner";
-import { BannerForHomePage } from "../components/Advertisement/BannerForHomePage";
 import { CategoryAd } from "../components/Advertisement/Category";
 import { Promotion } from "../components/Advertisement/Promotion";
 import { VerticalList } from "../components/Advertisement/VerticalList";
 import { BrandCarousel } from "../components/Brand";
 import { ProductContainer } from "../components/ProductContainer";
-import { Loading } from "../helpers/Loading";
 
 export const Home = () => {
     const initialData = { data: [], loading: true };
