@@ -53,17 +53,6 @@ export const Nav = () => {
         }
     }, [selectedCategoryNumber])
 
-    // useEffect(() => {
-    //     if (parsedData.selectedCategory && categories.length !== 0) {
-    //         categories.data.map((category) => {
-    //             if (category.id + "" === parsedData.selectedCategory) {
-    //                 setSelectedCategory(category);
-    //                 handleCategorySelection(category);
-    //             }
-    //         })
-    //     }
-
-    // }, [parsedData])
 
     const handleCategorySelection = (category) => {
         // extract ids of child categories in an array
@@ -115,7 +104,7 @@ export const Nav = () => {
         <>
             <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
                 {
-                    notificationShown && getSiteData('notification') !== "" ?
+                    notificationShown && getSiteData('notification').trim() !== "-" ?
                         <div className="container mx-auto m-2 p-1 bg-red-400/10 border border-red-500 rounded-full  flex items-center">
                             <div className="grow text-center" dangerouslySetInnerHTML={{ __html: getSiteData('notification') }} />
                             <button className="btn btn-ghost btn-circle btn-xs" onClick={e => setNotificationDisplay(false)}>

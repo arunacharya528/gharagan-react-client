@@ -5,6 +5,7 @@ import { PageLinkContext } from "../context/PageLinkContext";
 import logo from "../assets/image/logo.png"
 import { CartIcon, HomeIcon, PersonIcon, SearchIcon } from "../icons";
 import { SiteDetailContext } from "../context/SiteDetailContext";
+import { SocialIcon } from "react-social-icons";
 
 export const Footer = () => {
 
@@ -48,7 +49,7 @@ export const Footer = () => {
                         {
                             getSiteData('social_links') !== '' ?
                                 JSON.parse(getSiteData('social_links')).map((item, index) =>
-                                    <a href={item.path} target="_blank" dangerouslySetInnerHTML={{ __html: item.svg }} alt={item.name}></a>
+                                    <SocialIcon url={item.path} key={index} fgColor="white" style={{ width: "2.5rem", height: "2.5rem" }} />
                                 )
 
                                 : ''
