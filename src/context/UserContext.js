@@ -52,6 +52,7 @@ export const UserProvider = ({ children }) => {
                 })
                 .catch(response => setUser(initialState))
         }
+
     }, [isRefreshed])
 
     const setUserData = (data = { token: String }) => {
@@ -61,6 +62,21 @@ export const UserProvider = ({ children }) => {
         })
         cookies.set('token', data.token, { path: "/" })
     }
+
+    useEffect(() => {
+        if (!user.loading) {
+            if (user.data.role !== 3) {
+                toast(
+                    "Login into admin dashboard to access admin dashboard",
+                    {
+                        duration: 6000,
+                    }
+                );
+                handleLogout(user.data.token);
+            }
+        }
+    }, [user])
+
 
     const updateUser = () => setRefresh(!isRefreshed)
     return <UserContext.Provider value={{ user, setUserData, handleLogout, updateUser }}>

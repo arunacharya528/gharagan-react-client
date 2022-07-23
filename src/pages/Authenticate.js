@@ -35,17 +35,6 @@ export const Login = () => {
                     loading: "Logging in",
                     success: (response) => {
                         setUserData(response.data)
-
-                        if (response.data.role !== 3) {
-                            toast(
-                                "Login into admin dashboard to access admin dashboard",
-                                {
-                                    duration: 6000,
-                                }
-                            );
-                            handleLogout(response.data.token);
-                        }
-
                         return "Successfully logged-in to your account"
                     },
                     error: (error) => {
