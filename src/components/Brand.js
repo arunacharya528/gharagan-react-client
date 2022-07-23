@@ -47,13 +47,37 @@ export const BrandCarousel = () => {
     const loadingData = () => {
         if (brands.length !== 0) {
 
-            return <Slider {...defaultSliderSetting({ slidesToShow: 5, variableWidth: true })}>
-                {
-                    brands.map((brand, index) =>
-                        <ImageContainer key={index} brand={brand} />
-                    )
-                }
-            </Slider>
+            return (
+                <>
+                    <div className="block px-10 md:hidden">
+                        <Slider {...defaultSliderSetting({ slidesToShow: 1, variableWidth: true, centerMode: true, rows: 1 })}>
+                            {
+                                brands.map((brand, index) =>
+                                    <ImageContainer key={index} brand={brand} />
+                                )
+                            }
+                        </Slider>
+                    </div>
+                    <div className="hidden md:block lg:hidden">
+                        <Slider {...defaultSliderSetting({ slidesToShow: 3, variableWidth: true, centerMode: true })}>
+                            {
+                                brands.map((brand, index) =>
+                                    <ImageContainer key={index} brand={brand} />
+                                )
+                            }
+                        </Slider>
+                    </div>
+                    <div className="hidden lg:block">
+                        <Slider {...defaultSliderSetting({ slidesToShow: 5, variableWidth: true, centerMode: true })}>
+                            {
+                                brands.map((brand, index) =>
+                                    <ImageContainer key={index} brand={brand} />
+                                )
+                            }
+                        </Slider>
+                    </div>
+                </>
+            )
 
         } else {
             return <div class="shadow rounded-lg mx-3">
@@ -69,7 +93,7 @@ export const BrandCarousel = () => {
         }
 
     }
-    
+
     return (
         <div className="container mx-auto">
             {loadingData()}
