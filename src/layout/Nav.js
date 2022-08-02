@@ -20,6 +20,7 @@ import { NavProductContainer } from "../components/Nav/NavProductContainer";
 import { PageLinkContext } from "../context/PageLinkContext"
 import { SiteDetailContext } from "../context/SiteDetailContext";
 import { ProfileImage } from "../components/Avatar";
+import { ModalContext } from "../context/ModalContext";
 const queryString = require('query-string')
 
 
@@ -42,6 +43,50 @@ export const Nav = () => {
     const [selectedTab, setSelectedTab] = useState(null);
 
     const selectedCategoryNumber = parsedData.selectedCategory;
+
+    const { setModalData, openModal, closeModal } = useContext(ModalContext);
+
+    const forwardTo = (link) => {
+        setSelectedCategory([])
+        navigate(link)
+        setSelectedTab(null)
+        showDetailBar(false)
+        closeModal()
+    }
+
+    const handleCategoryView = (category) => {
+        setModalData({
+            title: `Category: ${category.name}`,
+            size: "max-w-5xl ",
+            body: <>
+                <div className="grid md:grid-cols-4 gap-5 px-3 h-full">
+                    <div className="">
+                        <div className="grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                            {
+                                category.child_categories.map((category, index) =>
+                                    <button key={index} className="btn btn-ghost capitalize" onClick={e => { e.stopPropagation(); forwardTo(`/filter/?categories=${category.id}`) }} >{category.name}</button>
+                                )
+                            }
+
+                        </div>
+                    </div>
+
+                    <div className="d-flex justify-content-between align-items-start">
+                        <p>
+                            {selectedCategory.description}
+                        </p>
+                    </div>
+
+                    <div className="md:col-span-2">
+                        <NavProductContainer title={"Latest Products"} products={latestProducts.products} link={latestProducts.link} forward={forwardTo} />
+                        <NavProductContainer title={"Top Rated Products"} products={topRatedProducts.products} link={topRatedProducts.link} forward={forwardTo} />
+                    </div>
+                </div>
+            </>
+        })
+        openModal()
+    }
+    // console.log(selectedCategory)
     useEffect(() => {
         if (parsedData.selectedCategory && categories.length !== 0) {
             categories.data.map((category) => {
@@ -61,40 +106,34 @@ export const Nav = () => {
         })
 
         // implode the array by joining with string and fetch data with contructed link
-        const latestLink = "categories=" + childCategories.join(',') + "&sort=latest&orderBy=desc";
+        const latestLink = "?categories=" + childCategories.join(',') + "&sort=latest&orderBy=desc";
         getProducts(latestLink)
             .then(response => {
                 setLatestProducts({
                     products: response.data,
-                    link: "/filter/?" + latestLink
+                    link: "/filter/" + latestLink
                 })
             })
             .catch(error => console.log(error))
 
-        const topRatedLink = "categories=" + childCategories.join(',') + "&sort=rating&orderBy=desc";
+        const topRatedLink = "?categories=" + childCategories.join(',') + "&sort=rating&orderBy=desc";
         getProducts(topRatedLink)
             .then(response => {
                 setTopRatedProducts({
                     products: response.data,
-                    link: "/filter/?" + topRatedLink
+                    link: "/filter/" + topRatedLink
                 })
             })
             .catch(error => console.log(error))
 
 
-        setSelectedCategory(category);
+        // setSelectedCategory(category);
+        handleCategoryView(category);
 
     }
 
     const { getLinks } = useContext(PageLinkContext);
     const { getSiteData } = useContext(SiteDetailContext);
-
-    const forwardTo = (link) => {
-        setSelectedCategory([])
-        navigate(link)
-        setSelectedTab(null)
-        showDetailBar(false)
-    }
 
     const [notificationShown, setNotificationDisplay] = useState(true);
 
@@ -187,15 +226,22 @@ export const Nav = () => {
                 </div>
             </div>
 
-            <div className="container mx-auto py-2 flex flex-row overflow-x-auto items-center space-x-5">
+            {/* <div className="container mx-auto py-2 flex flex-row overflow-x-auto items-center space-x-5">
                 <div className="btn btn-ghost" onClick={e => showDetailBar(!isDetailBarShown)}>Categories</div>
                 {
                     getLinks('head').map((link, index) =>
                         <Link to={"/page/" + link['url-slug']} key={index} className="capitalize hover:text-primary">{link.name}</Link>
                     )
                 }
+            </div> */}
+
+            <div className="hidden md:flex justify-center py-10 ">
+                <ul class="menu menu-horizontal bg-base-100 rounded-box">
+                    <CategoryMenu />
+                </ul>
             </div>
-            {isDetailBarShown ?
+
+            {/* {isDetailBarShown ?
 
                 <div className="fixed top-0 z-50 bg-base-100 flex justify-center items-center h-screen w-screen" onClick={e => showDetailBar(false)}>
                     <div className="absolute top-5 w-full text-center">Click outside container to close</div>
@@ -250,7 +296,7 @@ export const Nav = () => {
                     </div>
                 </div>
                 : ''
-            }
+            } */}
 
 
 

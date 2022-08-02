@@ -11,7 +11,7 @@ export const NavProductContainer = ({ title, products, link, forward }) => {
                 <span className="text-xl font-bold">{title}</span>
                 <span onClick={e => forward(link)} className="btn btn-sm btn-ghost rounded-full">More</span>
             </div>
-            <div className="grid grid-cols-3 items-stretch gap-5">
+            <div className="flex overflow-auto flex-auto space-x-5">
                 {products.length === 0 ?
                     <Loading />
                     : products.slice(0, 3).map((product, index) => <ShortProductThumbnail key={index} product={product} width={4} moveForward={link => forward(link)} />)

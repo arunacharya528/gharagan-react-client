@@ -14,7 +14,7 @@ export const ShortProductThumbnail = (props) => {
                 </figure>
 
 
-                <div class="absolute top-0 left-0 h-full w-full">
+                <div class="absolute top-0 left-0 h-full w-full" onClick={e => { props.moveForward("/product/" + props.product.id) }}>
                     <div className="h-full w-full flex items-center justify-center flex-col hover:bg-base-200/60">
                         <div className="grow"></div>
                         <div class="tooltip" data-tip={props.product.name}>

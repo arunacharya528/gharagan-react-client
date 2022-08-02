@@ -18,7 +18,7 @@ export const CategoryMenu = () => {
                 <CategoryListSkeletion />
                 :
                 categories.data.map((category, index) =>
-                    <li class={""} onMouseEnter={e => {
+                    <li class={""} onClick={e => {
                         navigate("?selectedCategory=" + category.id)
                     }} key={index} className={"capitalize "}>
                         <a className={(parsedData.selectedCategory === '' + category.id ? 'active' : '')}>{category.name}</a>
