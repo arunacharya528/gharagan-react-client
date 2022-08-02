@@ -21,6 +21,7 @@ import { PageLinkContext } from "../context/PageLinkContext"
 import { SiteDetailContext } from "../context/SiteDetailContext";
 import { ProfileImage } from "../components/Avatar";
 import { ModalContext } from "../context/ModalContext";
+import { ThemeToggle } from "../components/Nav/ThemeSwitch";
 const queryString = require('query-string')
 
 
@@ -181,7 +182,9 @@ export const Nav = () => {
                     </div>
 
                     <div className="flex flex-row items-center space-x-2">
-
+                        <span className="">
+                            <ThemeToggle showTitle={false} />
+                        </span>
                         {
                             !user.loading && session !== null ?
                                 <label for="rightDrawer" to={"/user/cart"} class="hidden lg:flex btn btn-ghost btn-circle">
@@ -195,8 +198,8 @@ export const Nav = () => {
                                 : ''
                         }
 
-                        <div className="flex-row space-x-2">
-
+                        <div className="flex-row space-x-2 items-center">
+                            
                             <div class="dropdown dropdown-end">
                                 <label tabindex="0" class="btn btn-ghost btn-circle">
                                     {
@@ -210,7 +213,7 @@ export const Nav = () => {
                                             </div>
                                     }
                                 </label>
-                                <div className="dropdown-content w-52 py-2 rounded-xl shadow-md">
+                                <div className="dropdown-content w-52 py-2 rounded-xl shadow-md bg-base-100">
                                     <UserMenu />
                                 </div>
                             </div>

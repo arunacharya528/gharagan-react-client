@@ -48,7 +48,7 @@ function App() {
                   <Route element={<ProductFilter />} path="/filter" />
                   <Route element={<Brand />} path="/brand/:brandId" />
                   <Route element={<Login />} path="/login" />
-                  <Route element={<Page />} path="/page/:slug" />
+                  {/* <Route element={<Page />} path="/page/:slug" /> */}
                   <Route element={<PasswordReset />} path="/password-reset" />
                   <Route path="/user">
                     <Route element={<UserLayout component={<Login />} />} path="login" exact />
