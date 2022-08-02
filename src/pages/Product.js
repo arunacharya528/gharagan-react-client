@@ -35,7 +35,7 @@ export const Product = () => {
             .then(response => setProduct({ data: response.data, loading: false }))
             .catch(error => console.log(error))
 
-        getProducts("mode=related&product_id=" + url[2])
+        getProducts("?mode=related&product_id=" + url[2])
             .then((response) => {
                 setRelatedProducts({ data: response.data, loading: false });
             })

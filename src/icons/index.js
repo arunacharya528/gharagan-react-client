@@ -21,6 +21,9 @@ import { ReactComponent as SearchIcon } from './search.svg';
 import { ReactComponent as StarIcon } from './star.svg';
 import { ReactComponent as ArrowLeftIcon } from './arrow-left.svg';
 import { ReactComponent as ClipboardIcon } from './clipboard.svg';
+import { ReactComponent as MailIcon } from './mail.svg';
+import { ReactComponent as PhoneIcon } from './phone.svg';
+
 
 export {
     BagIcon,
@@ -45,5 +48,7 @@ export {
     SearchIcon,
     StarIcon,
     ArrowLeftIcon,
-    ClipboardIcon
+    ClipboardIcon,
+    MailIcon,
+    PhoneIcon
 }

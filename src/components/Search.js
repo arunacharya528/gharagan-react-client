@@ -11,7 +11,7 @@ export const SearchBar = () => {
 
     useEffect(() => {
         if (searchQuery !== '') {
-            getProducts(`name=${searchQuery}&sort=rating&orderBy=desc`)
+            getProducts(`?name=${searchQuery}&sort=rating&orderBy=desc`)
                 .then((response) => {
                     setSearchResult(response.data);
                 })
