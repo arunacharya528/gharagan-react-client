@@ -44,8 +44,16 @@ export const ThemeToggle = ({ showTitle = true }) => {
     }
 
     return (
-        <button onClick={handleThemeChange} className="btn btn-ghost btn-circle">
-            {themeIcon}
-        </button>
+        <>
+            {showTitle ?
+                <a onClick={handleThemeChange}>
+                    {themeIcon} Toggle theme
+                </a>
+                :
+                <button onClick={handleThemeChange} className="btn btn-ghost btn-circle gap-5">
+                    {themeIcon}
+                </button>
+            }
+        </>
     );
 }

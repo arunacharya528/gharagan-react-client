@@ -1,23 +1,15 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
-import { getCategories } from "../adapters/category";
 import { getProducts } from "../adapters/product";
-import { getShoppingSession } from "../adapters/shoppingSession";
 import { CategoryMenu } from "../components/Nav/CategoryContent";
 import { UserMenu } from "../components/Nav/UserMenu";
 import { CartContext } from "../context/CartContext";
 import { CategoryContext } from "../context/CategoryContext";
-import { UserContext, UserProvider } from "../context/UserContext";
+import { UserContext } from "../context/UserContext";
 import { Loading } from "../helpers/Loading";
-import { CartIcon, MoonIcon, PersonIcon, SunIcon, ListIcon, SearchIcon, CloseIcon } from "../icons";
-import { AuthLink, AuthUser } from "../pages/Authenticate";
-
-import logo from "../assets/image/logo.png";
-import lgLogo from "../assets/image/lg-logo.png";
+import { CartIcon, PersonIcon, ListIcon, CloseIcon } from "../icons";
 import { SearchBar } from "../components/Search";
 import { NavProductContainer } from "../components/Nav/NavProductContainer";
-import { PageLinkContext } from "../context/PageLinkContext"
 import { SiteDetailContext } from "../context/SiteDetailContext";
 import { ProfileImage } from "../components/Avatar";
 import { ModalContext } from "../context/ModalContext";
@@ -28,131 +20,154 @@ const queryString = require('query-string')
 export const Nav = () => {
 
     const navigate = useNavigate();
-    const location = useLocation();
-    const parsedData = queryString.parse(location.search);
 
     const { user } = useContext(UserContext);
     const { session } = useContext(CartContext);
     const { categories } = useContext(CategoryContext);
+    const { getSiteData } = useContext(SiteDetailContext);
 
-    const [selectedCategory, setSelectedCategory] = useState([]);
-
-    const [latestProducts, setLatestProducts] = useState({ link: '', products: [] });
-    const [topRatedProducts, setTopRatedProducts] = useState({ link: '', products: [] });
-
-
-    const [selectedTab, setSelectedTab] = useState(null);
-
-    const selectedCategoryNumber = parsedData.selectedCategory;
-
+    const [selectedCategory, setSelectedCategory] = useState(null)
     const { setModalData, openModal, closeModal } = useContext(ModalContext);
 
-    const forwardTo = (link) => {
-        setSelectedCategory([])
-        navigate(link)
-        setSelectedTab(null)
-        showDetailBar(false)
-        closeModal()
-    }
+    const initialState = { loading: true, link: '', products: [] };
+    const [latestProducts, setLatestProducts] = useState(initialState);
+    const [topRatedProducts, setTopRatedProducts] = useState(initialState);
 
-    const handleCategoryView = (category) => {
-        setModalData({
-            title: `Category: ${category.name}`,
-            size: "max-w-5xl ",
-            body: <>
-                <div className="grid md:grid-cols-4 gap-5 px-3 h-full">
-                    <div className="">
-                        <div className="grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
-                            {
-                                category.child_categories.map((category, index) =>
-                                    <button key={index} className="btn btn-ghost capitalize" onClick={e => { e.stopPropagation(); forwardTo(`/filter/?categories=${category.id}`) }} >{category.name}</button>
-                                )
-                            }
+    const location = useLocation();
+    const parsedData = queryString.parse(location.search);
+    const selectedCategoryNumber = parsedData.selectedCategory;
+    const [toggleLoading, setToggleLoading] = useState(false);
 
+    useEffect(() => {
+
+        if (!latestProducts.loading && !topRatedProducts.loading) {
+
+            setToggleLoading(false)
+            setModalData({
+                title: `Category: ${selectedCategory.name}`,
+                size: "max-w-5xl ",
+                body: <>
+                    <div className="hidden md:flex justify-center py-3 ">
+                        <ul class="menu menu-horizontal bg-base-100 rounded-box">
+                            <CategoryMenu />
+                        </ul>
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-5 px-3 h-full">
+                        <div className="">
+                            <div className="grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                                {
+                                    selectedCategory.child_categories.map((category, index) =>
+                                        <button key={index} className="btn btn-ghost capitalize" onClick={e => { e.stopPropagation(); forwardTo(`/filter/?categories=${category.id}`) }} >{category.name}</button>
+                                    )
+                                }
+
+                            </div>
+                        </div>
+
+                        <div className="md:col-span-2">
+                            <NavProductContainer title={"Latest Products"} products={latestProducts.products} link={latestProducts.link} forward={forwardTo} />
+                            <NavProductContainer title={"Top Rated Products"} products={topRatedProducts.products} link={topRatedProducts.link} forward={forwardTo} />
                         </div>
                     </div>
+                </>
+            })
+            openModal()
+        } else {
+            if (selectedCategory !== null) {
+                setToggleLoading(true)
+            }
+        }
+    }, [latestProducts, topRatedProducts])
 
-                    <div className="d-flex justify-content-between align-items-start">
-                        <p>
-                            {selectedCategory.description}
-                        </p>
-                    </div>
 
-                    <div className="md:col-span-2">
-                        <NavProductContainer title={"Latest Products"} products={latestProducts.products} link={latestProducts.link} forward={forwardTo} />
-                        <NavProductContainer title={"Top Rated Products"} products={topRatedProducts.products} link={topRatedProducts.link} forward={forwardTo} />
-                    </div>
-                </div>
-            </>
-        })
-        openModal()
-    }
-    // console.log(selectedCategory)
     useEffect(() => {
         if (parsedData.selectedCategory && categories.length !== 0) {
             categories.data.map((category) => {
                 if (category.id + "" === parsedData.selectedCategory) {
                     setSelectedCategory(category);
-                    handleCategorySelection(category);
+
+                    const childCategories = category.child_categories.map((category, index) => {
+                        return category.id;
+                    })
+
+                    // implode the array by joining with string and fetch data with contructed link
+                    const latestLink = "?categories=" + childCategories.join(',') + "&sort=latest&orderBy=desc";
+                    setLatestProducts(initialState)
+                    getProducts(latestLink)
+                        .then(response => {
+                            setLatestProducts({
+                                loading: false,
+                                products: response.data,
+                                link: "/filter/" + latestLink
+                            })
+                        })
+                        .catch(error => console.log(error))
+
+                    const topRatedLink = "?categories=" + childCategories.join(',') + "&sort=rating&orderBy=desc";
+                    setTopRatedProducts(initialState)
+                    getProducts(topRatedLink)
+                        .then(response => {
+                            setTopRatedProducts({
+                                loading: false,
+                                products: response.data,
+                                link: "/filter/" + topRatedLink
+                            })
+                        })
+                        .catch(error => console.log(error))
+
                 }
             })
         }
     }, [selectedCategoryNumber])
 
-
-    const handleCategorySelection = (category) => {
-        // extract ids of child categories in an array
-        const childCategories = category.child_categories.map((category, index) => {
-            return category.id;
-        })
-
-        // implode the array by joining with string and fetch data with contructed link
-        const latestLink = "?categories=" + childCategories.join(',') + "&sort=latest&orderBy=desc";
-        getProducts(latestLink)
-            .then(response => {
-                setLatestProducts({
-                    products: response.data,
-                    link: "/filter/" + latestLink
-                })
-            })
-            .catch(error => console.log(error))
-
-        const topRatedLink = "?categories=" + childCategories.join(',') + "&sort=rating&orderBy=desc";
-        getProducts(topRatedLink)
-            .then(response => {
-                setTopRatedProducts({
-                    products: response.data,
-                    link: "/filter/" + topRatedLink
-                })
-            })
-            .catch(error => console.log(error))
-
-
-        // setSelectedCategory(category);
-        handleCategoryView(category);
-
+    const forwardTo = (link) => {
+        navigate(link)
+        closeModal()
     }
 
-    const { getLinks } = useContext(PageLinkContext);
-    const { getSiteData } = useContext(SiteDetailContext);
+    const Notification = () => {
+        const intitalState = { display: false, data: "" }
+        const [notificationShown, setNotificationDisplay] = useState(intitalState);
 
-    const [notificationShown, setNotificationDisplay] = useState(true);
+        useEffect(() => {
+            if (getSiteData('notification').trim() === "-" || getSiteData('notification').trim() === "") {
+                setNotificationDisplay(intitalState)
+            } else {
+                setNotificationDisplay({ display: true, data: getSiteData('notification') })
+            }
+        }, [getSiteData('notification')])
 
-    const [isDetailBarShown, showDetailBar] = useState(false);
 
-    return (
-        <>
-            <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
+        return (
+            <>
                 {
-                    notificationShown && getSiteData('notification').trim() !== "-" ?
+
+                    notificationShown.display ?
                         <div className="container mx-auto m-2 p-1 bg-red-400/10 border border-red-500 rounded-full  flex items-center">
-                            <div className="grow text-center" dangerouslySetInnerHTML={{ __html: getSiteData('notification') }} />
+                            <div className="grow text-center" dangerouslySetInnerHTML={{ __html: notificationShown.data }} />
                             <button className="btn btn-ghost btn-circle btn-xs" onClick={e => setNotificationDisplay(false)}>
                                 <CloseIcon className="" />
                             </button>
                         </div>
                         : ''
                 }
+            </>
+        );
+    }
+
+
+    return (
+        <>
+            {
+                toggleLoading ?
+                    <div className="fixed w-full h-full z-50 flex items-center justify-center text-base-100 bg-slate-600/50 ">
+                        <Loading />
+                    </div>
+                    : ''
+            }
+
+            <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
+                <Notification />
 
                 <div className="lg:container mx-auto flex justify-between items-center space-x-10 p-2 flex-nowrap w-full">
 
@@ -182,7 +197,7 @@ export const Nav = () => {
                     </div>
 
                     <div className="flex flex-row items-center space-x-2">
-                        <span className="">
+                        <span className="hidden md:inline">
                             <ThemeToggle showTitle={false} />
                         </span>
                         {
@@ -199,7 +214,7 @@ export const Nav = () => {
                         }
 
                         <div className="flex-row space-x-2 items-center">
-                            
+
                             <div class="dropdown dropdown-end">
                                 <label tabindex="0" class="btn btn-ghost btn-circle">
                                     {
@@ -229,82 +244,12 @@ export const Nav = () => {
                 </div>
             </div>
 
-            {/* <div className="container mx-auto py-2 flex flex-row overflow-x-auto items-center space-x-5">
-                <div className="btn btn-ghost" onClick={e => showDetailBar(!isDetailBarShown)}>Categories</div>
-                {
-                    getLinks('head').map((link, index) =>
-                        <Link to={"/page/" + link['url-slug']} key={index} className="capitalize hover:text-primary">{link.name}</Link>
-                    )
-                }
-            </div> */}
 
             <div className="hidden md:flex justify-center py-10 ">
                 <ul class="menu menu-horizontal bg-base-100 rounded-box">
                     <CategoryMenu />
                 </ul>
             </div>
-
-            {/* {isDetailBarShown ?
-
-                <div className="fixed top-0 z-50 bg-base-100 flex justify-center items-center h-screen w-screen" onClick={e => showDetailBar(false)}>
-                    <div className="absolute top-5 w-full text-center">Click outside container to close</div>
-
-                    <div className="bg-base-200 w-full h-4/5 overflow-x-auto relative border border-gray-700">
-                        <div className="flex flex-col md:flex-row container mx-auto py-6 items-stretch">
-                            <ul class="menu menu-vertical p-0">
-                                {
-                                    categories.data.map((category, index) =>
-                                        <li onClick={e => { e.stopPropagation(); handleCategorySelection(category); }} key={index} className={"capitalize "}>
-                                            <a className={(selectedCategory.id === category.id ? 'active' : '')}>{category.name}</a>
-                                        </li>
-                                    )
-                                }
-                            </ul>
-
-                            <div>
-                                {
-                                    selectedCategory.length !== 0 ?
-                                        <div className="grid md:grid-cols-4 gap-5 px-3 h-full">
-                                            <div className="">
-                                                <div className="grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
-                                                    {
-                                                        selectedCategory.child_categories.map((category, index) =>
-                                                            <button key={index} className="btn btn-ghost capitalize" onClick={e => { e.stopPropagation(); forwardTo(`/filter/?categories=${category.id}`) }} >{category.name}</button>
-                                                        )
-                                                    }
-
-                                                </div>
-                                            </div>
-
-                                            <div className="d-flex justify-content-between align-items-start">
-                                                <p>
-                                                    {selectedCategory.description}
-                                                </p>
-                                            </div>
-
-                                            <div className="md:col-span-2">
-                                                <NavProductContainer title={"Latest Products"} products={latestProducts.products} link={latestProducts.link} forward={forwardTo} />
-                                                <NavProductContainer title={"Top Rated Products"} products={topRatedProducts.products} link={topRatedProducts.link} forward={forwardTo} />
-                                            </div>
-                                        </div>
-                                        :
-                                        ''
-                                }
-                            </div>
-
-
-
-                        </div>
-
-                    </div>
-                </div>
-                : ''
-            } */}
-
-
-
-
-
         </>
     );
 }

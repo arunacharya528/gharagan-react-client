@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
@@ -35,7 +35,9 @@ export const UserMenu = () => {
 
             }
 
-            {/* <li><ThemeToggle /></li> */}
+            <li className="inline md:hidden">
+                <ThemeToggle showTitle={true} />
+            </li>
         </ul>
     );
 }
