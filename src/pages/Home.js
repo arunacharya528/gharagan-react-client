@@ -16,7 +16,7 @@ export const Home = () => {
 
 
     useEffect(() => {
-        getProducts("sort=latest&orderBy=desc")
+        getProducts("?sort=latest&orderBy=desc")
             .then((response) => {
                 setLatestProducts({ loading: false, data: response.data })
             })
@@ -24,7 +24,7 @@ export const Home = () => {
                 console.log(error);
             });
 
-        getProducts("sort=popular&orderBy=desc")
+        getProducts("?sort=popular&orderBy=desc")
             .then((response) => {
                 setPopularProducts({ loading: false, data: response.data });
             })
@@ -32,7 +32,7 @@ export const Home = () => {
                 console.log(error);
             });
 
-        getProducts("sort=controversial&orderBy=desc")
+        getProducts("?sort=controversial&orderBy=desc")
             .then((response) => {
                 setControversialProducts({ loading: false, data: response.data });
             })
@@ -40,7 +40,7 @@ export const Home = () => {
                 console.log(error);
             });
 
-        getProducts("sort=rating&orderBy=desc")
+        getProducts("?sort=rating&orderBy=desc")
             .then((response) => {
                 setTopRatedProducts({ loading: false, data: response.data });
             })

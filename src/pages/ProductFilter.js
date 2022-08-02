@@ -2,38 +2,23 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getProducts } from "../adapters/product";
 import { FilterBar } from "../components/FilterBar";
+import { ProductThumbnailSkeleton } from "../components/Skeleton/ProductSkeleton";
 import { LongProductThumbnail } from "../components/Thumbnail/LongProductThumbnail";
-import { Loading } from "../helpers/Loading";
 import { FullScreenEnterIcon, FullScreenExitIcon, ListIcon } from "../icons";
-
-const handleURL = require('../helpers/handleURL');
 
 export const ProductFilter = () => {
 
     const location = useLocation();
-    const navigate = useNavigate();
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState({ loading: true, data: [] });
 
     useEffect(() => {
-        getProducts(location.search, 'item=9')
+        getProducts(location.search)
             .then(response => {
-                setProducts(response.data)
+                setProducts({ loading: false, data: response.data })
             })
             .catch(error => console.log(error))
     }, [location]);
 
-
-    const handlelinkClick = (link) => {
-        // get json object of location
-        // const parsedLocation = queryString.parse(location)
-        // get page number from clicked page link
-        var linkPage = link.url !== null ? link.url.split("?")[1] : '';
-        linkPage = linkPage !== '' ? linkPage.split("=")[1] : linkPage;
-        if (linkPage !== '') {
-            handleURL.handleURLUpdate(linkPage, 'page', 'single', location, navigate)
-        }
-
-    }
     const [isDrawerFit, fitDrawer] = useState(false);
     return (
         <>
@@ -50,7 +35,7 @@ export const ProductFilter = () => {
                                 </label>
                                 <span className="font-bold uppercase">filter</span>
                             </div>
-                            
+
 
                             <button className="btn btn-sm btn-ghost gap-2 rounded-full" onClick={e => fitDrawer(!isDrawerFit)}>
                                 {isDrawerFit ? <>Exit fullscreen <FullScreenExitIcon /> </> : <>Fullscreen <FullScreenEnterIcon /></>}
@@ -59,10 +44,21 @@ export const ProductFilter = () => {
 
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 relative p-5">
-                            {products.length === 0 ?
-                                <Loading />
+
+                            {products.loading ?
+                                <>{Array(4).fill({}).map((item, index) =>
+                                    <ProductThumbnailSkeleton key={index} />
+                                )}</>
                                 :
-                                products.map((product, index) => <LongProductThumbnail key={index} product={product} width={4} />)
+                                products.data.length === 0 ?
+
+                                    <div className="flex justify-center flex-col items-center w-full col-span-4 space-y-10">
+                                        <span className="text-5xl">(･_･)</span>
+                                        <span>No product found</span>
+                                    </div>
+                                    :
+                                    products.data.map((product, index) => <LongProductThumbnail key={index} product={product} width={4} />)
+
                             }
                         </div>
                     </div>
