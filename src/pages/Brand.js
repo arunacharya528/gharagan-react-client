@@ -2,18 +2,20 @@ import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { getBrand } from "../adapters/brand";
 import { getProducts } from "../adapters/product";
+import { ProductContainer } from "../components/ProductContainer";
 import { LongProductThumbnail } from "../components/Thumbnail/LongProductThumbnail";
 import { Loading } from "../helpers/Loading";
 
 export const Brand = () => {
     const location = useLocation();
-    const [products, setProducts] = useState([]);
+    const [products, setProducts] = useState({ loading: true, data: [] });
     const [brandsPage, setBrandsPage] = useState(1);
     const [brand, setBrand] = useState(undefined);
     const brandId = location.pathname.split("/")[2];
+
     useEffect(() => {
-        getProducts("brands=" + brandId)
-            .then(response => setProducts(response.data))
+        getProducts("?brands=" + brandId)
+            .then(response => setProducts({ loading: false, data: response.data }))
             .catch(error => console.log(error))
 
         getBrand(brandId)
@@ -34,7 +36,7 @@ export const Brand = () => {
                             <div className="font-extrabold text-transparent text-3xl bg-clip-text bg-gradient-to-r from-purple-400 to-pink-600">{brand.name}</div>
 
                             <div className="flex flex-col space-y-2 text-center">
-                                <span>Number of products: {products.length}</span>
+                                <span>Number of products: {products.data.length}</span>
                                 <Link to={"/filter/?brands=" + brand.id} className="text-primary underline underline-offset-1">Filter with this brand</Link>
                             </div>
 
@@ -47,14 +49,7 @@ export const Brand = () => {
             </div>
 
             <div className="container mx-auto">
-
-                <div className="grid grid-cols-4 gap-5 my-4">
-                    {products.length === 0 ?
-                        <Loading />
-                        : products.map((product, index) => <LongProductThumbnail key={index} product={product} />)
-                    }
-                </div>
-
+                <ProductContainer products={products} title={""} />
             </div>
         </div>
     );
