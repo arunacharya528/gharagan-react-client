@@ -2,6 +2,7 @@
     "name": "gharagan-ecommerce-client",
     "version": "0.1.0",
     "private": true,
+    "homepage": "http://client.gharagan.com",
     "dependencies": {
         "@brainhubeu/react-carousel": "^2.0.4",
         "@popperjs/core": "^2.11.4",

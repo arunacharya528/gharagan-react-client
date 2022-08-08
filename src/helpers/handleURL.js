@@ -73,6 +73,4 @@ const getURLStatus = (id, type, status, location) => {
     }
 }
 
-module.exports = {
-    handleURLUpdate, getURLStatus
-}
+export { handleURLUpdate, getURLStatus }
