@@ -45,7 +45,7 @@ export const ProductContainer = ({ products, title }) => {
                             <ProductThumbnailSkeleton key={index} />
                         </div>
                     )}</>
-                    : products.data.slice(0, (page * 10)).map((product, index) =>
+                    : products.data.map((product, index) =>
 
                         <div class="carousel-item w-11/12">
                             <LongProductThumbnail key={index} product={product} />
