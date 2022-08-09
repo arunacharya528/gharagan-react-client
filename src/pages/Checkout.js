@@ -32,7 +32,6 @@ export const Checkout = () => {
     //=======================
 
     // for address
-    // const [addresses, setAddresses] = useState([]);
     const { addresses, updateAddress } = useContext(AddressContext);
     const [selectedAddress, setSelectedAddress] = useState({ address: null, delivery_price: 0 });
     const [isAddressRefreshed, refreshAddress] = useState(false);
@@ -43,41 +42,6 @@ export const Checkout = () => {
     const [discountResponse, setDiscountResponse] = useState(null);
 
     const [disableForm, setDisableForm] = useState(false);
-
-
-
-    //=======================
-    //
-    // react hooks
-    //
-    //=======================
-
-    // to retrieve all available address 
-    // useEffect(() => {
-    //     getUser('', user.id, 'addresses')
-    //         .then(response => setAddresses(response.data))
-    //         .catch(error => console.log(error))
-    // }, [isAddressRefreshed])
-
-    //=======================
-    //
-    // methods for form control
-    //
-    //=======================
-    // const handleNewAddressAddition = () => {
-    //     const handleRefresh = (data) => {
-    //         refreshAddress(!isAddressRefreshed);
-    //         setSelectedAddress(data.response.id);
-    //         closeModal();
-    //     }
-    //     setModalData(
-    //         {
-    //             title: "Add new address",
-    //             body: <AddAddress refresh={handleRefresh} userId={user.id} />
-    //         });
-    //     openModal();
-
-    // }
 
     const handleDiscountCodeApplication = () => {
         setDiscountResponse(null)
@@ -114,7 +78,14 @@ export const Checkout = () => {
                         updateSession()
                         return "Order successfully placed"
                     },
-                    error: () => {
+                    error: (error) => {
+                        toast(
+                            error.response.data.error +
+                            "\nThe checkout procedure was cancelled. \n Please try again    ",
+                            {
+                                duration: 6000,
+                            }
+                        );
                         setDisableForm(false);
                         return "Error placing your order"
                     }
@@ -166,7 +137,7 @@ export const Checkout = () => {
                     </div>
 
                     <div>
-                        <div className={"grid grid-cols-2 gap-5 p-3 rounded-md " + (!addressValidation.isValid ? 'border border-error' : '')}>
+                        <div className={"grid md:grid-cols-2 lg:grid-cols-1 gap-5 p-3 rounded-md " + (!addressValidation.isValid ? 'border border-error' : '')}>
                             {addresses.map((address, index) =>
 
                                 <div className={"flex flex-col grow rounded-xl p-3 cursor-pointer bg-base-200 " + (selectedAddress !== null && selectedAddress.address === address.id ? "outline outline-primary" : '')} onClick={e => setSelectedAddress({ address: address.id, delivery_price: address.delivery.price })} key={index}>
