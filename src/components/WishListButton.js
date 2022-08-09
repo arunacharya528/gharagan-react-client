@@ -20,7 +20,8 @@ export const WishListButton = ({ productId, size = "-sm" }) => {
         }
     }, [user])
 
-    const handleWishListRemoval = () => {
+    const handleWishListRemoval = (e) => {
+        e.stopPropagation();
         toast.promise(
             removeFromWishList(user.data.token, getFromWishList(productId).id),
             {
@@ -35,7 +36,8 @@ export const WishListButton = ({ productId, size = "-sm" }) => {
         )
     }
 
-    const handleWishListAddition = () => {
+    const handleWishListAddition = (e) => {
+        e.stopPropagation();
         toast.promise(
             postWishList(user.data.token, { product_id: productId, user_id: user.id }),
             {
