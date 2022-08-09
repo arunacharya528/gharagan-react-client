@@ -52,7 +52,7 @@ export const Home = () => {
     return (
         <>
 
-            <div className="container mx-auto p-5 grid grid-cols-6 gap-10 items-center">
+            <div className="container mx-auto p-5 grid grid-cols-6 gap-12 items-center">
                 <div className="col-span-6 md:col-span-2 order-last md:order-1">
                     <VerticalList />
                 </div>

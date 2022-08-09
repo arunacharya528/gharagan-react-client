@@ -7,7 +7,7 @@ export const defaultSliderSetting = (addedSetting) => {
         infinite: true,
         className: "",
         swipeToSlide: true,
-        speed: 2000,
+        speed: 200,
         autoplaySpeed: 2000,
         pauseOnHover: true,
         autoplay: true
