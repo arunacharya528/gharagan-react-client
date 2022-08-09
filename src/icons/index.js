@@ -23,6 +23,9 @@ import { ReactComponent as ArrowLeftIcon } from './arrow-left.svg';
 import { ReactComponent as ClipboardIcon } from './clipboard.svg';
 import { ReactComponent as MailIcon } from './mail.svg';
 import { ReactComponent as PhoneIcon } from './phone.svg';
+import { ReactComponent as StarOutlineIcon } from './star-outline.svg';
+import { ReactComponent as HelpCircleIcon } from './help-circle.svg';
+
 
 
 export {
@@ -50,5 +53,7 @@ export {
     ArrowLeftIcon,
     ClipboardIcon,
     MailIcon,
-    PhoneIcon
+    PhoneIcon,
+    StarOutlineIcon,
+    HelpCircleIcon
 }

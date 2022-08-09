@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BagIcon, CartIcon, CreditCardIcon, HeartIcon, ListIcon, MapPinIcon, PersonIcon, StarIcon } from "../icons";
+import { BagIcon, CartIcon, CreditCardIcon, HeartIcon, HelpCircleIcon, ListIcon, MapPinIcon, PersonIcon, StarIcon, StarOutlineIcon } from "../icons";
 
 export const UserDashboard = () => {
     const routes = [
@@ -23,12 +23,12 @@ export const UserDashboard = () => {
                     path: "wishlist"
                 },
                 {
-                    icon: <StarIcon className="w-5 h-5" />,
+                    icon: <StarOutlineIcon className="w-5 h-5" />,
                     name: "Reviews",
                     path: "reviews"
                 },
                 {
-                    icon: <StarIcon className="w-5 h-5" />,
+                    icon: <HelpCircleIcon className="w-5 h-5" />,
                     name: "Question Answers",
                     path: "qas"
                 }
