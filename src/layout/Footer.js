@@ -21,7 +21,7 @@ export const Footer = () => {
     return (
         <>
 
-            <footer class="footer p-10 flex flex-col md:flex-row  md:justify-around bg-secondary/90 mt-20 text-gray-200">
+            <footer class="footer p-10 flex flex-col md:flex-row  md:justify-around mt-20 bg-neutral text-neutral-content">
                 <div className="flex flex-col">
                     <span class="footer-title">Store Information</span>
                     <div className="flex flex-row items-center">
@@ -30,12 +30,11 @@ export const Footer = () => {
                     </div>
                     <div className="flex flex-row">
                         <PhoneIcon className="w-4 h-4 mr-5" />
-                        {getSiteData('contact')}
+                        <div dangerouslySetInnerHTML={{ __html: getSiteData('contact') }} />
                     </div>
                     <div className="flex flex-row ">
                         <MailIcon className="w-4 h-4 mr-5" />
-                        {getSiteData('email')}
-
+                        <div dangerouslySetInnerHTML={{ __html: getSiteData('email') }} />
                     </div>
                 </div>
 
@@ -70,7 +69,7 @@ export const Footer = () => {
                     </div>
                 </div> */}
                 {/* <div className="grow"></div> */}
-               
+
                 <div className="flex flex-col">
                     <img src={logo} className="w-16" />
                     <span class="footer-title">Follow us</span>
@@ -84,7 +83,7 @@ export const Footer = () => {
                                 : ''
                         }
                     </div>
-               </div>
+                </div>
                 {/* <div className="w-full md:w-1/5">
 
                     <div className="py-2">
@@ -102,8 +101,9 @@ export const Footer = () => {
 
                 </div> */}
             </footer>
-
-            <div className="text-center py-2 bg-secondary  text-gray-200 text-sm">
+            {/* <hr className="bg-slate-500" /> */}
+            {/* <div class="divider"></div> */}
+            <div className="text-center py-2 bg-neutral text-neutral-content text-sm border-t border-gray-600">
 
                 &copy; Gharagan {moment().format("Y")}
             </div>

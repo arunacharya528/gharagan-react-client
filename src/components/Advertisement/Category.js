@@ -49,27 +49,31 @@ export const CategoryAd = () => {
     }
     return (
         <>
-            <div className="block md:hidden container mx-auto my-32 px-10">
-                <Slider {...defaultSliderSetting({ autoplaySpeed: 10000, rows: 1, slidesToShow: 1, centerMode: true })}>
-                    {getAdvertisement('category').map((ad, index) =>
-                        <View ad={ad} key={index} />
-                    )}
-                </Slider>
+            <div className="my-32">
+                <div className="font-semibold text-center  bg-base-100 rounded-full px-3 py-1 uppercase ">Advertisements</div>
+                <div className="block md:hidden container mx-auto px-10 mb-32">
+                    <Slider {...defaultSliderSetting({ autoplaySpeed: 10000, rows: 1, slidesToShow: 1, centerMode: true })}>
+                        {getAdvertisement('category').map((ad, index) =>
+                            <View ad={ad} key={index} />
+                        )}
+                    </Slider>
+                </div>
+                <div className="hidden md:block lg:hidden container mx-auto">
+                    <Slider {...defaultSliderSetting({ autoplaySpeed: 10000, rows: 1, slidesToShow: 2, centerMode: true })}>
+                        {getAdvertisement('category').map((ad, index) =>
+                            <View ad={ad} key={index} />
+                        )}
+                    </Slider>
+                </div>
+                <div className="hidden lg:block container mx-auto">
+                    <Slider {...defaultSliderSetting({ autoplaySpeed: 10000, rows: 2, slidesToShow: 3, centerMode: true })}>
+                        {getAdvertisement('category').map((ad, index) =>
+                            <View ad={ad} key={index} />
+                        )}
+                    </Slider>
+                </div>
             </div>
-            <div className="hidden md:block lg:hidden container mx-auto my-32">
-                <Slider {...defaultSliderSetting({ autoplaySpeed: 10000, rows: 1, slidesToShow: 2, centerMode: true })}>
-                    {getAdvertisement('category').map((ad, index) =>
-                        <View ad={ad} key={index} />
-                    )}
-                </Slider>
-            </div>
-            <div className="hidden lg:block container mx-auto my-32">
-                <Slider {...defaultSliderSetting({ autoplaySpeed: 10000, rows: 2, slidesToShow: 3, centerMode: true })}>
-                    {getAdvertisement('category').map((ad, index) =>
-                        <View ad={ad} key={index} />
-                    )}
-                </Slider>
-            </div>
+            
         
         </>
         

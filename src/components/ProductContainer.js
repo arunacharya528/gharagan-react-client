@@ -10,7 +10,7 @@ export const ProductContainer = ({ products, title }) => {
     return (
         <div className="container mx-auto mb-8 p-5">
             <div className="text-center my-3">
-                <span className="font-semibold text-center sticky top-16 z-10 bg-base-100 rounded-full px-3 py-1 uppercase">{title}</span>
+                <span className="font-semibold text-lg text-center bg-base-100 rounded-full px-3 py-1 uppercase">{title}</span>
             </div>
 
             <div className="hidden md:block">
@@ -27,12 +27,12 @@ export const ProductContainer = ({ products, title }) => {
                 <div className="flex justify-center space-x-5 mt-8">
                     {
                         page < products.data.length / 8 ?
-                            <button className="btn btn-accent btn-outline" onClick={() => { setPage(page + 1) }}>View More</button>
+                            <button className={"btn btn-primary"} onClick={() => { setPage(page + 1) }}>View More</button>
                             : ''
                     }
                     {
                         page > 1 ?
-                            <button className="btn btn-accent btn-outline" onClick={() => { setPage(1) }}>Set default</button>
+                            <button className="btn btn-primary btn-outline" onClick={() => { setPage(1) }}>Set default</button>
                             : ''
                     }
                 </div>

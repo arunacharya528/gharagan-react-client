@@ -10,7 +10,7 @@ export const Banner = () => {
     const { getAdvertisement } = useContext(AdvertisementContext);
 
     return (
-        <div>
+        <div className="p-5">
             <Slider {...defaultSliderSetting({ autoplaySpeed: 7000 })}>
                 {getAdvertisement('banner').map((ad, index) =>
                     <div

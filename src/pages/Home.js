@@ -64,13 +64,16 @@ export const Home = () => {
             <ProductContainer products={latestProducts} title={"Latest Products"} />
             <ProductContainer products={topRatedProducts} title={"Top Rated Products"} />
 
+            {/* <div className="font-semibold text-center bg-base-100 rounded-full px-3 py-1 uppercase">Advertisements</div> */}
             <Promotion />
 
+            <div className="mt-16"></div>
             <ProductContainer products={popularProducts} title={"Popular Products"} />
             <ProductContainer products={controversialProducts} title={"Controversial Products"} />
             
             <CategoryAd />
             
+            <div className="font-semibold text-center bg-base-100 rounded-full px-3 py-2 uppercase">Popular Brands</div>
             <BrandCarousel />
         </>
     );

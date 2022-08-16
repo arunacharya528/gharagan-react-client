@@ -82,8 +82,8 @@ export const InventoryList = ({ product, buttonSize = "-sm" }) => {
                                 Select from list to add to cart
                             </button>
                             :
-                            <button className={`grow btn btn${buttonSize} btn-accent ` + (!session ? 'btn-disabled' : '')} onClick={handleCartAddition}>
-                                {session ? "Add to cart" : "Login to add to cart"}
+                            <button className={`grow btn btn${buttonSize} btn-primary ` + (user.loading ? 'btn-disabled' : '')} onClick={handleCartAddition}>
+                                {!user.loading ? "Add to cart" : "Login to add to cart"}
                             </button>
                     }
 

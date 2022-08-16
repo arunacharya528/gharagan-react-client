@@ -33,7 +33,7 @@ export const VerticalList = () => {
                     )}
                 </Slider>
             </div>
-            <div className="block md:hidden">
+            <div className="block md:hidden p-5">
                 <Slider {...defaultSliderSetting({ arrows: true, slidesToShow: 1, autoplaySpeed: 7000 })}>
                     {getAdvertisement('sidebar').map((ad, index) =>
                         <Content ad={ad} key={index} />

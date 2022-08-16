@@ -249,9 +249,9 @@ export const Login = () => {
                     <div class="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
                         <div class="card-body">
 
-                            <div class="tabs w-full mb-4">
+                            <div class="tabs tabs-boxed w-full mb-4">
                                 {tabs.map((tab, index) =>
-                                    <a class={"tab tab-bordered " + (tab.value === selectedTab ? 'tab-active' : '')} onClick={e => setSelectedTab(tab.value)}>{tab.name}</a>
+                                    <a class={"tab " + (tab.value === selectedTab ? 'tab-active' : '')} onClick={e => setSelectedTab(tab.value)}>{tab.name}</a>
                                 )}
                             </div>
 

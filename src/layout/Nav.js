@@ -213,6 +213,14 @@ export const Nav = () => {
                                 : ''
                         }
 
+                        {
+                            user.loading ?
+                                <div className="hidden lg:block">
+                                    <Link to="/user/profile" class="btn btn-primary">Sign in</Link>
+                                </div>
+                                : ''
+                        }
+
                         <div className="flex-row space-x-2 items-center">
 
                             <div class="dropdown dropdown-end">
@@ -228,6 +236,8 @@ export const Nav = () => {
                                             </div>
                                     }
                                 </label>
+
+
                                 <div className="dropdown-content w-52 py-2 rounded-xl shadow-md bg-base-100">
                                     <UserMenu />
                                 </div>

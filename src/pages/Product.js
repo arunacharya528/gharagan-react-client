@@ -85,7 +85,7 @@ export const Product = () => {
 
     return (
         <section class="" >
-            <div class="card  md:container mx-3 md:mx-auto bg-base-200 shadow-md">
+            <div class="card  md:container mx-3 md:mx-auto bg-base-200 shadow-sm">
                 <div class="card-body px-3 py-5 ">
                     {/* <ul class="menu bg-base-100 flex flex-row items-stretch justify-between bg-transparent">
                         {
