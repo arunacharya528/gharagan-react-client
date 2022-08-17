@@ -254,12 +254,16 @@ export const Nav = () => {
                 </div>
             </div>
 
+            {
+                location.pathname.split("/")[1] !== 'filter' ?
+                    <div className="hidden md:flex justify-center py-10 ">
+                        <ul class="menu menu-horizontal bg-base-100 rounded-box">
+                            <CategoryMenu />
+                        </ul>
+                    </div>
+                    : ''
+            }
 
-            <div className="hidden md:flex justify-center py-10 ">
-                <ul class="menu menu-horizontal bg-base-100 rounded-box">
-                    <CategoryMenu />
-                </ul>
-            </div>
         </>
     );
 }
