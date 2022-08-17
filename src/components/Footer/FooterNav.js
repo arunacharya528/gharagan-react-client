@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import { UserContext } from "../../context/UserContext";
 import { CartIcon, HeartIcon, HomeIcon, PersonIcon, SearchIcon } from "../../icons";
@@ -9,28 +9,26 @@ export const FooterNav = () => {
     const { user } = useContext(UserContext)
     const { session } = useContext(CartContext)
 
+    const location = useLocation();
+
     return (
         <>
+            <div class="btm-nav flex lg:hidden btm-nav-lg">
+                <Link to="/" className={location.pathname === "/" ? 'active' : ''}>
+                    <HomeIcon className="h-7 w-7" />
+                </Link>
 
-            <ul class="menu menu-horizontal w-full flex lg:hidden justify-around sticky bottom-0 py-3 z-50 bg-base-200">
-                <li>
-                    <Link to="/" className="btn btn-ghost">
-                        <HomeIcon className="h-7 w-7" />
-                    </Link>
-                </li>
-                <li>
-                    <Link to="/filter" className="btn btn-ghost">
-                        <SearchIcon className="h-7 w-7" />
-                    </Link>
-                </li>
-                <li>
-                    <Link to={"/user/wishlist"} className="btn btn-ghost">
-                        <HeartIcon className="h-7 w-7" />
-                    </Link>
-                </li>
+                <Link to="/filter" className={location.pathname === "/filter" ? 'active' : ''}>
+                    <SearchIcon className="h-7 w-7" />
+                </Link>
+
+                <Link to={"/user/wishlist"} className={location.pathname === "/user/wishlist" ? 'active' : ''}>
+                    <HeartIcon className="h-7 w-7" />
+                </Link>
+
                 {
                     !user.loading && session !== null ?
-                        <label for="rightDrawer" class="btn btn-ghost">
+                        <label for="rightDrawer">
                             <div class="indicator">
                                 <CartIcon className="w-6 h-6" />
                                 <span class="badge badge-xs badge-primary indicator-item">
@@ -38,14 +36,13 @@ export const FooterNav = () => {
                                 </span>
                             </div>
                         </label>
-                        : <li>
-                            <Link to={"/user/cart"} className="btn btn-ghost">
-                                <CartIcon className="h-7 w-7" />
-                            </Link>
-                        </li>
-                }
-            </ul>
+                        :
+                        <Link to={"/user/cart"} className={location.pathname === "/user/cart" ? 'active' : ''}>
+                            <CartIcon className="h-7 w-7" />
+                        </Link>
 
+                }
+            </div>
         </>
 
     );

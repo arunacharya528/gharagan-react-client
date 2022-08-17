@@ -63,13 +63,6 @@ export const Footer = () => {
                     <Link to={"/user/reviews"}>My Reviews</Link>
                     <Link to={"/user/qas"}>My QAs</Link>
                 </div>
-                {/* <div className="w-full md:w-1/5 flex flex-row items-center justify-center">
-                    <img src={logo} className="w-16" />
-                    <div className="w-full text-left" dangerouslySetInnerHTML={{ __html: getSiteData('site_address') }}>
-                    </div>
-                </div> */}
-                {/* <div className="grow"></div> */}
-
                 <div className="flex flex-col">
                     <img src={logo} className="w-16" />
                     <span class="footer-title">Follow us</span>
@@ -84,27 +77,9 @@ export const Footer = () => {
                         }
                     </div>
                 </div>
-                {/* <div className="w-full md:w-1/5">
-
-                    <div className="py-2">
-                        
-                    </div>
-
-                    <div className="py-2">
-                        <span class="footer-title">Contact Us</span>
-
-                    </div>
-
-                    <div className="py-2">
-                        <span class="footer-title">Email</span>
-                    </div>
-
-                </div> */}
+              
             </footer>
-            {/* <hr className="bg-slate-500" /> */}
-            {/* <div class="divider"></div> */}
-            <div className="text-center py-2 bg-neutral text-neutral-content text-sm border-t border-gray-600">
-
+            <div className="text-center py-2 bg-neutral text-neutral-content text-sm border-t border-gray-600 mb-20 lg:mb-0">
                 &copy; Gharagan {moment().format("Y")}
             </div>
             <FooterNav />

@@ -72,7 +72,7 @@ export const LongProductThumbnail = (props) => {
 
     return (
 
-        <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl w-full cursor-pointer" onMouseEnter={e => showButtonPanel(true)} onMouseLeave={e => showButtonPanel(false)} onClick={e => { e.stopPropagation(); navigate("/product/" + props.product.id) }}>
+        <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl w-full cursor-pointer" onMouseEnter={e => showButtonPanel(true)} onMouseLeave={e => showButtonPanel(false)}>
             <div className="relative">
                 {
                     images.map((image, index) =>
@@ -96,7 +96,7 @@ export const LongProductThumbnail = (props) => {
 
 
             </div>
-            <div class="flex flex-col p-5 space-y-3">
+            <div class="flex flex-col p-5 space-y-3" onClick={e => { navigate("/product/" + props.product.id) }}>
                 <div className="flex flex-col space-y-1">
                     <div>
                         <Link to={"/filter/?categories=" + props.product.category.id} onClick={e => e.stopPropagation()} className="text-gray-500 font-semibold text-xs uppercase tracking-widest hover:text-gray-700">{props.product.category.name}</Link>
