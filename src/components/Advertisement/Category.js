@@ -49,7 +49,7 @@ export const CategoryAd = () => {
     }
     return (
         <>
-            <div className="my-32">
+            <div className="my-32 mx-10">
                 <div className="font-semibold text-center  bg-base-100 rounded-full px-3 py-1 uppercase ">Advertisements</div>
                 <div className="block md:hidden container mx-auto px-10 mb-32">
                     <Slider {...defaultSliderSetting({ autoplaySpeed: 10000, rows: 1, slidesToShow: 1, centerMode: true })}>

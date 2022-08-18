@@ -58,7 +58,7 @@ export const BrandCarousel = () => {
                             }
                         </Slider>
                     </div>
-                    <div className="hidden md:block lg:hidden">
+                    <div className="hidden md:block lg:hidden mx-5">
                         <Slider {...defaultSliderSetting({ slidesToShow: 3, variableWidth: true, centerMode: true })}>
                             {
                                 brands.map((brand, index) =>
@@ -67,7 +67,7 @@ export const BrandCarousel = () => {
                             }
                         </Slider>
                     </div>
-                    <div className="hidden lg:block">
+                    <div className="hidden lg:block mx-10">
                         <Slider {...defaultSliderSetting({ slidesToShow: 5, variableWidth: true, centerMode: true })}>
                             {
                                 brands.map((brand, index) =>
