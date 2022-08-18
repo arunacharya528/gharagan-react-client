@@ -8,11 +8,9 @@ import { SiteDetailContext } from "../context/SiteDetailContext";
 import { SocialIcon } from "react-social-icons";
 import moment from "moment";
 import { CategoryContext } from "../context/CategoryContext";
-// import { EmailIcon } from "react-share";
 
 export const Footer = () => {
 
-    const { getLinks } = useContext(PageLinkContext);
     const { getSiteData } = useContext(SiteDetailContext);
     const { categories } = useContext(CategoryContext)
     const navigate = useNavigate();
@@ -23,7 +21,7 @@ export const Footer = () => {
 
             <footer class="footer p-10 flex flex-col md:flex-row  md:justify-around mt-20 bg-neutral text-neutral-content">
                 <div className="flex flex-col">
-                    <span class="footer-title">Store Information</span>
+                    <span class="footer-title">Corporate Information</span>
                     <div className="flex flex-row items-center">
                         <MapPinIcon className="w-4 h-4 mr-5" />
                         <div dangerouslySetInnerHTML={{ __html: getSiteData('site_address') }} />

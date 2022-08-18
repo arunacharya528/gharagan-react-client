@@ -16,7 +16,7 @@ export const ContextList = ({ children }) => {
             <SiteDetailProvider>
                 <MaintainanceProvider>
                     <AdvertisementProvider>
-                        <PageLinkProvider>
+                        {/* <PageLinkProvider> */}
                             <UserProvider>
                                 <AddressProvider>
                                     <CartProvider>
@@ -30,7 +30,7 @@ export const ContextList = ({ children }) => {
                                     </CartProvider>
                                 </AddressProvider>
                             </UserProvider>
-                        </PageLinkProvider>
+                        {/* </PageLinkProvider> */}
                     </AdvertisementProvider>
                 </MaintainanceProvider>
             </SiteDetailProvider>

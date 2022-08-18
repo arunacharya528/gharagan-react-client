@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { CartContext } from "../../context/CartContext";
 import { UserContext } from "../../context/UserContext";
+import { UserDashboard } from "../../layout/UserDashboard";
 import { ThemeToggle } from "./ThemeSwitch";
 
 export const UserMenu = () => {
@@ -11,33 +12,26 @@ export const UserMenu = () => {
     const { updateSession } = useContext(CartContext)
 
     return (
-        <ul tabindex="0" class="menu bg-base-200 w-full">
-
+        <>
             {
                 !user.loading ?
-                    <>
-                        <li>
-                            <Link to={"/user/cart"}>Cart</Link>
-                            <Link to={"/user/orders"}>Orders</Link>
-                            <Link to={"/user/profile"}>Profile</Link>
-                            <Link to={"/user/wishlist"}>Wish List</Link>
-                        </li>
-                    </>
+                    <UserDashboard short={true} />
                     : ''
             }
 
-            {
-                !user.loading ?
-                    <li className=""><a onClick={e => { handleLogout(); updateSession() }}>Logout</a></li>
-                    :
-                    <li><Link to={"/user/profile"}>Login</Link></li>
+           
+            <ul tabindex="0" class="menu bg-base-100 w-full p-2">
+                {
+                    !user.loading ?
+                        <li className=""><a onClick={e => { handleLogout(); updateSession() }}>Logout</a></li>
+                        :
+                        <li><Link to={"/user/profile#login"}>Login</Link></li>
+                }
+                <li className="inline md:hidden">
+                    <ThemeToggle showTitle={true} />
+                </li>
+            </ul>
+        </>
 
-
-            }
-
-            <li className="inline md:hidden">
-                <ThemeToggle showTitle={true} />
-            </li>
-        </ul>
     );
 }

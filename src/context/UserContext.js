@@ -43,7 +43,7 @@ export const UserProvider = ({ children }) => {
 
     useEffect(() => {
         const token = cookies.get('token');
-        if (token !== '') {
+        if (token && token !== '') {
             getIfLoggedIn({ token: token })
                 .then(response => {
                     var data = response.data;

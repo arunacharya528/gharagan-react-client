@@ -3,24 +3,3 @@
 @tailwind utilities;
 
 @import "~react-image-gallery/styles/css/image-gallery.css";
-
-
-.BrainhubCarousel__container {
-    grid-column-start: 2;
-    grid-column-end: 6;
-}
-@media (min-width: 768px) {
-
-    .BrainhubCarousel__container ul li .bannerImage {
-        height: 750px !important;
-        width: 700px !important;
-    }
-}
-
-@media (max-width: 640px) {
-
-    .BrainhubCarousel__container ul li .bannerImage {
-        height: 400px !important;
-        width: 600px !important;
-    }
-}

@@ -40,7 +40,7 @@ export const LongProductThumbnail = (props) => {
                 <div className="flex flex-col space-y-3">
 
                     <InventoryList product={props.product} />
-                    <Link to={"/product/" + id} className="w-full btn btn-sm btn-primary" onClick={e => onChange({ type: 'EXIT' })}>
+                    <Link to={"/product/" + id} className="w-full btn btn-sm btn-accent" onClick={e => onChange({ type: 'EXIT' })}>
                         View
                     </Link>
                 </div>

@@ -11,9 +11,11 @@ export const AddressProvider = ({ children }) => {
     const [isRefreshed, setRefresh] = useState(false)
 
     useEffect(() => {
-        getUser(user.data.token, 'addresses')
-            .then(response => setAddresses(response.data))
-            .catch(error => console.log(error))
+        if (!user.loading) { 
+            getUser(user.data.token, 'addresses')
+                .then(response => setAddresses(response.data))
+                .catch(error => console.log(error))
+        }
     }, [isRefreshed,user])
 
     const updateAddress = () => { 

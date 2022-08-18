@@ -186,7 +186,7 @@ export const Nav = () => {
 
                     <div className="md:grow flex justify-center">
 
-                        <Link to="/" className="block lg:hidden">
+                        <Link to="/" className="block mx-auto lg:hidden">
                             <img src={getSiteData('logo_url')} alt="Gharagan logo" className="w-10" />
                         </Link>
 
@@ -215,9 +215,10 @@ export const Nav = () => {
 
                         {
                             user.loading ?
-                                <div className="hidden lg:block">
-                                    <Link to="/user/profile" class="btn btn-primary">Sign in</Link>
-                                </div>
+                                <ul class="hidden lg:flex menu menu-horizontal bg-primary menu-compact rounded-md uppercase font-semibold text-white">
+                                    <li><Link to={"/user/profile#login"}>Login</Link></li>
+                                    <li><Link to={"/user/profile#register"}>Register</Link></li>
+                                </ul>
                                 : ''
                         }
 

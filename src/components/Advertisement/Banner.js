@@ -1,10 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Slider from "react-slick";
-import { getActiveAdvertisements } from "../../adapters/advertisement";
 import { AdvertisementContext } from "../../context/AdvertisementContext";
 import { defaultSliderSetting } from "../../helpers/defaultSliderSetting";
-import { Loading } from "../../helpers/Loading";
-import { CarouselView } from "../Carousel";
 
 export const Banner = () => {
     const { getAdvertisement } = useContext(AdvertisementContext);
@@ -14,7 +11,7 @@ export const Banner = () => {
             <Slider {...defaultSliderSetting({ autoplaySpeed: 7000 })}>
                 {getAdvertisement('banner').map((ad, index) =>
                     <div
-                        class=" duration-700 ease-in-out max-auto h-auto !grid grid-rows-2 md:grid-cols-2  md:grid-rows-none gap-x-20  items-center justify-center md:space-x-10  "
+                        class=" duration-700 ease-in-out max-auto h-auto !grid grid-rows-2 md:grid-cols-2  md:grid-rows-none gap-x-20  items-center justify-center md:space-x-10 px-5 "
                         data-carousel-item
                         key={index}>
                         <img

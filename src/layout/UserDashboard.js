@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { BagIcon, CartIcon, CreditCardIcon, HeartIcon, HelpCircleIcon, ListIcon, MapPinIcon, PersonIcon, StarIcon, StarOutlineIcon } from "../icons";
 
-export const UserDashboard = () => {
+export const UserDashboard = ({ short = false }) => {
     const routes = [
         {
             title: "Dashboard",
@@ -45,7 +45,7 @@ export const UserDashboard = () => {
                 {
                     icon: <MapPinIcon />,
                     name: "Addresses",
-                 
+
                     path: "addresses"
                 }
 
@@ -62,7 +62,7 @@ export const UserDashboard = () => {
     }
 
     return (
-        <ul class="menu w-80 bg-base-100 p-2" >
+        <ul class={"menu bg-base-100 p-2 " + (short ? "" : 'w-10/12 md:w-1/2 lg:w-80')} >
 
             {
                 routes.map((route, index) =>

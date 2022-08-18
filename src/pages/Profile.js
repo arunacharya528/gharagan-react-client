@@ -42,53 +42,7 @@ export const Profile = () => {
             {
                 user ?
                     <>
-                        {/* <div className="grid md:grid-cols-2 gap-5">
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-bold">First Name</span>
-                                </label>
-                                <input type="text" placeholder="Enter your first name" class="input input-bordered input-secondary w-full" value={firstName} onChange={e => setFirstName(e.target.value)} />
-                            </div>
-
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-bold">Last Name</span>
-                                </label>
-                                <input type="text" placeholder="Enter your last name" class="input input-bordered input-secondary w-full" value={lastName} onChange={e => setLastName(e.target.value)} />
-                            </div>
-
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-bold">Email</span>
-                                </label>
-                                <input type="text" placeholder="Enter your email" class="input input-bordered input-secondary w-full" value={email} onChange={e => setEmail(e.target.value)} />
-                            </div>
-
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-bold">Contact</span>
-                                </label>
-                                <input type="text" placeholder="Enter your contact" class="input input-bordered input-secondary w-full" value={contact} onChange={e => setContact(e.target.value)} />
-                            </div>
-
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-bold">Password</span>
-                                </label>
-                                <input type="text" placeholder="Enter new password" class="input input-bordered input-secondary w-full" />
-                            </div>
-
-                            <div class="form-control w-full">
-                                <label class="label">
-                                    <span class="label-text font-bold">Confirm password</span>
-                                </label>
-                                <input type="text" placeholder="Confirm new password" class="input input-bordered input-secondary w-full" />
-                            </div>
-
-
-                        </div>
-                        <button className="btn btn-primary mt-4">Save</button> */}
-
+    
                         <div className="flex flex-col space-y-5">
                             <div className="grid grid-cols-2 w-1/3">
                                 <span className="font-semibold">Name</span>
@@ -100,7 +54,7 @@ export const Profile = () => {
                                 <span className="font-semibold">Email</span>
                                 <span>{user.data.email}</span>
                             </div>
-                            <div className="space-x-5">
+                            <div className="flex flex-col space-y-5 md:flex-row md:space-x-5 md:space-y-0">
                                 <button className="btn btn-outline" onClick={handleInfoUpdate}>Update Info</button>
                                 <button className="btn btn-outline" onClick={handleEmailUpdate}>Update Email</button>
                                 <button className="btn btn-outline" onClick={handlePasswordUpdate}>Update Password</button>

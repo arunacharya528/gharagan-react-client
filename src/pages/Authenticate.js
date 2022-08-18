@@ -4,22 +4,25 @@ import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
+import { Link, useLocation, useNavigate } from "react-router-dom";
 export const Login = () => {
-    const [selectedTab, setSelectedTab] = useState(1);
+
+    const location = useLocation();
     const tabs = [
         {
             name: "Login",
-            value: 1
+            value: "/user/profile#login"
         },
         {
             name: "Register",
-            value: 2
+            value: "/user/profile#register"
         },
         {
             name: "Forgot Password",
-            value: 3
+            value: "/user/profile#forgot-password"
         }
     ]
+
 
     const LoginForm = () => {
         const { setUserData, handleLogout } = useContext(UserContext)
@@ -225,15 +228,14 @@ export const Login = () => {
             </form>
         );
     }
-    const getSelectedTab = () => {
-        switch (selectedTab) {
-            case 1: return <LoginForm />
-            case 2: return <RegisteringForm />
-            case 3: return <PasswordForgot />
+    const getSelectedTab = (path) => {
+        switch (path) {
+            case "/user/profile#login": return <LoginForm />
+            case "/user/profile#register": return <RegisteringForm />
+            case "/user/profile#forgot-password": return <PasswordForgot />
+            default: return <LoginForm />
         }
     }
-
-
     return (
 
         <>
@@ -251,11 +253,11 @@ export const Login = () => {
 
                             <div class="tabs tabs-boxed w-full mb-4">
                                 {tabs.map((tab, index) =>
-                                    <a class={"tab " + (tab.value === selectedTab ? 'tab-active' : '')} onClick={e => setSelectedTab(tab.value)}>{tab.name}</a>
+                                    <Link className={"tab " + (location.pathname + location.hash === tab.value ? 'tab-active' : '')} to={tab.value} key={index}>{tab.name}</Link>
                                 )}
                             </div>
 
-                            {getSelectedTab()}
+                            {getSelectedTab(location.pathname + location.hash)}
 
                         </div>
                     </div>
