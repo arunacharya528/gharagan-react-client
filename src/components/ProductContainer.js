@@ -8,7 +8,7 @@ export const ProductContainer = ({ products, title }) => {
     const [page, setPage] = useState(1);
 
     return (
-        <div className="container mx-auto mb-8 p-5">
+        <div className="w-10/12 mx-auto mb-8 p-5">
             <div className="text-center my-3">
                 <span className="font-semibold text-lg text-center bg-base-100 rounded-full px-3 py-1 uppercase">{title}</span>
             </div>

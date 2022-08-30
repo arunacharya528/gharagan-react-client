@@ -61,7 +61,7 @@ export const InventoryList = ({ product, buttonSize = "-sm" }) => {
                                     }} key={index}>
                                         <div className="flex-1">{inventory.type}</div>
                                         <div class="flex flex-col grow">
-                                            <div className="text-accent text-lg font-bold">Rs. {getDiscountedPrice(inventory.price, inventory.discount.active === 1 ? inventory.discount.discount_percent : 0)}</div>
+                                            <div className="text-accent text-lg font-bold">Rs. {getDiscountedPrice(inventory.price, inventory.discount && inventory.discount.active === 1 ? inventory.discount.discount_percent : 0)}</div>
                                             {inventory.discount && inventory.discount.active === 1 ? <div className="font-light"><s>Rs. {inventory.price}</s></div> : ''}
                                         </div>
                                         <div className="col-span-3 md:col-span-1 space-y-2 flex flex-col">

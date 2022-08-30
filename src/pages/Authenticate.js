@@ -25,7 +25,7 @@ export const Login = () => {
 
 
     const LoginForm = () => {
-        const { setUserData, handleLogout } = useContext(UserContext)
+        const { user, setUserData, handleLogout } = useContext(UserContext)
         const [email, setEmail] = useState('');
         const [password, setPassowrd] = useState('');
 
@@ -38,6 +38,15 @@ export const Login = () => {
                     loading: "Logging in",
                     success: (response) => {
                         setUserData(response.data)
+                        setTimeout(() => {
+                            toast(
+                                "Your session has expired. Login again to continue your operations.",
+                                {
+                                    duration: 6000,
+                                }
+                            );
+                            handleLogout(response.data.token)
+                        }, 60 * 60 * 1000)
                         return "Successfully logged-in to your account"
                     },
                     error: (error) => {

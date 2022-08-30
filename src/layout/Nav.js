@@ -169,7 +169,7 @@ export const Nav = () => {
             <div className="sticky top-0 z-40 bg-base-100 flex flex-col">
                 <Notification />
 
-                <div className="lg:container mx-auto flex justify-between items-center space-x-10 p-2 flex-nowrap w-full">
+                <div className="lg:w-10/12 mx-auto flex justify-between items-center space-x-10 p-2 flex-nowrap w-full">
 
                     <div className="flex flex-row space-x-2 items-stretch flex-grow-0 flex-nowrap">
                         <div className="lg:hidden ">

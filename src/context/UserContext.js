@@ -41,6 +41,15 @@ export const UserProvider = ({ children }) => {
         )
     }
 
+
+    const setUserData = (data = { token: String }) => {
+        setUser({
+            loading: false,
+            data: data
+        })
+        cookies.set('token', data.token, { path: "/", expires: new Date(Date.now() + (60 * 60 * 1000)) })
+    }
+
     useEffect(() => {
         const token = cookies.get('token');
         if (token && token !== '') {
@@ -48,20 +57,14 @@ export const UserProvider = ({ children }) => {
                 .then(response => {
                     var data = response.data;
                     data['token'] = token;
-                    setUser({ loading: false, data: data })
+                    setUserData(data)
                 })
                 .catch(response => setUser(initialState))
         }
 
     }, [isRefreshed])
 
-    const setUserData = (data = { token: String }) => {
-        setUser({
-            loading: false,
-            data: data
-        })
-        cookies.set('token', data.token, { path: "/" })
-    }
+
 
     useEffect(() => {
         if (!user.loading) {
