@@ -50,7 +50,7 @@ export const UserProvider = ({ children }) => {
         cookies.set('token', data.token, { path: "/", expires: new Date(Date.now() + (60 * 60 * 1000)) })
     }
 
-    useEffect(() => {
+    const getLoggedInStatus = () => {
         const token = cookies.get('token');
         if (token && token !== '') {
             getIfLoggedIn({ token: token })
@@ -62,6 +62,13 @@ export const UserProvider = ({ children }) => {
                 .catch(response => setUser(initialState))
         }
 
+    }
+
+    useEffect(() => {
+        getLoggedInStatus()
+        setInterval(() => {
+            getLoggedInStatus()
+        }, 1000 * 60 * 3)
     }, [isRefreshed])
 
 
