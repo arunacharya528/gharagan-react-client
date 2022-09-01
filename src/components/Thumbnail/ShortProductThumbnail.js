@@ -17,10 +17,8 @@ export const ShortProductThumbnail = (props) => {
                 <div class="absolute top-0 left-0 h-full w-full" onClick={e => { props.moveForward("/product/" + props.product.id) }}>
                     <div className="h-full w-full flex items-center justify-center flex-col hover:bg-base-200/60">
                         <div className="grow"></div>
-                        <div class="tooltip w-full tooltip-bottom" data-tip={props.product.name}>
-                            <div className="text-md p-2 whitespace-normal bg-slate-900/80 text-white cursor-pointer rounded-b-xl w-full text-center">
-                                {props.product.name}
-                            </div>
+                        <div className="text-md p-2 whitespace-normal bg-slate-900/80 text-white cursor-pointer rounded-b-xl w-full text-center">
+                            {props.product.name}
                         </div>
                     </div>
                 </div>

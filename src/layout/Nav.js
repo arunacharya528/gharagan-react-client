@@ -52,9 +52,9 @@ export const Nav = () => {
                             <CategoryMenu />
                         </ul>
                     </div>
-                    <div className="grid md:grid-cols-3 gap-5 px-3 h-full">
+                    <div className="grid md:grid-cols-3 gap-5 h-full">
                         <div className="">
-                            <div className="grid grid-cols-4 md:grid-cols-1 lg:grid-cols-2 gap-2">
+                            <div className="grid grid-cols-2 md:grid-cols-1 lg:grid-cols-1 gap-2">
                                 {
                                     selectedCategory.child_categories.map((category, index) =>
                                         <button key={index} className="btn btn-ghost capitalize" onClick={e => { e.stopPropagation(); forwardTo(`/filter/?categories=${category.id}`) }} >{category.name}</button>

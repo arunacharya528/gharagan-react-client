@@ -14,7 +14,7 @@ export const NavProductContainer = ({ title, products, link, forward }) => {
                         No {title} available
                     </div>
                     :
-                    <section className="mb-4">
+                    <section className="">
                         <div className="flex justify-between py-3">
                             <span className="text-xl font-bold">{title}</span>
                             <span onClick={e => forward(link)} className="btn btn-sm btn-ghost rounded-full">More</span>
