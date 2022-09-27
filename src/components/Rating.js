@@ -96,13 +96,13 @@ export const RateDisplayByNumber = ({ rating, displayNumber = true }) => {
     })
     return (
         <div className="flex flex-row items-center space-x-3">
-            {
+            {/* {
                 displayNumber ?
                     <span className="">
                         {getRoundedValue(rating)}
                     </span>
                     : ''
-            }
+            } */}
 
 
             <div class="stars" style={{ '--rating': getRoundedValue(rating) }} aria-label="Rated 2.3 out of 5">

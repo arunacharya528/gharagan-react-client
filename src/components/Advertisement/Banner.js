@@ -7,11 +7,11 @@ export const Banner = () => {
     const { getAdvertisement } = useContext(AdvertisementContext);
 
     return (
-        <div className="p-5">
+        <div className="">
             <Slider {...defaultSliderSetting({ autoplaySpeed: 7000 })}>
                 {getAdvertisement('banner').map((ad, index) =>
                     <div
-                        class=" duration-700 ease-in-out max-auto h-auto !grid grid-rows-2 md:grid-cols-2  md:grid-rows-none gap-x-20  items-center justify-center md:space-x-10 px-5 "
+                        class=" duration-700 ease-in-out max-auto h-auto !grid grid-rows-2 md:grid-cols-2  md:grid-rows-none gap-x-20  items-center justify-center md:space-x-10 px-2 "
                         data-carousel-item
                         key={index}>
                         <img

@@ -38,7 +38,7 @@ function App() {
     const main = document.getElementById("main")
     main.addEventListener("scroll", (e) => {
       const scrollPosition = main.scrollTop;
-      if (scrollPosition > 1000) {
+      if (scrollPosition > 0) {
         showGoToTop(true)
       } else {
         showGoToTop(false)
@@ -88,7 +88,7 @@ function App() {
 
                 {
                   isGotoTopShown ?
-                    <div class="fixed bottom-0 right-0 py-20 px-5" id="scrollToTop" onClick={goUpScrollAction}>
+                    <div class="fixed bottom-0 right-0 my-28 px-5" id="scrollToTop" onClick={goUpScrollAction}>
                       <button class="btn btn-primary gap-2 btn-circle">
                         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
                       </button>

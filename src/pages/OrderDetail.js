@@ -107,7 +107,7 @@ export const OrderDetail = () => {
 
                         <div className="flex justify-between px-2 py-5">
                             <span className="font-semibold">Order Total</span>
-                            <span className="text-accent font-bold">{
+                            <span className="text-primary font-bold">{
                                 "Rs. " + order.data.total
                             }</span>
                         </div>
@@ -210,54 +210,61 @@ export const OrderDetail = () => {
     }
 
     return (
-        <>
-            {order.loading ?
-                <OrderDetailSkeleton />
-                :
-                <div className="p-2 mb-8 flex flex-col">
+      <>
+        {order.loading ? (
+          <OrderDetailSkeleton />
+        ) : (
+          <div className="p-2 mb-8 flex flex-col">
+            <div className="font-bold text-2xl py-2">Order Detail</div>
 
-                    <div className="font-bold text-2xl py-2">Order Detail</div>
-
-                    <div className="flex justify-between">
-                        <div className="flex grow">
-                            <span className="text-gray-400">Order number</span>
-                            <div className="font-bold ml-1">{order.data.id}</div>
-                            &bull;
-                            <div className="font-semibold ml-1">{moment(order.data.created_at).format("MMM D YYYY")}</div>
-                        </div>
-
-                        <div className="flex items-center space-x-3">
-                            <InvoiceLink id={order.data.id} />
-                            <OrderCancelBtn onSubmit={() => {
-                                setRefresh(!isRefreshed)
-                                navigate(-1);
-                            }} order={order.data} />
-                        </div>
-
-
-                    </div>
-                    <div className="divider"></div>
-                    <OrderSteps status={order.data.status} />
-                    <div className="font-semibold text-center">Latest action took place in {moment(order.data.updated_at).format("MMMM D YYYY")}</div>
-                    <div className="divider"></div>
-
-                    <div className="flex mb-8">
-                        <div class="tabs tabs-boxed">
-                            {tabs.map((item, index) =>
-                                <a class={"tab " + (selectedTab === item.index ? 'tab-active' : '')} onClick={e => setSelectedTab(item.index)} key={index}>{item.name}</a>
-                            )}
-                        </div>
-                    </div>
-
-                    {getSelectedTab()}
-
+            <div className="flex flex-col md:flex-row justify-between">
+              <div className="flex grow ">
+                <span className="text-gray-400">Order number</span>
+                <div className="font-bold ml-1">{order.data.id}</div>
+                &bull;
+                <div className="font-semibold ml-1">
+                  {moment(order.data.created_at).format("MMM D YYYY")}
                 </div>
+              </div>
 
-            }
+              <div className="flex flex-col space-y-3 md:flex-row md:space-x-3 md:space-y-0 md:items-center ">
+                <InvoiceLink id={order.data.id} />
+                <OrderCancelBtn
+                  onSubmit={() => {
+                    setRefresh(!isRefreshed);
+                    navigate(-1);
+                  }}
+                  order={order.data}
+                />
+              </div>
+            </div>
+            <div className="divider"></div>
+            <OrderSteps status={order.data.status} />
+            <div className="font-semibold text-center">
+              Latest action took place in{" "}
+              {moment(order.data.updated_at).format("MMMM D YYYY")}
+            </div>
+            <div className="divider"></div>
 
-        </>
+            <div className="flex mb-8">
+              <div class="tabs tabs-boxed">
+                {tabs.map((item, index) => (
+                  <a
+                    class={
+                      "tab " + (selectedTab === item.index ? "tab-active" : "")
+                    }
+                    onClick={(e) => setSelectedTab(item.index)}
+                    key={index}
+                  >
+                    {item.name}
+                  </a>
+                ))}
+              </div>
+            </div>
 
-
-
+            {getSelectedTab()}
+          </div>
+        )}
+      </>
     );
 }

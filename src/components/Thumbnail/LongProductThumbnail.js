@@ -71,48 +71,88 @@ export const LongProductThumbnail = (props) => {
     const [isButtonPanelShown, showButtonPanel] = useState(false);
 
     return (
+      <div
+        class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl w-full cursor-pointer"
+        onMouseEnter={(e) => showButtonPanel(true)}
+        onMouseLeave={(e) => showButtonPanel(false)}
+      >
+        <div className="relative">
+          {images.map((image, index) => (
+            <img
+              src={
+                image.file
+                  ? process.env.REACT_APP_FILE_PATH + image.file.path
+                  : image.image_url
+              }
+              alt={"Image " + (index + 1) + " of " + props.product.name}
+              key={index}
+              className="h-48 w-full rounded-t-xl object-cover"
+            />
+          ))}
 
-        <div class="flex flex-col items-stretch bg-base-200 hover:shadow-md ease-in-out duration-300 rounded-xl w-full cursor-pointer" onMouseEnter={e => showButtonPanel(true)} onMouseLeave={e => showButtonPanel(false)}>
-            <div className="relative">
-                {
-                    images.map((image, index) =>
-                        <img src={image.file ? process.env.REACT_APP_FILE_PATH + image.file.path : image.image_url} alt={"Image " + (index + 1) + " of " + props.product.name} key={index} className="h-48 w-full rounded-t-xl object-cover" />
-                    )
-                }
-
-                {
-                    isButtonPanelShown ?
-                        <div className="absolute top-0 w-full bg-base-100/40 h-full flex items-center justify-center space-x-3">
-
-                            <div class="tooltip tooltip-top" data-tip="Preview">
-                                <button className="btn btn-square btn-ghost btn-active btn-sm text-white" onClick={e => { e.stopPropagation(); handlePreview() }}>
-                                    <EyeIcon className="h-5 w-5" />
-                                </button>
-                            </div>
-                            <WishListButton productId={props.product.id} />
-                        </div>
-                        : ''
-                }
-
-
+          {isButtonPanelShown ? (
+            <div className="absolute top-0 w-full bg-base-100/40 h-full flex items-center justify-center space-x-3">
+              <div class="tooltip tooltip-top" data-tip="Preview">
+                <button
+                  className="btn btn-square btn-ghost btn-active btn-sm text-white"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handlePreview();
+                  }}
+                >
+                  <EyeIcon className="h-5 w-5" />
+                </button>
+              </div>
+              <WishListButton productId={props.product.id} />
             </div>
-            <div class="flex flex-col p-5 space-y-3" onClick={e => { navigate("/product/" + props.product.id) }}>
-                <div className="flex flex-col space-y-1">
-                    <div>
-                        <Link to={"/filter/?categories=" + props.product.category.id} onClick={e => e.stopPropagation()} className="text-gray-500 font-semibold text-xs uppercase tracking-widest hover:text-gray-700">{props.product.category.name}</Link>
-                    </div>
-                    <div>
-                        <Link to={"/product/" + props.product.id} class="text-xl font-semibold">
-                            {props.product.name}
-                        </Link>
-                    </div>
-                    <div>
-                        <Link to={"/brand/" + props.product.brand.id} onClick={e => e.stopPropagation()} className="text-gray-500 font-semibold text-xs uppercase tracking-widest hover:text-gray-700">{props.product.brand.name}</Link>
-                    </div>
-                </div>
-                <RateDisplayByNumber rating={props.product.ratings_avg_rate ? parseFloat(props.product.ratings_avg_rate) : 0} />
-
-            </div>
+          ) : (
+            ""
+          )}
         </div>
+        <div
+          class="flex flex-col p-5 space-y-3"
+          onClick={(e) => {
+            navigate("/product/" + props.product.id);
+          }}
+        >
+          <div className="flex flex-col space-y-1">
+            <div>
+              <Link
+                to={"/filter/?categories=" + props.product.category.id}
+                onClick={(e) => e.stopPropagation()}
+                className="text-gray-500 font-semibold text-xs uppercase tracking-widest hover:text-gray-700"
+              >
+                {props.product.category.name}
+              </Link>
+            </div>
+            <RateDisplayByNumber
+              rating={
+                props.product.ratings_avg_rate
+                  ? parseFloat(props.product.ratings_avg_rate)
+                  : 0
+              }
+            />
+
+            <div>
+              <Link
+                to={"/product/" + props.product.id}
+                class="text-md md:text-xl font-semibold"
+              >
+                {props.product.name}
+              </Link>
+            </div>
+            <div>
+              <Link
+                to={"/brand/" + props.product.brand.id}
+                onClick={(e) => e.stopPropagation()}
+                className="text-gray-500 font-semibold text-xs uppercase tracking-widest hover:text-gray-700"
+              >
+                {props.product.brand.name}
+              </Link>
+            </div>
+          </div>
+          {/* <RateDisplayByNumber rating={props.product.ratings_avg_rate ? parseFloat(props.product.ratings_avg_rate) : 0} /> */}
+        </div>
+      </div>
     );
 }

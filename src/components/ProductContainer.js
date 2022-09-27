@@ -8,7 +8,7 @@ export const ProductContainer = ({ products, title }) => {
     const [page, setPage] = useState(1);
 
     return (
-        <div className="w-10/12 mx-auto mb-8 p-5">
+        <div className="w-full md:w-11/12 mx-auto mb-8 p-4">
             <div className="text-center my-3">
                 <span className="font-semibold text-lg text-center bg-base-100 rounded-full px-3 py-1 uppercase">{title}</span>
             </div>
@@ -38,7 +38,7 @@ export const ProductContainer = ({ products, title }) => {
                 </div>
             </div>
 
-            <div class="flex md:hidden carousel carousel-center p-4 space-x-4  rounded-box">
+            <div class="flex md:hidden carousel carousel-center space-x-4  rounded-box">
                 {products.loading ?
                     <>{Array(5).fill({}).map((item, index) =>
                         <div class="carousel-item w-11/12">
@@ -47,7 +47,7 @@ export const ProductContainer = ({ products, title }) => {
                     )}</>
                     : products.data.map((product, index) =>
 
-                        <div class="carousel-item w-11/12">
+                        <div class="carousel-item w-6/12">
                             <LongProductThumbnail key={index} product={product} />
                         </div>
                     )
